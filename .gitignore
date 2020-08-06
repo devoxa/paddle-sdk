@@ -1,0 +1,13 @@
+# Compiled Output
+dist/
+
+# Tests
+coverage/
+
+# Dependencies
+node_modules/
+yarn-debug.log*
+yarn-error.log*
+
+# Development Environments
+.history/
