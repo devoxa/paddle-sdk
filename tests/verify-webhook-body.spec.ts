@@ -7,6 +7,10 @@ function verify(publicKey: string, body: any) {
 }
 
 describe('webhooks -> verify webhook body', () => {
+  it('errors when not providing a public key', () => {
+    expect(() => verify('', WEBHOOK_BODY_SUBSCRIPTION_CREATED)).toThrowError('PaddleSdk was called without a publicKey')
+  })
+
   it('verifies valid signature', () => {
     expect(verify(PUBLIC_KEY, WEBHOOK_BODY_SUBSCRIPTION_CREATED)).toEqual(true)
   })
