@@ -28,5 +28,5 @@
     "resolveJsonModule": true,
     "allowJs": false
   },
-  "include": ["src/", "tests/"]
+  "include": ["generators/", "src/", "tests/"]
 }
