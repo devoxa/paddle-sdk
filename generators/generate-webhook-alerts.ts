@@ -45,6 +45,7 @@ type JsonSchemaProperty = {
   description?: string
   default?: string
   enum?: Array<string>
+  pattern?: string
 }
 
 run()
@@ -79,7 +80,10 @@ async function buildWebhookAlertInterface(url: string) {
   const properties = Object.entries(jsonSchema.properties).map(([propertyName, propertySchema]) => {
     const type = inferTypeFromPropertySchema(propertySchema)
 
-    const comment = propertySchema.description ? `/** ${propertySchema.description} */\n  ` : ''
+    const pattern = propertySchema.pattern ? `\n@pattern ${propertySchema.pattern}` : ''
+    const comment = propertySchema.description
+      ? `/** ${propertySchema.description}${pattern} */\n  `
+      : ''
     return `  ${comment}${propertyName}: ${type}`
   })
 
