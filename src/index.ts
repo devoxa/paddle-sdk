@@ -1,5 +1,6 @@
 import { createVerify } from 'crypto'
-import { stableSerialize, parseUtcDate } from './helpers'
+import fetch from 'node-fetch'
+import { stableSerialize, parseUtcDate, objectToFormData } from './helpers'
 import {
   RawPaddleWebhookAlert,
   RawPaddleSubscriptionCreatedAlert,
@@ -7,28 +8,48 @@ import {
   RawPaddleSubscriptionCancelledAlert,
   RawPaddleSubscriptionPaymentSucceededAlert,
 } from './__generated__/webhook-alert-interfaces'
+import { PaddleSdkException, PaddleSdkApiException } from './exceptions'
 import {
   PaddleSdkSubscriptionCreatedAlert,
   PaddleSdkSubscriptionUpdatedAlert,
   PaddleSdkSubscriptionCancelledAlert,
   PaddleSdkSubscriptionPaymentSucceededAlert,
 } from './interfaces'
+import {
+  RawPaddlePostProductGeneratePayLinkRequest,
+  RawPaddlePostProductGeneratePayLinkResponse,
+  PADDLE_PRODUCT_GENERATE_PAY_LINK,
+} from './__generated__/api-route-interfaces'
 
 export * from './interfaces'
 
 export interface PaddleSdkOptions {
   publicKey: string
+  vendorId: number
+  vendorAuthCode: string
 }
 
 export class PaddleSdk {
   private readonly publicKey: string
+  private readonly vendorId: number
+  private readonly vendorAuthCode: string
 
   constructor(options: PaddleSdkOptions) {
     if (!options.publicKey) {
       throw new PaddleSdkException('PaddleSdk was called without a publicKey')
     }
 
+    if (!options.vendorId) {
+      throw new PaddleSdkException('PaddleSdk was called without a vendorId')
+    }
+
+    if (!options.vendorAuthCode) {
+      throw new PaddleSdkException('PaddleSdk was called without a vendorAuthCode')
+    }
+
     this.publicKey = options.publicKey
+    this.vendorId = options.vendorId
+    this.vendorAuthCode = options.vendorAuthCode
   }
 
   verifyWebhookAlert(body: any): body is RawPaddleWebhookAlert {
@@ -65,6 +86,10 @@ export class PaddleSdk {
     throw new PaddleSdkException(
       `Implementation missing: Can not parse alert of type ${body.alert_name}`
     )
+  }
+
+  private stringifyPassthrough(passthrough: any) {
+    return JSON.stringify(passthrough)
   }
 
   private parsePassthrough(passthrough: string) {
@@ -196,5 +221,42 @@ export class PaddleSdk {
       unit_price: parseFloat(body.unit_price),
       user_id: parseInt(body.user_id),
     }
+  }
+
+  private async apiRequest<TRequest, TResponse>(
+    url: string,
+    method: 'GET' | 'POST',
+    body: TRequest
+  ): Promise<TResponse> {
+    const formData = objectToFormData({
+      vendor_id: this.vendorId,
+      vendor_auth_code: this.vendorAuthCode,
+      ...body,
+    })
+
+    const response = await fetch(url, { method, body: formData })
+    const json = await response.json()
+
+    // Turn errors from the Paddle API into a unique exception with the error message
+    if (json.success === false) {
+      throw new PaddleSdkApiException(json.error.message)
+    }
+
+    return json.response
+  }
+
+  // TODO Add our own interface for request/response
+  async createProductPayLink(data: {
+    product_id?: number
+    customer_email?: string
+    passthrough?: any
+  }) {
+    return this.apiRequest<
+      RawPaddlePostProductGeneratePayLinkRequest,
+      RawPaddlePostProductGeneratePayLinkResponse
+    >(PADDLE_PRODUCT_GENERATE_PAY_LINK.url, PADDLE_PRODUCT_GENERATE_PAY_LINK.method, {
+      ...data,
+      passthrough: this.stringifyPassthrough(data.passthrough),
+    })
   }
 }
