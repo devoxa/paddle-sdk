@@ -17,7 +17,9 @@
   },
   "eslintConfig": {
     "extends": "@devoxa",
-    "rules": { "@typescript-eslint/camelcase": "off" }
+    "rules": {
+      "@typescript-eslint/camelcase": "off"
+    }
   },
   "prettier": "@devoxa/prettier-config",
   "devDependencies": {
