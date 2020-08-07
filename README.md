@@ -44,6 +44,8 @@
 
 ## Installation
 
+**:construction: This package is a work in progress. You can not use it yet.**
+
 ```bash
 yarn add @devoxa/paddle-sdk
 ```
