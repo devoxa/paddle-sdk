@@ -6,8 +6,7 @@ import {
   RawPaddleSubscriptionUpdatedAlert,
   RawPaddleSubscriptionCancelledAlert,
   RawPaddleSubscriptionPaymentSucceededAlert,
-} from './__generated__/webhook-alerts.interface'
-import { PaddleSdkException } from './exceptions'
+} from './__generated__/webhook-alert-interfaces'
 import {
   PaddleSdkSubscriptionCreatedAlert,
   PaddleSdkSubscriptionUpdatedAlert,

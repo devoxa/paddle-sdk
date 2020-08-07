@@ -67,8 +67,8 @@ export type RawPaddleWebhookAlert = ${unionType}
 
 ${interfaces.map((x) => x.sourceCode).join('\n\n')}`
 
-  fs.writeFileSync(__dirname + '/../src/__generated__/webhook-alerts.interface.ts', code, 'utf-8')
-  console.log('Written into /src/__generated__/webhook-alerts.interface.ts')
+  fs.writeFileSync(__dirname + '/../src/__generated__/webhook-alert-interfaces.ts', code, 'utf-8')
+  console.log('Written into /src/__generated__/webhook-alert-interfaces.ts')
 }
 
 async function buildWebhookAlertInterface(url: string) {
