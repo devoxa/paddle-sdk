@@ -2,6 +2,7 @@ import { serialize as phpSerialize } from 'php-serialize'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
+import FormData from 'form-data'
 
 dayjs.extend(customParseFormat)
 dayjs.extend(utc)
@@ -44,4 +45,14 @@ export function parseUtcDate(dateString: string, type: 'DATE' | 'DATE_TIME'): Da
     case 'DATE_TIME':
       return dayjs.utc(dateString, 'YYYY-MM-DD HH:mm:ss').toDate()
   }
+}
+
+export function objectToFormData(object: { [key: string]: any }): FormData {
+  const formData = new FormData()
+
+  Object.entries(object).map(([key, value]) => {
+    formData.append(key, value.toString())
+  })
+
+  return formData
 }
