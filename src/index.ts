@@ -63,7 +63,9 @@ export class PaddleSdk {
         return this.parseSubscriptionPaymentSucceededWebhookAlert<T>(body)
     }
 
-    throw new PaddleSdkException(`Implementation missing: Can not parse alert of type ${body.alert_name}`)
+    throw new PaddleSdkException(
+      `Implementation missing: Can not parse alert of type ${body.alert_name}`
+    )
   }
 
   private parsePassthrough(passthrough: string) {
