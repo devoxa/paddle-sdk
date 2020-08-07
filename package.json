@@ -14,7 +14,8 @@
     "lint": "eslint --ignore-path='.gitignore' '{src,tests}/**/*.ts'",
     "build": "rm -rf dist/ && tsc",
     "preversion": "yarn build",
-    "generate-webhook-alerts": "ts-node generators/generate-webhook-alerts.ts; yarn format"
+    "generate-webhook-alert-interfaces": "ts-node generators/generate-webhook-alert-interfaces.ts; yarn format",
+    "generate-api-route-interfaces": "ts-node generators/generate-api-route-interfaces.ts; yarn format"
   },
   "eslintConfig": {
     "extends": "@devoxa",
@@ -32,6 +33,7 @@
     "eslint": "^7.0.0",
     "jest": "^26.0.1",
     "node-fetch": "^2.6.0",
+    "nodemon": "^2.0.4",
     "prettier": "^2.0.5",
     "ts-jest": "^26.0.0",
     "ts-node": "^8.10.2",
