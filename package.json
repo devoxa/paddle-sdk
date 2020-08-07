@@ -16,7 +16,8 @@
     "preversion": "yarn build"
   },
   "eslintConfig": {
-    "extends": "@devoxa"
+    "extends": "@devoxa",
+    "rules": { "@typescript-eslint/camelcase": "off" }
   },
   "prettier": "@devoxa/prettier-config",
   "devDependencies": {
