@@ -1,4 +1,10 @@
 import { serialize as phpSerialize } from 'php-serialize'
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+import utc from 'dayjs/plugin/utc'
+
+dayjs.extend(customParseFormat)
+dayjs.extend(utc)
 
 export function stableSerialize(object: { [key: string]: any }): string {
   // 1) Sort the object alphabetically by it's keys
@@ -29,4 +35,13 @@ function sortByKey(object: { [key: string]: any }) {
   }
 
   return sortedObject
+}
+
+export function parseUtcDate(dateString: string, type: 'DATE' | 'DATE_TIME'): Date {
+  switch (type) {
+    case 'DATE':
+      return dayjs.utc(dateString, 'YYYY-MM-DD').toDate()
+    case 'DATE_TIME':
+      return dayjs.utc(dateString, 'YYYY-MM-DD HH:mm:ss').toDate()
+  }
 }

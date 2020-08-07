@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`webhooks -> parse webhook alert parses a webhook correctly 1`] = `
+Object {
+  "alert_id": 364306259,
+  "alert_name": "subscription_created",
+  "cancel_url": "https://checkout.paddle.com/subscription/cancel?user=9&subscription=9&hash=42dc900b19a0101aeccd04fbab9ffc7a653aefee",
+  "checkout_id": "3-4e596a5d8139178-878b1f0c04",
+  "currency": "GBP",
+  "email": "garret46@example.net",
+  "event_time": 2020-08-07T17:20:37.000Z,
+  "marketing_consent": true,
+  "next_bill_date": 2020-09-04T00:00:00.000Z,
+  "passthrough": Object {
+    "foo": "bar",
+  },
+  "quantity": 23,
+  "source": "Activation",
+  "status": "trialing",
+  "subscription_id": 6,
+  "subscription_plan_id": 7,
+  "unit_price": 9.99,
+  "update_url": "https://checkout.paddle.com/subscription/update?user=2&subscription=6&hash=3504881033812f6bc5757f31691e3cd795feda65",
+  "user_id": 9,
+}
+`;

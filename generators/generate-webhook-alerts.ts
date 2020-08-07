@@ -63,7 +63,7 @@ async function run() {
   const code = `// THIS FILE IS GENERATED AUTOMATICALLY. DO NOT EDIT.
 
 /** An alert fired by Paddle through a configured webhook */
-export type PaddleWebhookAlert = ${unionType}
+export type RawPaddleWebhookAlert = ${unionType}
 
 ${interfaces.map((x) => x.sourceCode).join('\n\n')}`
 
@@ -87,7 +87,7 @@ async function buildWebhookAlertInterface(url: string) {
     return `  ${comment}${propertyName}: ${type}`
   })
 
-  const name = `Paddle${toPascalCase(jsonSchema.properties.alert_name.default)}Alert`
+  const name = `RawPaddle${toPascalCase(jsonSchema.properties.alert_name.default)}Alert`
   const sourceCode = `/** ${description} */
 export interface ${name} {
 ${properties.join('\n')}

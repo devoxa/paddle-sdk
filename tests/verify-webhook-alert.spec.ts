@@ -3,12 +3,14 @@ import { PaddleSdk } from '../src/index'
 
 function verify(publicKey: string, body: any) {
   const paddleSdk = new PaddleSdk({ publicKey })
-  return paddleSdk.verifyWebhookBody(body)
+  return paddleSdk.verifyWebhookAlert(body)
 }
 
 describe('webhooks -> verify webhook body', () => {
   it('errors when not providing a public key', () => {
-    expect(() => verify('', WEBHOOK_BODY_SUBSCRIPTION_CREATED)).toThrowError('PaddleSdk was called without a publicKey')
+    expect(() => verify('', WEBHOOK_BODY_SUBSCRIPTION_CREATED)).toThrowError(
+      'PaddleSdk was called without a publicKey'
+    )
   })
 
   it('verifies valid signature', () => {
@@ -17,8 +19,8 @@ describe('webhooks -> verify webhook body', () => {
 
   it('verifies valid signature for pre-parsed body', () => {
     const alertBodyParsed: any = WEBHOOK_BODY_SUBSCRIPTION_CREATED
-    alertBodyParsed.linked_subscriptions = [7, 4, 5]
-    alertBodyParsed.subscription_plan_id = 3
+    alertBodyParsed.linked_subscriptions = [8, 9, 4]
+    alertBodyParsed.subscription_plan_id = 7
 
     expect(verify(PUBLIC_KEY, alertBodyParsed)).toEqual(true)
   })
