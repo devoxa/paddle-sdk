@@ -98,9 +98,11 @@ async function run() {
     console.log(`Built interface from ${url}`)
   }
 
-  const code = `// THIS FILE IS GENERATED AUTOMATICALLY. DO NOT EDIT.
+  let code = `// THIS FILE IS GENERATED AUTOMATICALLY. DO NOT EDIT.
 
 ${interfaces.map((x) => x.sourceCode).join('\n\n')}`
+
+  code = fixCodeInconsistencies(code)
 
   fs.writeFileSync(__dirname + '/../src/__generated__/api-route-interfaces.ts', code, 'utf-8')
   console.log('Written into /src/__generated__/api-route-interfaces.ts')
@@ -284,4 +286,8 @@ function inferTypeFromPropertySchema(propertySchema: JsonSchemaProperty): string
   }
 
   throw new Error(`Unknown property schema type ${propertySchema.type}`)
+}
+
+function fixCodeInconsistencies(sourceCode: string) {
+  return sourceCode.replace('trialling', 'trialing').replace('next_payment:', 'next_payment?:')
 }

@@ -110,14 +110,14 @@ export type RawPaddlePostSubscriptionUsersResponse = Array<{
   user_id: number
   user_email: string
   marketing_consent: boolean
-  state: 'active' | 'past_due' | 'trialling' | 'deleted' | 'paused'
+  state: 'active' | 'past_due' | 'trialing' | 'deleted' | 'paused'
   signup_date: string
   last_payment: {
     amount: number
     currency: string
     date: string
   }
-  next_payment: {
+  next_payment?: {
     amount: number
     currency: string
     date: string
