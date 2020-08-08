@@ -37,13 +37,13 @@ Note: to use the HTTP tester and code generator tool below, pass in each array v
   /** A coupon to be applied to the checkout. */
   coupon_code?: string
   /** Specifies if a coupon can be applied to the checkout. "Add Coupon" button on the checkout will be hidden as well if set to `0`. */
-  discountable?: '0' | '1'
+  discountable?: 0 | 1
   /** A URL for the product image/icon displayed on the checkout. */
   image_url?: string
   /** A URL to redirect to once the checkout is completed. If the variable `{checkout_hash}` is included within the URL (e.g. *https://mysite.com/thanks?checkout={checkout_hash}*), the API will automatically populate the Paddle checkout ID in the redirected URL. */
   return_url?: string
   /** Specifies if the user is allowed to alter the quantity of the checkout. */
-  quantity_variable?: '0' | '1'
+  quantity_variable?: 0 | 1
   /** Pre-fills the quantity selector on the checkout. Please note that free products/subscription plans are fixed to a quantity of 1. */
   quantity?: number
   /** Specifies if the checkout link should expire. The generated checkout URL will be accessible until 23:59:59 (UTC) on the date specified (date in format YYYY-MM-DD). */
@@ -53,7 +53,7 @@ Note: to use the HTTP tester and code generator tool below, pass in each array v
   /** Limit the number of times other Paddle vendors will receive funds from the recurring payments (for subscription products). The initial checkout payment is included in the limit. If you leave this field empty, the limit will not be applied.<br><br>Note: if your plan has a trial period, set this to `2` or greater in order for your affiliates to correctly receive their commission on paid payments after the trial. */
   recurring_affiliate_limit?: number
   /** Whether you have gathered consent to market to the customer. `customer_email` is required if this property is set and you want to opt the customer into marketing. */
-  marketing_consent?: '0' | '1'
+  marketing_consent?: 0 | 1
   /** Pre-fills the customer email field on the checkout. */
   customer_email?: string
   /** Pre-fills the customer country field on the checkout. See [Supported Countries](https://developer.paddle.com/reference/platform-parameters/supported-countries) for the list of supported ISO country codes. */
@@ -198,7 +198,7 @@ export type RawPaddlePostSubscriptionModifiersCreateRequest = {
   /** The ID of the subscription that you want to add a modifier for */
   subscription_id: number
   /** Whether to retain the modifiers on the subscription. By default we retain them, but you can specify this field as false to  */
-  modifier_recurring?: 'true' | 'false'
+  modifier_recurring?: true | false
   /** The amount will be in the currency of the subscription. */
   modifier_amount: number
   /** A description text to be displayed on the buyer's receipt email and invoice. */

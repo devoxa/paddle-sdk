@@ -244,7 +244,13 @@ function toSnakeCase(pascalCase: string) {
 
 function inferTypeFromPropertySchema(propertySchema: JsonSchemaProperty): string {
   if (propertySchema.enum) {
-    return propertySchema.enum.map((x) => `"${x}"`).join(' | ')
+    let enumValues = propertySchema.enum
+
+    if (propertySchema.type === 'string') {
+      enumValues = enumValues.map((x) => `"${x}"`)
+    }
+
+    return enumValues.join(' | ')
   }
 
   if (propertySchema.type === 'integer' || propertySchema.type === 'number') {
