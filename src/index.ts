@@ -29,7 +29,9 @@ export interface PaddleSdkOptions {
   vendorAuthCode: string
 }
 
-export class PaddleSdk {
+type WithPassthrough<T, P> = Omit<T, 'passthrough'> & { passthrough?: P }
+
+export class PaddleSdk<Passthrough = any> {
   private readonly publicKey: string
   private readonly vendorId: number
   private readonly vendorAuthCode: string
@@ -67,7 +69,7 @@ export class PaddleSdk {
     return verifier.verify(this.publicKey, signature, 'base64')
   }
 
-  parseWebhookAlert<T extends any>(body: any) {
+  parseWebhookAlert<T = Passthrough>(body: any) {
     if (!this.verifyWebhookAlert(body)) {
       throw new PaddleSdkException('Failed validating alert body')
     }
@@ -100,7 +102,7 @@ export class PaddleSdk {
     }
   }
 
-  private parseSubscriptionCreatedWebhookAlert<T>(
+  private parseSubscriptionCreatedWebhookAlert<T = Passthrough>(
     body: RawPaddleSubscriptionCreatedAlert
   ): PaddleSdkSubscriptionCreatedAlert<T> {
     return {
@@ -125,7 +127,7 @@ export class PaddleSdk {
     }
   }
 
-  private parseSubscriptionUpdatedWebhookAlert<T>(
+  private parseSubscriptionUpdatedWebhookAlert<T = Passthrough>(
     body: RawPaddleSubscriptionUpdatedAlert
   ): PaddleSdkSubscriptionUpdatedAlert<T> {
     return {
@@ -159,7 +161,7 @@ export class PaddleSdk {
     }
   }
 
-  private parseSubscriptionCancelledWebhookAlert<T>(
+  private parseSubscriptionCancelledWebhookAlert<T = Passthrough>(
     body: RawPaddleSubscriptionCancelledAlert
   ): PaddleSdkSubscriptionCancelledAlert<T> {
     return {
@@ -181,7 +183,7 @@ export class PaddleSdk {
     }
   }
 
-  private parseSubscriptionPaymentSucceededWebhookAlert<T>(
+  private parseSubscriptionPaymentSucceededWebhookAlert<T = Passthrough>(
     body: RawPaddleSubscriptionPaymentSucceededAlert
   ): PaddleSdkSubscriptionPaymentSucceededAlert<T> {
     return {
@@ -245,12 +247,9 @@ export class PaddleSdk {
     return json.response
   }
 
-  // TODO Add our own interface for request/response
-  async createProductPayLink(data: {
-    product_id?: number
-    customer_email?: string
-    passthrough?: any
-  }) {
+  async createProductPayLink(
+    data: WithPassthrough<RawPaddlePostProductGeneratePayLinkRequest, Passthrough>
+  ) {
     return this.apiRequest<
       RawPaddlePostProductGeneratePayLinkRequest,
       RawPaddlePostProductGeneratePayLinkResponse
