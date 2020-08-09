@@ -38,12 +38,14 @@ function sortByKey(object: { [key: string]: any }) {
   return sortedObject
 }
 
-export function parseUtcDate(dateString: string, type: 'DATE' | 'DATE_TIME'): Date {
+export function parseUtcDate(dateString: string, type: 'DATE' | 'DATE_TIME' | 'EXPIRY_DATE'): Date {
   switch (type) {
     case 'DATE':
       return dayjs.utc(dateString, 'YYYY-MM-DD').toDate()
     case 'DATE_TIME':
       return dayjs.utc(dateString, 'YYYY-MM-DD HH:mm:ss').toDate()
+    case 'EXPIRY_DATE':
+      return dayjs.utc(dateString, 'MM/YYYY').toDate()
   }
 }
 
