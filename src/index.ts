@@ -19,6 +19,18 @@ import {
   RawPaddlePostProductGeneratePayLinkRequest,
   RawPaddlePostProductGeneratePayLinkResponse,
   PADDLE_PRODUCT_GENERATE_PAY_LINK,
+  RawPaddlePostSubscriptionUsersUpdateRequest,
+  RawPaddlePostSubscriptionUsersUpdateResponse,
+  PADDLE_SUBSCRIPTION_USERS_UPDATE,
+  RawPaddlePostSubscriptionModifiersCreateRequest,
+  RawPaddlePostSubscriptionModifiersCreateResponse,
+  PADDLE_SUBSCRIPTION_MODIFIERS_CREATE,
+  RawPaddlePostSubscriptionUsersCancelRequest,
+  RawPaddlePostSubscriptionUsersCancelResponse,
+  PADDLE_SUBSCRIPTION_USERS_CANCEL,
+  RawPaddlePostSubscriptionUsersRequest,
+  RawPaddlePostSubscriptionUsersResponse,
+  PADDLE_SUBSCRIPTION_USERS,
 } from './__generated__/api-route-interfaces'
 
 export * from './interfaces'
@@ -257,5 +269,83 @@ export class PaddleSdk<Passthrough = any> {
       ...data,
       passthrough: this.stringifyPassthrough(data.passthrough),
     })
+  }
+
+  async listSubscriptions(data: RawPaddlePostSubscriptionUsersRequest) {
+    function formatPaymentInformation(
+      paymentInformation: RawPaddlePostSubscriptionUsersResponse[0]['payment_information']
+    ) {
+      if (paymentInformation.payment_method !== 'card') {
+        // Only card & paypal are enabled for subscriptions, but there might be more options in the future
+        return { payment_method: paymentInformation.payment_method }
+      }
+
+      return {
+        payment_method: 'card' as const,
+        card_type: paymentInformation.card_type, // TODO Would be nice to have strict types here
+        last_four_digits: paymentInformation.last_four_digits,
+        expiry_date: parseUtcDate(paymentInformation.expiry_date, 'EXPIRY_DATE'),
+      }
+    }
+
+    function formatPayment(payment: RawPaddlePostSubscriptionUsersResponse[0]['last_payment']) {
+      return {
+        amount: payment.amount,
+        currency: payment.currency,
+        date: parseUtcDate(payment.date, 'DATE'),
+      }
+    }
+
+    function formatSubscription(subscription: RawPaddlePostSubscriptionUsersResponse[0]) {
+      return {
+        subscription_id: subscription.subscription_id,
+        plan_id: subscription.plan_id,
+        user_id: subscription.user_id,
+        user_email: subscription.user_email,
+        marketing_consent: subscription.marketing_consent,
+        status: subscription.state,
+        signup_date: parseUtcDate(subscription.signup_date, 'DATE_TIME'),
+        update_url: subscription.update_url,
+        cancel_url: subscription.cancel_url,
+        paused_at: parseUtcDate(subscription.paused_at, 'DATE_TIME'),
+        paused_from: parseUtcDate(subscription.paused_from, 'DATE_TIME'),
+        payment_information: formatPaymentInformation(subscription.payment_information),
+        last_payment: formatPayment(subscription.last_payment),
+        next_payment: subscription.next_payment ? formatPayment(subscription.next_payment) : null,
+      }
+    }
+
+    return this.apiRequest<
+      RawPaddlePostSubscriptionUsersRequest,
+      RawPaddlePostSubscriptionUsersResponse
+    >(PADDLE_SUBSCRIPTION_USERS.url, PADDLE_SUBSCRIPTION_USERS.method, data).then((subscriptions) =>
+      subscriptions.map(formatSubscription)
+    )
+  }
+
+  async updateSubscription(
+    data: WithPassthrough<RawPaddlePostSubscriptionUsersUpdateRequest, Passthrough>
+  ) {
+    return this.apiRequest<
+      RawPaddlePostSubscriptionUsersUpdateRequest,
+      RawPaddlePostSubscriptionUsersUpdateResponse
+    >(PADDLE_SUBSCRIPTION_USERS_UPDATE.url, PADDLE_SUBSCRIPTION_USERS_UPDATE.method, {
+      ...data,
+      passthrough: this.stringifyPassthrough(data.passthrough),
+    })
+  }
+
+  async cancelSubscription(data: RawPaddlePostSubscriptionUsersCancelRequest) {
+    return this.apiRequest<
+      RawPaddlePostSubscriptionUsersCancelRequest,
+      RawPaddlePostSubscriptionUsersCancelResponse
+    >(PADDLE_SUBSCRIPTION_USERS_CANCEL.url, PADDLE_SUBSCRIPTION_USERS_CANCEL.method, data)
+  }
+
+  async createSubscriptionModifier(data: RawPaddlePostSubscriptionModifiersCreateRequest) {
+    return this.apiRequest<
+      RawPaddlePostSubscriptionModifiersCreateRequest,
+      RawPaddlePostSubscriptionModifiersCreateResponse
+    >(PADDLE_SUBSCRIPTION_MODIFIERS_CREATE.url, PADDLE_SUBSCRIPTION_MODIFIERS_CREATE.method, data)
   }
 }
