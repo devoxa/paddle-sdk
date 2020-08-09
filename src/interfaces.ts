@@ -7,7 +7,7 @@ export type PaddleSdkPaymentMethod = 'card' | 'paypal' | 'free' | 'apple-pay' | 
 // TODO Make properties snakeCase
 // TODO Make alert type an enum (SUBSCRIPTION_CREATED, ...)
 
-export interface PaddleSdkSubscriptionCreatedAlert<T> {
+export type PaddleSdkSubscriptionCreatedAlert<T> = {
   alert_id: number
   alert_name: 'subscription_created'
   cancel_url: string
@@ -28,7 +28,7 @@ export interface PaddleSdkSubscriptionCreatedAlert<T> {
   user_id: number
 }
 
-export interface PaddleSdkSubscriptionUpdatedAlert<T> {
+export type PaddleSdkSubscriptionUpdatedAlert<T> = {
   alert_id: number
   alert_name: 'subscription_updated'
   cancel_url: string
@@ -58,7 +58,7 @@ export interface PaddleSdkSubscriptionUpdatedAlert<T> {
   user_id: number
 }
 
-export interface PaddleSdkSubscriptionCancelledAlert<T> {
+export type PaddleSdkSubscriptionCancelledAlert<T> = {
   alert_id: number
   alert_name: 'subscription_cancelled'
   cancellation_effective_date: Date
@@ -76,7 +76,7 @@ export interface PaddleSdkSubscriptionCancelledAlert<T> {
   user_id: number
 }
 
-export interface PaddleSdkSubscriptionPaymentSucceededAlert<T> {
+export type PaddleSdkSubscriptionPaymentSucceededAlert<T> = {
   alert_id: number
   alert_name: 'subscription_payment_succeeded'
   balance_currency: PaddleSdkCurrency

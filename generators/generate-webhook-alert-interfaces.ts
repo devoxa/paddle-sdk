@@ -1,6 +1,8 @@
 import fetch from 'node-fetch'
 import fs from 'fs'
 
+const INCLUDE_COMMENTS = true
+
 const DOCUMENTATION_URLS = [
   'https://developer.paddle.com/webhook-reference/subscription-alerts/subscription-created',
   'https://developer.paddle.com/webhook-reference/subscription-alerts/subscription-updated',
@@ -84,12 +86,12 @@ async function buildWebhookAlertInterface(url: string) {
     const comment = propertySchema.description
       ? `/** ${propertySchema.description}${pattern} */\n  `
       : ''
-    return `  ${comment}${propertyName}: ${type}`
+    return `  ${INCLUDE_COMMENTS ? comment : ''}${propertyName}: ${type}`
   })
 
   const name = `RawPaddle${toPascalCase(jsonSchema.properties.alert_name.default)}Alert`
-  const sourceCode = `/** ${description} */
-export interface ${name} {
+  const sourceCode = `${INCLUDE_COMMENTS ? `/** ${description} */` : ''}
+export type ${name} = {
 ${properties.join('\n')}
 }`
 

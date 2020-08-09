@@ -24,7 +24,7 @@ export type RawPaddleWebhookAlert =
   | RawPaddleInvoiceOverdueAlert
 
 /** Fired when a new subscription is created, and a customer has successfully subscribed. */
-export interface RawPaddleSubscriptionCreatedAlert {
+export type RawPaddleSubscriptionCreatedAlert = {
   alert_name: 'subscription_created'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */
@@ -74,7 +74,7 @@ export interface RawPaddleSubscriptionCreatedAlert {
 }
 
 /** Fired when the plan, price, quantity, status of a subscription changes, or if the payment date is rescheduled manually. */
-export interface RawPaddleSubscriptionUpdatedAlert {
+export type RawPaddleSubscriptionUpdatedAlert = {
   alert_name: 'subscription_updated'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */
@@ -150,7 +150,7 @@ export interface RawPaddleSubscriptionUpdatedAlert {
 }
 
 /** Fired when a subscription is cancelled. */
-export interface RawPaddleSubscriptionCancelledAlert {
+export type RawPaddleSubscriptionCancelledAlert = {
   alert_name: 'subscription_cancelled'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */
@@ -194,7 +194,7 @@ export interface RawPaddleSubscriptionCancelledAlert {
 }
 
 /** Fired when a payment for a subscription is received successfully. */
-export interface RawPaddleSubscriptionPaymentSucceededAlert {
+export type RawPaddleSubscriptionPaymentSucceededAlert = {
   alert_name: 'subscription_payment_succeeded'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */
@@ -292,7 +292,7 @@ export interface RawPaddleSubscriptionPaymentSucceededAlert {
 }
 
 /** Fired when a payment for a subscription fails. */
-export interface RawPaddleSubscriptionPaymentFailedAlert {
+export type RawPaddleSubscriptionPaymentFailedAlert = {
   alert_name: 'subscription_payment_failed'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */
@@ -355,7 +355,7 @@ export interface RawPaddleSubscriptionPaymentFailedAlert {
 }
 
 /** Fired when a refund for a subscription payment is issued. */
-export interface RawPaddleSubscriptionPaymentRefundedAlert {
+export type RawPaddleSubscriptionPaymentRefundedAlert = {
   alert_name: 'subscription_payment_refunded'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */
@@ -441,7 +441,7 @@ export interface RawPaddleSubscriptionPaymentRefundedAlert {
 }
 
 /** Fired when a payment is made into your Paddle account. */
-export interface RawPaddlePaymentSucceededAlert {
+export type RawPaddlePaymentSucceededAlert = {
   alert_name: 'payment_succeeded'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */
@@ -518,7 +518,7 @@ export interface RawPaddlePaymentSucceededAlert {
 }
 
 /** Fired when a payment is refunded. */
-export interface RawPaddlePaymentRefundedAlert {
+export type RawPaddlePaymentRefundedAlert = {
   alert_name: 'payment_refunded'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */
@@ -582,7 +582,7 @@ export interface RawPaddlePaymentRefundedAlert {
 }
 
 /** Fired when an order is created after a successful payment event. */
-export interface RawPaddleLockerProcessedAlert {
+export type RawPaddleLockerProcessedAlert = {
   alert_name: 'locker_processed'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */
@@ -622,7 +622,7 @@ export interface RawPaddleLockerProcessedAlert {
 }
 
 /** Fired when a dispute/chargeback is raised for a card transaction. */
-export interface RawPaddlePaymentDisputeCreatedAlert {
+export type RawPaddlePaymentDisputeCreatedAlert = {
   alert_name: 'payment_dispute_created'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */
@@ -657,7 +657,7 @@ export interface RawPaddlePaymentDisputeCreatedAlert {
 }
 
 /** Fired when a dispute/chargeback is closed for a card transaction. This indicates that the dispute/chargeback was contested and won by Paddle. */
-export interface RawPaddlePaymentDisputeClosedAlert {
+export type RawPaddlePaymentDisputeClosedAlert = {
   alert_name: 'payment_dispute_closed'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */
@@ -692,7 +692,7 @@ export interface RawPaddlePaymentDisputeClosedAlert {
 }
 
 /** Fired when a transaction is flagged as high risk. */
-export interface RawPaddleHighRiskTransactionCreatedAlert {
+export type RawPaddleHighRiskTransactionCreatedAlert = {
   alert_name: 'high_risk_transaction_created'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */
@@ -730,7 +730,7 @@ export interface RawPaddleHighRiskTransactionCreatedAlert {
 }
 
 /** Fired when a flagged transaction is approved or rejected. */
-export interface RawPaddleHighRiskTransactionUpdatedAlert {
+export type RawPaddleHighRiskTransactionUpdatedAlert = {
   alert_name: 'high_risk_transaction_updated'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */
@@ -771,7 +771,7 @@ export interface RawPaddleHighRiskTransactionUpdatedAlert {
 }
 
 /** Fired when a new transfer/payout is created for your account. */
-export interface RawPaddleTransferCreatedAlert {
+export type RawPaddleTransferCreatedAlert = {
   alert_name: 'transfer_created'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */
@@ -795,7 +795,7 @@ export interface RawPaddleTransferCreatedAlert {
 }
 
 /** Fired when a new transfer/payout is marked as paid for your account. */
-export interface RawPaddleTransferPaidAlert {
+export type RawPaddleTransferPaidAlert = {
   alert_name: 'transfer_paid'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */
@@ -819,7 +819,7 @@ export interface RawPaddleTransferPaidAlert {
 }
 
 /** Fired when a customer opts in to receive marketing communication from you. */
-export interface RawPaddleNewAudienceMemberAlert {
+export type RawPaddleNewAudienceMemberAlert = {
   alert_name: 'new_audience_member'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */
@@ -848,7 +848,7 @@ export interface RawPaddleNewAudienceMemberAlert {
 }
 
 /** Fired when the information of an audience member is updated. */
-export interface RawPaddleUpdateAudienceMemberAlert {
+export type RawPaddleUpdateAudienceMemberAlert = {
   alert_name: 'update_audience_member'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */
@@ -879,7 +879,7 @@ export interface RawPaddleUpdateAudienceMemberAlert {
 }
 
 /** Fired when a manual invoice has been successfully paid by a customer. */
-export interface RawPaddleInvoicePaidAlert {
+export type RawPaddleInvoicePaidAlert = {
   alert_name: 'invoice_paid'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */
@@ -986,7 +986,7 @@ export interface RawPaddleInvoicePaidAlert {
 }
 
 /** Fired when a manual invoice has been successfully sent to a customer. */
-export interface RawPaddleInvoiceSentAlert {
+export type RawPaddleInvoiceSentAlert = {
   alert_name: 'invoice_sent'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */
@@ -1078,7 +1078,7 @@ export interface RawPaddleInvoiceSentAlert {
 }
 
 /** Fired when a manual invoice has exceeded the payment term and is now overdue. */
-export interface RawPaddleInvoiceOverdueAlert {
+export type RawPaddleInvoiceOverdueAlert = {
   alert_name: 'invoice_overdue'
   /** The unique identifier for this Paddle webhook alert. Integer value sent as a string.
 @pattern \d+ */

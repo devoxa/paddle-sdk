@@ -1,6 +1,8 @@
 import fetch from 'node-fetch'
 import fs from 'fs'
 
+const INCLUDE_COMMENTS = true
+
 const DOCUMENTATION_URLS = [
   'https://developer.paddle.com/api-reference/product-api/pay-links/createpaylink',
   'https://developer.paddle.com/api-reference/subscription-api/users/listusers',
@@ -124,7 +126,7 @@ async function buildApiRouteInterfaces(url: string) {
 
       const nullable = requestJsonSchema.required?.includes(propertyName) ? '' : '?'
       const comment = propertySchema.description ? `/** ${propertySchema.description} */\n  ` : ''
-      return `  ${comment}${propertyName}${nullable}: ${type}`
+      return `  ${INCLUDE_COMMENTS ? comment : ''}${propertyName}${nullable}: ${type}`
     })
 
   let responseType
@@ -145,7 +147,7 @@ async function buildApiRouteInterfaces(url: string) {
         const comment = propertySchema.description
           ? `/** ${propertySchema.description}${pattern} */\n  `
           : ''
-        return `  ${comment}${propertyName}: ${type}`
+        return `  ${INCLUDE_COMMENTS ? comment : ''}${propertyName}: ${type}`
       }
     )
 
