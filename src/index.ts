@@ -53,7 +53,7 @@ export interface PaddleSdkOptions {
   passthroughEncryptionKey: string
 }
 
-export class PaddleSdk<Passthrough = any> {
+export class PaddleSdk<TPassthrough = any> {
   private readonly publicKey: string
   private readonly vendorId: number
   private readonly vendorAuthCode: string
@@ -97,20 +97,20 @@ export class PaddleSdk<Passthrough = any> {
     return verifier.verify(this.publicKey, signature, 'base64')
   }
 
-  parseWebhookAlert<T = Passthrough>(body: any) {
+  parseWebhookAlert(body: any) {
     if (!this.verifyWebhookAlert(body)) {
       throw new PaddleSdkException('Failed validating alert body')
     }
 
     switch (body.alert_name) {
       case 'subscription_created':
-        return this.parseSubscriptionCreatedWebhookAlert<T>(body)
+        return this.parseSubscriptionCreatedWebhookAlert(body)
       case 'subscription_updated':
-        return this.parseSubscriptionUpdatedWebhookAlert<T>(body)
+        return this.parseSubscriptionUpdatedWebhookAlert(body)
       case 'subscription_cancelled':
-        return this.parseSubscriptionCancelledWebhookAlert<T>(body)
+        return this.parseSubscriptionCancelledWebhookAlert(body)
       case 'subscription_payment_succeeded':
-        return this.parseSubscriptionPaymentSucceededWebhookAlert<T>(body)
+        return this.parseSubscriptionPaymentSucceededWebhookAlert(body)
     }
 
     throw new PaddleSdkException(
@@ -122,7 +122,7 @@ export class PaddleSdk<Passthrough = any> {
     return encrypt(this.passthroughEncryptionKey, JSON.stringify(passthrough))
   }
 
-  private parsePassthrough(passthrough: string) {
+  private parsePassthrough(passthrough: string): TPassthrough {
     try {
       return JSON.parse(decrypt(this.passthroughEncryptionKey, passthrough))
     } catch (err) {
@@ -130,9 +130,9 @@ export class PaddleSdk<Passthrough = any> {
     }
   }
 
-  private parseSubscriptionCreatedWebhookAlert<T = Passthrough>(
+  private parseSubscriptionCreatedWebhookAlert(
     body: RawPaddleSubscriptionCreatedAlert
-  ): PaddleSdkSubscriptionCreatedAlert<T> {
+  ): PaddleSdkSubscriptionCreatedAlert<TPassthrough> {
     return {
       alert_id: parseInt(body.alert_id),
       alert_name: body.alert_name,
@@ -155,9 +155,9 @@ export class PaddleSdk<Passthrough = any> {
     }
   }
 
-  private parseSubscriptionUpdatedWebhookAlert<T = Passthrough>(
+  private parseSubscriptionUpdatedWebhookAlert(
     body: RawPaddleSubscriptionUpdatedAlert
-  ): PaddleSdkSubscriptionUpdatedAlert<T> {
+  ): PaddleSdkSubscriptionUpdatedAlert<TPassthrough> {
     return {
       alert_id: parseInt(body.alert_id),
       alert_name: body.alert_name,
@@ -189,9 +189,9 @@ export class PaddleSdk<Passthrough = any> {
     }
   }
 
-  private parseSubscriptionCancelledWebhookAlert<T = Passthrough>(
+  private parseSubscriptionCancelledWebhookAlert(
     body: RawPaddleSubscriptionCancelledAlert
-  ): PaddleSdkSubscriptionCancelledAlert<T> {
+  ): PaddleSdkSubscriptionCancelledAlert<TPassthrough> {
     return {
       alert_id: parseInt(body.alert_id),
       alert_name: body.alert_name,
@@ -211,9 +211,9 @@ export class PaddleSdk<Passthrough = any> {
     }
   }
 
-  private parseSubscriptionPaymentSucceededWebhookAlert<T = Passthrough>(
+  private parseSubscriptionPaymentSucceededWebhookAlert(
     body: RawPaddleSubscriptionPaymentSucceededAlert
-  ): PaddleSdkSubscriptionPaymentSucceededAlert<T> {
+  ): PaddleSdkSubscriptionPaymentSucceededAlert<TPassthrough> {
     return {
       alert_id: parseInt(body.alert_id),
       alert_name: body.alert_name,
@@ -276,7 +276,7 @@ export class PaddleSdk<Passthrough = any> {
   }
 
   async createProductPayLink(
-    data: PaddleSdkCreateProductPayLinkRequest
+    data: PaddleSdkCreateProductPayLinkRequest<TPassthrough>
   ): Promise<PaddleSdkCreateProductPayLinkResponse> {
     return this.apiRequest<
       RawPaddlePostProductGeneratePayLinkRequest,
@@ -342,7 +342,7 @@ export class PaddleSdk<Passthrough = any> {
   }
 
   async updateSubscription(
-    data: PaddleSdkUpdateSubscriptionRequest
+    data: PaddleSdkUpdateSubscriptionRequest<TPassthrough>
   ): Promise<PaddleSdkUpdateSubscriptionResponse> {
     return this.apiRequest<
       RawPaddlePostSubscriptionUsersUpdateRequest,

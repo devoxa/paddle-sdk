@@ -114,7 +114,7 @@ export type PaddleSdkSubscriptionPaymentSucceededAlert<T> = {
   user_id: number
 }
 
-export type PaddleSdkCreateProductPayLinkRequest = {
+export type PaddleSdkCreateProductPayLinkRequest<T> = {
   product_id?: number
   title?: string
   webhook_url?: string
@@ -135,7 +135,7 @@ export type PaddleSdkCreateProductPayLinkRequest = {
   customer_email?: string
   customer_country?: string
   customer_postcode?: string
-  passthrough?: string
+  passthrough?: T
   vat_number?: string
   vat_company_name?: string
   vat_street?: string
@@ -191,7 +191,7 @@ export type PaddleSdkListSubscriptionsResponse = Array<{
   } | null
 }>
 
-export type PaddleSdkUpdateSubscriptionRequest = {
+export type PaddleSdkUpdateSubscriptionRequest<T> = {
   subscription_id: number
   quantity?: number
   currency?: string
@@ -200,7 +200,7 @@ export type PaddleSdkUpdateSubscriptionRequest = {
   plan_id?: number
   prorate?: boolean
   keep_modifiers?: boolean
-  passthrough?: string
+  passthrough?: T
   pause?: boolean
 }
 
