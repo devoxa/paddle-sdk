@@ -113,3 +113,122 @@ export type PaddleSdkSubscriptionPaymentSucceededAlert<T> = {
   unit_price: number
   user_id: number
 }
+
+export type PaddleSdkCreateProductPayLinkRequest = {
+  product_id?: number
+  title?: string
+  webhook_url?: string
+  prices?: Array<string>
+  recurring_prices?: Array<string>
+  trial_days?: number
+  custom_message?: string
+  coupon_code?: string
+  discountable?: 0 | 1
+  image_url?: string
+  return_url?: string
+  quantity_variable?: 0 | 1
+  quantity?: number
+  expires?: string
+  affiliates?: Array<string>
+  recurring_affiliate_limit?: number
+  marketing_consent?: 0 | 1
+  customer_email?: string
+  customer_country?: string
+  customer_postcode?: string
+  passthrough?: string
+  vat_number?: string
+  vat_company_name?: string
+  vat_street?: string
+  vat_city?: string
+  vat_state?: string
+  vat_country?: string
+  vat_postcode?: string
+}
+
+export type PaddleSdkCreateProductPayLinkResponse = {
+  url: string
+}
+
+export type PaddleSdkListSubscriptionsRequest = {
+  subscription_id?: string
+  plan_id?: string
+  state?: 'active' | 'past_due' | 'trialing' | 'paused' | 'deleted'
+  page?: number
+  results_per_page?: number
+}
+
+export type PaddleSdkListSubscriptionsResponse = Array<{
+  subscription_id: number
+  plan_id: number
+  user_id: number
+  user_email: string
+  marketing_consent: boolean
+  status: PaddleSdkSubscriptionStatus
+  signup_date: Date
+  update_url: string
+  cancel_url: string
+  paused_at: Date
+  paused_from: Date
+  payment_information:
+    | {
+        payment_method: 'card'
+        card_type: string
+        last_four_digits: string
+        expiry_date: Date
+      }
+    | {
+        payment_method: 'paypal'
+      }
+  last_payment: {
+    amount: number
+    currency: string
+    date: Date
+  }
+  next_payment: {
+    amount: number
+    currency: string
+    date: Date
+  } | null
+}>
+
+export type PaddleSdkUpdateSubscriptionRequest = {
+  subscription_id: number
+  quantity?: number
+  currency?: string
+  recurring_price?: number
+  bill_immediately?: boolean
+  plan_id?: number
+  prorate?: boolean
+  keep_modifiers?: boolean
+  passthrough?: string
+  pause?: boolean
+}
+
+export type PaddleSdkUpdateSubscriptionResponse = {
+  subscription_id: number
+  user_id: number
+  plan_id: number
+  next_payment: {
+    amount: number
+    currency: string
+    date: string
+  }
+}
+
+export type PaddleSdkCancelSubscriptionRequest = {
+  subscription_id: number
+}
+
+export type PaddleSdkCancelSubscriptionResponse = void
+
+export type PaddleSdkCreateSubscriptionModifierRequest = {
+  subscription_id: number
+  modifier_recurring?: true | false
+  modifier_amount: number
+  modifier_description?: string
+}
+
+export type PaddleSdkCreateSubscriptionModifierResponse = {
+  subscription_id: number
+  modifier_id: number
+}

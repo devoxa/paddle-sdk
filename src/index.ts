@@ -14,6 +14,16 @@ import {
   PaddleSdkSubscriptionUpdatedAlert,
   PaddleSdkSubscriptionCancelledAlert,
   PaddleSdkSubscriptionPaymentSucceededAlert,
+  PaddleSdkCreateProductPayLinkRequest,
+  PaddleSdkListSubscriptionsRequest,
+  PaddleSdkUpdateSubscriptionRequest,
+  PaddleSdkCancelSubscriptionRequest,
+  PaddleSdkCreateSubscriptionModifierRequest,
+  PaddleSdkCreateProductPayLinkResponse,
+  PaddleSdkListSubscriptionsResponse,
+  PaddleSdkUpdateSubscriptionResponse,
+  PaddleSdkCancelSubscriptionResponse,
+  PaddleSdkCreateSubscriptionModifierResponse,
 } from './interfaces'
 import {
   RawPaddlePostProductGeneratePayLinkRequest,
@@ -42,8 +52,6 @@ export interface PaddleSdkOptions {
   vendorAuthCode: string
   passthroughEncryptionKey: string
 }
-
-type WithPassthrough<T, P> = Omit<T, 'passthrough'> & { passthrough?: P }
 
 export class PaddleSdk<Passthrough = any> {
   private readonly publicKey: string
@@ -268,8 +276,8 @@ export class PaddleSdk<Passthrough = any> {
   }
 
   async createProductPayLink(
-    data: WithPassthrough<RawPaddlePostProductGeneratePayLinkRequest, Passthrough>
-  ) {
+    data: PaddleSdkCreateProductPayLinkRequest
+  ): Promise<PaddleSdkCreateProductPayLinkResponse> {
     return this.apiRequest<
       RawPaddlePostProductGeneratePayLinkRequest,
       RawPaddlePostProductGeneratePayLinkResponse
@@ -279,7 +287,9 @@ export class PaddleSdk<Passthrough = any> {
     })
   }
 
-  async listSubscriptions(data: RawPaddlePostSubscriptionUsersRequest) {
+  async listSubscriptions(
+    data: PaddleSdkListSubscriptionsRequest
+  ): Promise<PaddleSdkListSubscriptionsResponse> {
     function formatPaymentInformation(
       paymentInformation: RawPaddlePostSubscriptionUsersResponse[0]['payment_information']
     ) {
@@ -332,8 +342,8 @@ export class PaddleSdk<Passthrough = any> {
   }
 
   async updateSubscription(
-    data: WithPassthrough<RawPaddlePostSubscriptionUsersUpdateRequest, Passthrough>
-  ) {
+    data: PaddleSdkUpdateSubscriptionRequest
+  ): Promise<PaddleSdkUpdateSubscriptionResponse> {
     return this.apiRequest<
       RawPaddlePostSubscriptionUsersUpdateRequest,
       RawPaddlePostSubscriptionUsersUpdateResponse
@@ -343,14 +353,18 @@ export class PaddleSdk<Passthrough = any> {
     })
   }
 
-  async cancelSubscription(data: RawPaddlePostSubscriptionUsersCancelRequest) {
+  async cancelSubscription(
+    data: PaddleSdkCancelSubscriptionRequest
+  ): Promise<PaddleSdkCancelSubscriptionResponse> {
     return this.apiRequest<
       RawPaddlePostSubscriptionUsersCancelRequest,
       RawPaddlePostSubscriptionUsersCancelResponse
     >(PADDLE_SUBSCRIPTION_USERS_CANCEL.url, PADDLE_SUBSCRIPTION_USERS_CANCEL.method, data)
   }
 
-  async createSubscriptionModifier(data: RawPaddlePostSubscriptionModifiersCreateRequest) {
+  async createSubscriptionModifier(
+    data: PaddleSdkCreateSubscriptionModifierRequest
+  ): Promise<PaddleSdkCreateSubscriptionModifierResponse> {
     return this.apiRequest<
       RawPaddlePostSubscriptionModifiersCreateRequest,
       RawPaddlePostSubscriptionModifiersCreateResponse
