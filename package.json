@@ -14,6 +14,7 @@
     "lint": "eslint --ignore-path='.gitignore' '{src,tests}/**/*.ts'",
     "build": "rm -rf dist/ && tsc",
     "preversion": "yarn build",
+    "generate": "ts-node generators/generate-webhook-alert-interfaces.ts; ts-node generators/generate-api-route-interfaces.ts; yarn format",
     "generate-webhook-alert-interfaces": "ts-node generators/generate-webhook-alert-interfaces.ts; yarn format",
     "generate-api-route-interfaces": "ts-node generators/generate-api-route-interfaces.ts; yarn format"
   },
