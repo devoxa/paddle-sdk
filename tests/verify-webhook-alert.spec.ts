@@ -2,7 +2,12 @@ import { PUBLIC_KEY, WEBHOOK_BODY_SUBSCRIPTION_CREATED } from './fixtures'
 import { PaddleSdk } from '../src/index'
 
 function verify(publicKey: string, body: any) {
-  const paddleSdk = new PaddleSdk({ publicKey, vendorId: 123, vendorAuthCode: 'FooBarBaz' })
+  const paddleSdk = new PaddleSdk({
+    publicKey,
+    vendorId: 123,
+    vendorAuthCode: 'FooBarBaz',
+    passthroughEncryptionKey: 'ZtdDl3Ex7ycFfgdbAC3uTLNk8eLVDcEd',
+  })
   return paddleSdk.verifyWebhookAlert(body)
 }
 

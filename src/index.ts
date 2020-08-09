@@ -32,6 +32,7 @@ import {
   RawPaddlePostSubscriptionUsersResponse,
   PADDLE_SUBSCRIPTION_USERS,
 } from './__generated__/api-route-interfaces'
+import { encrypt, decrypt } from '@devoxa/aes-encryption'
 
 export * from './interfaces'
 
@@ -39,6 +40,7 @@ export interface PaddleSdkOptions {
   publicKey: string
   vendorId: number
   vendorAuthCode: string
+  passthroughEncryptionKey: string
 }
 
 type WithPassthrough<T, P> = Omit<T, 'passthrough'> & { passthrough?: P }
@@ -47,6 +49,7 @@ export class PaddleSdk<Passthrough = any> {
   private readonly publicKey: string
   private readonly vendorId: number
   private readonly vendorAuthCode: string
+  private readonly passthroughEncryptionKey: string
 
   constructor(options: PaddleSdkOptions) {
     if (!options.publicKey) {
@@ -61,9 +64,14 @@ export class PaddleSdk<Passthrough = any> {
       throw new PaddleSdkException('PaddleSdk was called without a vendorAuthCode')
     }
 
+    if (!options.passthroughEncryptionKey || options.passthroughEncryptionKey.length !== 32) {
+      throw new PaddleSdkException('PaddleSdk was called with an invalid passthroughEncryptionKey')
+    }
+
     this.publicKey = options.publicKey
     this.vendorId = options.vendorId
     this.vendorAuthCode = options.vendorAuthCode
+    this.passthroughEncryptionKey = options.passthroughEncryptionKey
   }
 
   verifyWebhookAlert(body: any): body is RawPaddleWebhookAlert {
@@ -103,12 +111,12 @@ export class PaddleSdk<Passthrough = any> {
   }
 
   private stringifyPassthrough(passthrough: any) {
-    return JSON.stringify(passthrough)
+    return encrypt(this.passthroughEncryptionKey, JSON.stringify(passthrough))
   }
 
   private parsePassthrough(passthrough: string) {
     try {
-      return JSON.parse(passthrough)
+      return JSON.parse(decrypt(this.passthroughEncryptionKey, passthrough))
     } catch (err) {
       throw new PaddleSdkException('Failed parsing passthrough: ' + err.message)
     }

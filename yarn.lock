@@ -265,6 +265,11 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@devoxa/aes-encryption@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@devoxa/aes-encryption/-/aes-encryption-1.0.2.tgz#cd258f79da9bf40cff8b9be7648edd2b64ebdea9"
+  integrity sha512-60srTnhdYTCBxw5j6hbOJCCYTuPVViKj3/qcA4E3d3f3oi3kVn2EIojJ2nY6e+IGxWQ0n7AKd+gmvVxpXQw+HQ==
+
 "@devoxa/eslint-config@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@devoxa/eslint-config/-/eslint-config-1.0.0.tgz#923969e631499fc313760684dfd25b94cfdad691"
