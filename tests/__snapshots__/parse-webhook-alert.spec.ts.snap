@@ -3,7 +3,7 @@
 exports[`webhooks -> parse webhook alert parses a webhook correctly 1`] = `
 Object {
   "alert_id": 2091557455,
-  "alert_name": "subscription_created",
+  "alert_name": "SUBSCRIPTION_CREATED",
   "cancel_url": "https://checkout.paddle.com/subscription/cancel?user=6&subscription=1&hash=acb15fc760b9d4cb4fae9abf67b7b4d52f12441e",
   "checkout_id": "2-461ecbe710cab0e-f2e284ef00",
   "currency": "GBP",
@@ -16,7 +16,7 @@ Object {
   },
   "quantity": 23,
   "source": "https://genesis.devoxa.io/",
-  "status": "trialing",
+  "status": "TRIALING",
   "subscription_id": 6,
   "subscription_plan_id": 7,
   "unit_price": 9.99,
