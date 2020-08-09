@@ -5,7 +5,7 @@
 
 <!-- Description -->
 <h4 align="center"> 
-  An SDK to interface with the API and webhooks from <a href="https://paddle.com">Paddle</a>.
+  An SDK to interface with the API and webhooks from <a href="https://paddle.com">Paddle</a>
 </h4>
 
 <!-- Badges -->
