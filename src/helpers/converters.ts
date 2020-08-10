@@ -2,12 +2,14 @@ import {
   RawPaddleSubscriptionCreatedAlert,
   RawPaddleSubscriptionUpdatedAlert,
   RawPaddleSubscriptionPaymentSucceededAlert,
-} from './__generated__/webhook-alert-interfaces'
+} from '../__generated__/webhook-alert-interfaces'
 import {
   PaddleSdkSubscriptionStatus,
   PaddleSdkPausedReason,
   PaddleSdkPaymentMethod,
-} from './interfaces'
+  PaddleSdkCurrency,
+  PaddleSdkCountry,
+} from '../interfaces'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
@@ -15,7 +17,22 @@ import utc from 'dayjs/plugin/utc'
 dayjs.extend(customParseFormat)
 dayjs.extend(utc)
 
-export function atsDate(dateString: string, type: 'DATE' | 'DATE_TIME' | 'EXPIRY_DATE'): Date {
+export function convertApiInteger(integerString: string): number {
+  return parseInt(integerString, 10)
+}
+
+export function convertApiFloat(floatString: string): number {
+  return parseFloat(floatString)
+}
+
+export function convertApiBoolean(booleanString: '0' | '1'): boolean {
+  return booleanString === '1'
+}
+
+export function convertApiDate(
+  dateString: string,
+  type: 'DATE' | 'DATE_TIME' | 'EXPIRY_DATE'
+): Date {
   switch (type) {
     case 'DATE':
       return dayjs.utc(dateString, 'YYYY-MM-DD').toDate()
@@ -26,10 +43,10 @@ export function atsDate(dateString: string, type: 'DATE' | 'DATE_TIME' | 'EXPIRY
   }
 }
 
-export function atsStatus(
-  status: RawPaddleSubscriptionCreatedAlert['status']
+export function convertApiSubscriptionStatus(
+  subscriptionStatus: RawPaddleSubscriptionCreatedAlert['status']
 ): PaddleSdkSubscriptionStatus {
-  switch (status) {
+  switch (subscriptionStatus) {
     case 'active':
       return 'ACTIVE'
     case 'trialing':
@@ -43,10 +60,10 @@ export function atsStatus(
   }
 }
 
-export function staStatus(
-  status: PaddleSdkSubscriptionStatus
+export function convertSdkSubscriptionStatus(
+  subscriptionStatus: PaddleSdkSubscriptionStatus
 ): RawPaddleSubscriptionCreatedAlert['status'] {
-  switch (status) {
+  switch (subscriptionStatus) {
     case 'ACTIVE':
       return 'active'
     case 'TRIALING':
@@ -60,7 +77,7 @@ export function staStatus(
   }
 }
 
-export function atsPausedReason(
+export function convertApiPausedReason(
   pausedReason: RawPaddleSubscriptionUpdatedAlert['paused_reason']
 ): PaddleSdkPausedReason {
   switch (pausedReason) {
@@ -71,7 +88,17 @@ export function atsPausedReason(
   }
 }
 
-export function atsPaymentMethod(
+export function convertApiCurrency(currency: string): PaddleSdkCurrency {
+  // These are the currencies already returned by paddle, we just make them type-safe
+  return currency as PaddleSdkCurrency
+}
+
+export function convertApiCountry(country: string): PaddleSdkCountry {
+  // These are the countries already returned by paddle, we just make them type-safe
+  return country as PaddleSdkCountry
+}
+
+export function convertApiPaymentMethod(
   paymentMethod: RawPaddleSubscriptionPaymentSucceededAlert['payment_method']
 ): PaddleSdkPaymentMethod {
   switch (paymentMethod) {
@@ -86,4 +113,9 @@ export function atsPaymentMethod(
     case 'free':
       return 'FREE'
   }
+}
+
+export function convertApiCardType(cardType: string): string {
+  // TODO Add exact types here
+  return cardType.toUpperCase()
 }

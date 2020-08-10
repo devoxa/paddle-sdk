@@ -14,10 +14,10 @@ Array [
     "paused_at": null,
     "paused_from": null,
     "payment_information": Object {
-      "card_type": "visa",
+      "card_type": "VISA",
       "expiry_date": 2021-08-01T00:00:00.000Z,
       "last_four_digits": "1824",
-      "payment_method": "card",
+      "payment_method": "CARD",
     },
     "plan_id": 124890,
     "signup_date": 2020-08-08T23:15:48.000Z,
