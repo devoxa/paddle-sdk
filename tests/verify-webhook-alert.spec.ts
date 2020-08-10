@@ -49,12 +49,17 @@ describe('webhooks -> verify webhook body', () => {
   })
 
   it('rejects for body with extra properties', () => {
-    expect(verify(FIXTURES.publicKey, { ...FIXTURES.subscriptionCreatedWebhook, foo: 'bar' })).toEqual(false)
+    expect(
+      verify(FIXTURES.publicKey, { ...FIXTURES.subscriptionCreatedWebhook, foo: 'bar' })
+    ).toEqual(false)
   })
 
   it('rejects for invalid signature type', () => {
     expect(
-      verify(FIXTURES.publicKey, { ...FIXTURES.subscriptionCreatedWebhook, p_signature: { foo: 'bar' } })
+      verify(FIXTURES.publicKey, {
+        ...FIXTURES.subscriptionCreatedWebhook,
+        p_signature: { foo: 'bar' },
+      })
     ).toEqual(false)
   })
 

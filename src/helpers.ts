@@ -1,6 +1,5 @@
 import { serialize as phpSerialize } from 'php-serialize'
 
-
 export function stableSerialize(object: { [key: string]: any }): string {
   // 1) Sort the object alphabetically by it's keys
   object = sortByKey(object)

@@ -327,8 +327,12 @@ export class PaddleSdk<TPassthrough = any> {
         signup_date: parser.atsDate(subscription.signup_date, 'DATE_TIME'),
         update_url: subscription.update_url,
         cancel_url: subscription.cancel_url,
-        paused_at: subscription.paused_at ? parser.atsDate(subscription.paused_at, 'DATE_TIME') : null,
-        paused_from: subscription.paused_from ? parser.atsDate(subscription.paused_from, 'DATE_TIME') : null,
+        paused_at: subscription.paused_at
+          ? parser.atsDate(subscription.paused_at, 'DATE_TIME')
+          : null,
+        paused_from: subscription.paused_from
+          ? parser.atsDate(subscription.paused_from, 'DATE_TIME')
+          : null,
         payment_information: formatPaymentInformation(subscription.payment_information),
         last_payment: formatPayment(subscription.last_payment),
         next_payment: subscription.next_payment ? formatPayment(subscription.next_payment) : null,
