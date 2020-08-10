@@ -1,6 +1,5 @@
 import { createVerify } from 'crypto'
-import fetch from 'node-fetch'
-import { stableSerialize, parseUtcDate, objectToFormData } from './helpers'
+import { stableSerialize } from './helpers'
 import {
   RawPaddleWebhookAlert,
   RawPaddleSubscriptionCreatedAlert,
@@ -24,10 +23,7 @@ import {
   PaddleSdkUpdateSubscriptionResponse,
   PaddleSdkCancelSubscriptionResponse,
   PaddleSdkCreateSubscriptionModifierResponse,
-  PaddleSdkSubscriptionStatus,
   PaddleSdkCurrency,
-  PaddleSdkPausedReason,
-  PaddleSdkPaymentMethod,
 } from './interfaces'
 import {
   RawPaddlePostProductGeneratePayLinkRequest,
@@ -47,6 +43,8 @@ import {
   PADDLE_SUBSCRIPTION_USERS,
 } from './__generated__/api-route-interfaces'
 import { encrypt, decrypt } from '@devoxa/aes-encryption'
+import * as parser from './parser'
+import { fetch } from './helpers/fetch'
 
 export * from './interfaces'
 
@@ -134,51 +132,6 @@ export class PaddleSdk<TPassthrough = any> {
     }
   }
 
-  private parseStatus(
-    status: RawPaddleSubscriptionCreatedAlert['status']
-  ): PaddleSdkSubscriptionStatus {
-    switch (status) {
-      case 'active':
-        return 'ACTIVE'
-      case 'trialing':
-        return 'TRIALING'
-      case 'past_due':
-        return 'PAST_DUE'
-      case 'paused':
-        return 'PAUSED'
-      case 'deleted':
-        return 'CANCELLED'
-    }
-  }
-
-  private parsePausedReason(
-    pausedReason: RawPaddleSubscriptionUpdatedAlert['paused_reason']
-  ): PaddleSdkPausedReason {
-    switch (pausedReason) {
-      case 'delinquent':
-        return 'DELINQUENT'
-      case 'voluntary':
-        return 'VOLUNTARY'
-    }
-  }
-
-  private parsePaymentMethod(
-    paymentMethod: RawPaddleSubscriptionPaymentSucceededAlert['payment_method']
-  ): PaddleSdkPaymentMethod {
-    switch (paymentMethod) {
-      case 'card':
-        return 'CARD'
-      case 'paypal':
-        return 'PAYPAL'
-      case 'apple-pay':
-        return 'APPLE_PAY'
-      case 'wire-transfer':
-        return 'WIRE_TRANSFER'
-      case 'free':
-        return 'FREE'
-    }
-  }
-
   private parseSubscriptionCreatedWebhookAlert(
     body: RawPaddleSubscriptionCreatedAlert
   ): PaddleSdkSubscriptionCreatedAlert<TPassthrough> {
@@ -189,13 +142,13 @@ export class PaddleSdk<TPassthrough = any> {
       checkout_id: body.checkout_id,
       currency: body.currency as PaddleSdkCurrency,
       email: body.email,
-      event_time: parseUtcDate(body.event_time, 'DATE_TIME'),
+      event_time: parser.atsDate(body.event_time, 'DATE_TIME'),
       marketing_consent: body.marketing_consent === '1',
-      next_bill_date: parseUtcDate(body.next_bill_date, 'DATE'),
+      next_bill_date: parser.atsDate(body.next_bill_date, 'DATE'),
       passthrough: this.parsePassthrough(body.passthrough),
       quantity: parseInt(body.quantity),
       source: body.source,
-      status: this.parseStatus(body.status),
+      status: parser.atsStatus(body.status),
       subscription_id: parseInt(body.subscription_id),
       subscription_plan_id: parseInt(body.subscription_plan_id),
       unit_price: parseFloat(body.unit_price),
@@ -214,24 +167,24 @@ export class PaddleSdk<TPassthrough = any> {
       checkout_id: body.checkout_id,
       currency: body.currency as PaddleSdkCurrency,
       email: body.email,
-      event_time: parseUtcDate(body.event_time, 'DATE_TIME'),
+      event_time: parser.atsDate(body.event_time, 'DATE_TIME'),
       marketing_consent: body.marketing_consent === '1',
-      new_next_bill_date: parseUtcDate(body.next_bill_date, 'DATE'),
+      new_next_bill_date: parser.atsDate(body.next_bill_date, 'DATE'),
       new_price: parseFloat(body.new_price),
       new_quantity: parseInt(body.new_quantity),
-      new_status: this.parseStatus(body.status),
+      new_status: parser.atsStatus(body.status),
       new_subscription_plan_id: parseInt(body.subscription_plan_id),
       new_unit_price: parseFloat(body.new_unit_price),
-      old_next_bill_date: parseUtcDate(body.old_next_bill_date, 'DATE'),
+      old_next_bill_date: parser.atsDate(body.old_next_bill_date, 'DATE'),
       old_price: parseFloat(body.old_price),
       old_quantity: parseInt(body.old_quantity),
-      old_status: this.parseStatus(body.old_status),
+      old_status: parser.atsStatus(body.old_status),
       old_subscription_plan_id: parseInt(body.old_subscription_plan_id),
       old_unit_price: parseFloat(body.old_unit_price),
       passthrough: this.parsePassthrough(body.passthrough),
-      paused_at: body.paused_at ? parseUtcDate(body.paused_at, 'DATE_TIME') : null,
-      paused_from: body.paused_from ? parseUtcDate(body.paused_from, 'DATE_TIME') : null,
-      paused_reason: body.paused_reason ? this.parsePausedReason(body.paused_reason) : null,
+      paused_at: body.paused_at ? parser.atsDate(body.paused_at, 'DATE_TIME') : null,
+      paused_from: body.paused_from ? parser.atsDate(body.paused_from, 'DATE_TIME') : null,
+      paused_reason: body.paused_reason ? parser.atsPausedReason(body.paused_reason) : null,
       subscription_id: parseInt(body.subscription_id),
       update_url: body.update_url,
       user_id: parseInt(body.user_id),
@@ -244,15 +197,15 @@ export class PaddleSdk<TPassthrough = any> {
     return {
       alert_id: parseInt(body.alert_id),
       alert_name: 'SUBSCRIPTION_CANCELLED',
-      cancellation_effective_date: parseUtcDate(body.cancellation_effective_date, 'DATE'),
+      cancellation_effective_date: parser.atsDate(body.cancellation_effective_date, 'DATE'),
       checkout_id: body.checkout_id,
       currency: body.currency as PaddleSdkCurrency,
       email: body.email,
-      event_time: parseUtcDate(body.event_time, 'DATE_TIME'),
+      event_time: parser.atsDate(body.event_time, 'DATE_TIME'),
       marketing_consent: body.marketing_consent === '1',
       passthrough: this.parsePassthrough(body.passthrough),
       quantity: parseInt(body.quantity),
-      status: this.parseStatus(body.status),
+      status: parser.atsStatus(body.status),
       subscription_id: parseInt(body.subscription_id),
       subscription_plan_id: parseInt(body.subscription_plan_id),
       unit_price: parseFloat(body.unit_price),
@@ -278,22 +231,22 @@ export class PaddleSdk<TPassthrough = any> {
       customer_name: body.customer_name,
       earnings: parseFloat(body.earnings),
       email: body.email,
-      event_time: parseUtcDate(body.event_time, 'DATE_TIME'),
+      event_time: parser.atsDate(body.event_time, 'DATE_TIME'),
       fee: parseFloat(body.fee),
       initial_payment: body.initial_payment === '1',
       instalments: parseInt(body.instalments),
       marketing_consent: body.marketing_consent === '1',
-      next_bill_date: parseUtcDate(body.next_bill_date, 'DATE'),
+      next_bill_date: parser.atsDate(body.next_bill_date, 'DATE'),
       next_payment_amount: parseFloat(body.next_payment_amount),
       order_id: body.order_id,
       passthrough: this.parsePassthrough(body.passthrough),
-      payment_method: this.parsePaymentMethod(body.payment_method),
+      payment_method: parser.atsPaymentMethod(body.payment_method),
       payment_tax: parseFloat(body.payment_tax),
       plan_name: body.plan_name,
       quantity: parseInt(body.quantity),
       receipt_url: body.receipt_url,
       sale_gross: parseFloat(body.sale_gross),
-      status: this.parseStatus(body.status),
+      status: parser.atsStatus(body.status),
       subscription_id: parseInt(body.subscription_id),
       subscription_payment_id: parseInt(body.subscription_payment_id),
       subscription_plan_id: parseInt(body.subscription_plan_id),
@@ -307,14 +260,14 @@ export class PaddleSdk<TPassthrough = any> {
     method: 'GET' | 'POST',
     body: TRequest
   ): Promise<TResponse> {
-    const formData = objectToFormData({
-      vendor_id: this.vendorId,
-      vendor_auth_code: this.vendorAuthCode,
-      ...body,
+    const json = await fetch(url, {
+      method,
+      body: {
+        vendor_id: this.vendorId,
+        vendor_auth_code: this.vendorAuthCode,
+        ...body,
+      },
     })
-
-    const response = await fetch(url, { method, body: formData })
-    const json = await response.json()
 
     // Turn errors from the Paddle API into a unique exception with the error message
     if (json.success === false) {
@@ -351,7 +304,7 @@ export class PaddleSdk<TPassthrough = any> {
         payment_method: 'card' as const,
         card_type: paymentInformation.card_type, // TODO Would be nice to have strict types here
         last_four_digits: paymentInformation.last_four_digits,
-        expiry_date: parseUtcDate(paymentInformation.expiry_date, 'EXPIRY_DATE'),
+        expiry_date: parser.atsDate(paymentInformation.expiry_date, 'EXPIRY_DATE'),
       }
     }
 
@@ -359,7 +312,7 @@ export class PaddleSdk<TPassthrough = any> {
       return {
         amount: payment.amount,
         currency: payment.currency as PaddleSdkCurrency,
-        date: parseUtcDate(payment.date, 'DATE'),
+        date: parser.atsDate(payment.date, 'DATE'),
       }
     }
 
@@ -370,12 +323,12 @@ export class PaddleSdk<TPassthrough = any> {
         user_id: subscription.user_id,
         user_email: subscription.user_email,
         marketing_consent: subscription.marketing_consent,
-        status: this.parseStatus(subscription.state),
-        signup_date: parseUtcDate(subscription.signup_date, 'DATE_TIME'),
+        status: parser.atsStatus(subscription.state),
+        signup_date: parser.atsDate(subscription.signup_date, 'DATE_TIME'),
         update_url: subscription.update_url,
         cancel_url: subscription.cancel_url,
-        paused_at: parseUtcDate(subscription.paused_at, 'DATE_TIME'),
-        paused_from: parseUtcDate(subscription.paused_from, 'DATE_TIME'),
+        paused_at: subscription.paused_at ? parser.atsDate(subscription.paused_at, 'DATE_TIME') : null,
+        paused_from: subscription.paused_from ? parser.atsDate(subscription.paused_from, 'DATE_TIME') : null,
         payment_information: formatPaymentInformation(subscription.payment_information),
         last_payment: formatPayment(subscription.last_payment),
         next_payment: subscription.next_payment ? formatPayment(subscription.next_payment) : null,
@@ -385,9 +338,13 @@ export class PaddleSdk<TPassthrough = any> {
     return this.apiRequest<
       RawPaddlePostSubscriptionUsersRequest,
       RawPaddlePostSubscriptionUsersResponse
-    >(PADDLE_SUBSCRIPTION_USERS.url, PADDLE_SUBSCRIPTION_USERS.method, data).then((subscriptions) =>
-      subscriptions.map(formatSubscription)
-    )
+    >(PADDLE_SUBSCRIPTION_USERS.url, PADDLE_SUBSCRIPTION_USERS.method, {
+      subscription_id: data.subscription_id?.toString(),
+      plan_id: data.plan_id?.toString(),
+      state: data.status ? parser.staStatus(data.status) : undefined,
+      page: data.page,
+      results_per_page: data.results_per_page,
+    }).then((subscriptions) => subscriptions.map(formatSubscription))
   }
 
   async updateSubscription(

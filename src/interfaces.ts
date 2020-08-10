@@ -433,9 +433,9 @@ export type PaddleSdkCreateProductPayLinkResponse = {
 }
 
 export type PaddleSdkListSubscriptionsRequest = {
-  subscription_id?: string
-  plan_id?: string
-  state?: 'active' | 'past_due' | 'trialing' | 'paused' | 'deleted'
+  subscription_id?: number
+  plan_id?: number
+  status?: PaddleSdkSubscriptionStatus
   page?: number
   results_per_page?: number
 }
@@ -450,8 +450,8 @@ export type PaddleSdkListSubscriptionsResponse = Array<{
   signup_date: Date
   update_url: string
   cancel_url: string
-  paused_at: Date
-  paused_from: Date
+  paused_at: Date | null
+  paused_from: Date | null
   payment_information:
     | {
         payment_method: 'card'

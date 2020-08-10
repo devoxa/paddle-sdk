@@ -1,18 +1,18 @@
-import { PUBLIC_KEY, WEBHOOK_BODY_SUBSCRIPTION_CREATED } from './fixtures'
+import * as FIXTURES from './fixtures'
 import { PaddleSdk } from '../src/index'
 
-function parse(publicKey: string, body: any) {
+function parse(body: any) {
   const paddleSdk = new PaddleSdk({
-    publicKey,
-    vendorId: 123,
-    vendorAuthCode: 'FooBarBaz',
-    passthroughEncryptionKey: 'ZtdDl3Ex7ycFfgdbAC3uTLNk8eLVDcEd',
+    publicKey: FIXTURES.publicKey,
+    vendorId: FIXTURES.vendorId,
+    vendorAuthCode: FIXTURES.vendorAuthCode,
+    passthroughEncryptionKey: FIXTURES.passthroughEncryptionKey,
   })
   return paddleSdk.parseWebhookAlert(body)
 }
 
 describe('webhooks -> parse webhook alert', () => {
   it('parses a webhook correctly', () => {
-    expect(parse(PUBLIC_KEY, WEBHOOK_BODY_SUBSCRIPTION_CREATED)).toMatchSnapshot()
+    expect(parse(FIXTURES.subscriptionCreatedWebhook)).toMatchSnapshot()
   })
 })
