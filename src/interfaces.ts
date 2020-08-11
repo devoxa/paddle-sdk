@@ -1,13 +1,13 @@
-import { RawPaddleEnumCurrencies, RawPaddleEnumCountries } from './__generated__/enums'
+import { RawPaddleEnumCountries, RawPaddleEnumCurrencies } from './__generated__/enums'
 
 /**
  * A status of a subscription
  *
- * ACTIVE: Indicates an active subscription, payments are up-to-date.
- * TRIALING: Indicates the subscription is in the trial period, will change to ACTIVE once the first recurring payment is successfully completed.
- * PAST_DUE: Indicates a payment for this subscription has failed. The payment will be retried and the status will change to ACTIVE, PAUSED or CANCELLED depending on your dunning settings.
- * PAUSED: Indicates that this subscription has been paused. The customer will not be charged for subsequent payments. The status will change to ACTIVE once the subscription is restarted.
- * CANCELLED: Indicates that this subscription has been cancelled.
+ * - ACTIVE: Indicates an active subscription, payments are up-to-date.
+ * - TRIALING: Indicates the subscription is in the trial period, will change to ACTIVE once the first recurring payment is successfully completed.
+ * - PAST_DUE: Indicates a payment for this subscription has failed. The payment will be retried and the status will change to ACTIVE, PAUSED or CANCELLED depending on your dunning settings.
+ * - PAUSED: Indicates that this subscription has been paused. The customer will not be charged for subsequent payments. The status will change to ACTIVE once the subscription is restarted.
+ * - CANCELLED: Indicates that this subscription has been cancelled.
  */
 export type PaddleSdkSubscriptionStatus =
   | 'ACTIVE'
@@ -33,24 +33,12 @@ export type PaddleSdkPausedReason = 'DELINQUENT' | 'VOLUNTARY'
 /** A payment method used to make a transaction */
 export type PaddleSdkPaymentMethod = 'CARD' | 'PAYPAL' | 'APPLE_PAY' | 'WIRE_TRANSFER' | 'FREE'
 
-/** A completed or pending payment */
-export type PaddleSdkPayment = {
-  /** The total amount charged for the payment */
-  amount: number
-
-  /** The currency of the payment */
-  currency: PaddleSdkCurrency
-
-  /** The date the payment is/was due */
-  date: Date
-}
-
 // ----------------------------------------------------------------------------
 // WEBHOOKS
 // ----------------------------------------------------------------------------
 
 /** An event fired when a subscription is created */
-export type PaddleSdkSubscriptionCreatedEvent<T> = {
+export type PaddleSdkSubscriptionCreatedEvent<TMetadata> = {
   // EVENT ---
 
   /** The type of this event */
@@ -64,8 +52,8 @@ export type PaddleSdkSubscriptionCreatedEvent<T> = {
 
   // ORDER ---
 
-  /** The value passed into the checkout using the `passthrough` parameter */
-  passthrough: T
+  /** The value passed into the pay link using the `metadata` parameter */
+  metadata: TMetadata
 
   /** The unique checkout ID of the order */
   checkoutId: string
@@ -96,8 +84,8 @@ export type PaddleSdkSubscriptionCreatedEvent<T> = {
   /** The total price of the subscription */
   price: number
 
-  /** The next payment of the subscription */
-  nextPayment: Pick<PaddleSdkPayment, 'date'>
+  /** The date the next payment is due for the subscription */
+  nextPaymentDate: Date
 
   /** The URL of the "Update Billing Information" page for the subscription */
   updateUrl: string
@@ -118,7 +106,7 @@ export type PaddleSdkSubscriptionCreatedEvent<T> = {
 }
 
 /** An event fired when a subscription is updated */
-export type PaddleSdkSubscriptionUpdatedEvent<T> = {
+export type PaddleSdkSubscriptionUpdatedEvent<TMetadata> = {
   // EVENT ---
 
   /** The type of this event */
@@ -132,8 +120,8 @@ export type PaddleSdkSubscriptionUpdatedEvent<T> = {
 
   // ORDER ---
 
-  /** The value passed into the checkout / set via the API using the `passthrough` parameter */
-  passthrough: T
+  /** The value passed into the pay link / set via the API using the `metadata` parameter */
+  metadata: TMetadata
 
   /** The unique checkout ID of the order */
   checkoutId: string
@@ -176,11 +164,11 @@ export type PaddleSdkSubscriptionUpdatedEvent<T> = {
   /** The total price of the subscription */
   price: number
 
-  /** The old next payment of the subscription */
-  oldNextPayment: Pick<PaddleSdkPayment, 'date'>
+  /** The old date the next payment was due for the subscription */
+  oldNextPaymentDate: Date
 
-  /** The next payment of the subscription */
-  nextPayment: Pick<PaddleSdkPayment, 'date'>
+  /** The date the next payment is due for the subscription */
+  nextPaymentDate: Date
 
   /** The URL of the "Update Billing Information" page for the subscription */
   updateUrl: string
@@ -213,7 +201,7 @@ export type PaddleSdkSubscriptionUpdatedEvent<T> = {
 }
 
 /** An event fired when a subscription is cancelled */
-export type PaddleSdkSubscriptionCancelledEvent<T> = {
+export type PaddleSdkSubscriptionCancelledEvent<TMetadata> = {
   // EVENT ---
 
   /** The type of this event */
@@ -227,8 +215,8 @@ export type PaddleSdkSubscriptionCancelledEvent<T> = {
 
   // ORDER ---
 
-  /** The value passed into the checkout / set via the API using the `passthrough` parameter */
-  passthrough: T
+  /** The value passed into the pay link / set via the API using the `metadata` parameter */
+  metadata: TMetadata
 
   /** The unique checkout ID of the order */
   checkoutId: string
@@ -278,7 +266,7 @@ export type PaddleSdkSubscriptionCancelledEvent<T> = {
  * An event fired when a subscription payment is made
  * Both the normal recurring subscription payment as well as extra charges trigger this event
  */
-export type PaddleSdkSubscriptionPaymentSucceededEvent<T> = {
+export type PaddleSdkSubscriptionPaymentSucceededEvent<TMetadata> = {
   // EVENT ---
 
   /** The type of this event */
@@ -292,8 +280,8 @@ export type PaddleSdkSubscriptionPaymentSucceededEvent<T> = {
 
   // ORDER ---
 
-  /** The value passed into the checkout / set via the API using the `passthrough` parameter */
-  passthrough: T
+  /** The value passed into the pay link / set via the API using the `metadata` parameter */
+  metadata: TMetadata
 
   /** The unique order ID for this payment */
   orderId: string
@@ -313,11 +301,8 @@ export type PaddleSdkSubscriptionPaymentSucceededEvent<T> = {
   /** The number of payments made to date */
   installments: number
 
-  /** The payment information of the order */
-  paymentInformation: {
-    /** The payment method used to make the transaction */
-    paymentMethod: PaddleSdkPaymentMethod
-  }
+  /** The payment method used to make the transaction */
+  paymentMethod: PaddleSdkPaymentMethod
 
   /** The currency of the order */
   currency: PaddleSdkCurrency
@@ -345,9 +330,6 @@ export type PaddleSdkSubscriptionPaymentSucceededEvent<T> = {
   /** The ID of the product the subscription is for */
   productId: number
 
-  /** The name of the product the subscription is for */
-  subscriptionProductName: string
-
   /** The status of the subscription */
   status: PaddleSdkSubscriptionStatus
 
@@ -360,8 +342,11 @@ export type PaddleSdkSubscriptionPaymentSucceededEvent<T> = {
   /** The total price of the subscription */
   price: number
 
-  /** The next payment of the subscription */
-  nextPayment: Pick<PaddleSdkPayment, 'date' | 'amount'>
+  /** The date the next payment is due for the subscription */
+  nextPaymentDate: Date
+
+  /** The total amount charged for the next payment of the subscription */
+  nextPaymentAmount: number
 
   // CUSTOMER ---
 
@@ -403,15 +388,15 @@ export type PaddleSdkSubscriptionPaymentSucceededEvent<T> = {
 // ----------------------------------------------------------------------------
 
 /** The API request parameters for creating a product pay link */
-export type PaddleSdkCreateProductPayLinkRequest<T> = {
+export type PaddleSdkCreateProductPayLinkRequest<TMetadata> = {
   /** The ID of the product to base the pay link on */
   productId?: number
 
   /**
-   * The passthrough data stored with the checkout, will be sent with all events associated with the order
+   * The metadata stored with the checkout, will be sent with all events associated with the order
    * This field is used to link payments/subscriptions to existing application entities
    */
-  passthrough?: T
+  metadata?: TMetadata
 
   // CUSTOM PRODUCT ---
 
@@ -476,58 +461,58 @@ export type PaddleSdkCreateProductPayLinkRequest<T> = {
    */
   recurringAffiliateLimit?: number
 
-  // PRE-FILL CHECKOUT ---
+  // POPULATE CHECKOUT ---
 
   /**
-   * Pre-fills the quantity selector on the checkout
+   * Populates the quantity selector on the checkout
    * Free products & subscription products are fixed to a quantity of 1
    */
-  preFillQuantity?: number
+  populateQuantity?: number
 
-  /** Pre-fills the "Coupon" field on the checkout */
-  preFillCoupon?: string
+  /** Populates the "Coupon" field on the checkout */
+  populateCoupon?: string
 
-  /** Pre-fills whether the customer has agreed to receive marketing messages */
-  preFillHasMarketingConsent?: boolean
+  /** Populates whether the customer has agreed to receive marketing messages */
+  populateHasMarketingConsent?: boolean
 
-  /** Pre-fills the "Email" field on the checkout, required if `preFillHasMarketingConsent` if set */
-  preFillCustomerEmail?: string
+  /** Populates the "Email" field on the checkout, required if `populateHasMarketingConsent` if set */
+  populateCustomerEmail?: string
 
-  /** Pre-fills the "Country" field on the checkout */
-  preFillCustomerCountry?: PaddleSdkCountry
+  /** Populates the "Country" field on the checkout */
+  populateCustomerCountry?: PaddleSdkCountry
 
   /**
-   * Pre-fills the "Postcode" field on the checkout, required if the `preFillCustomerCountry` requires a postcode
+   * Populates the "Postcode" field on the checkout, required if the `populateCustomerCountry` requires a postcode
    *
    * See the [Supported Countries](https://developer.paddle.com/reference/platform-parameters/supported-countries#countries-requiring-postcode) for countries requiring this field.
    */
-  preFillCustomerPostcode?: string
+  populateCustomerPostcode?: string
 
-  /** Pre-fills the "VAT Number" field on the checkout */
-  preFillVatNumber?: string
+  /** Populates the "VAT Number" field on the checkout */
+  populateVatNumber?: string
 
-  /** Pre-fills the "VAT Company Name" field on the checkout, required if `preFillVatNumber` is set */
-  preFillVatCompanyName?: string
+  /** Populates the "VAT Company Name" field on the checkout, required if `populateVatNumber` is set */
+  populateVatCompanyName?: string
 
-  /** Pre-fills the "VAT Street" field on the checkout, required if `preFillVatNumber` is set */
-  preFillVatStreet?: string
+  /** Populates the "VAT Street" field on the checkout, required if `populateVatNumber` is set */
+  populateVatStreet?: string
 
-  /** Pre-fills the "VAT Town/City" field on the checkout, required if `preFillVatNumber` is set */
-  preFillVatCity?: string
+  /** Populates the "VAT Town/City" field on the checkout, required if `populateVatNumber` is set */
+  populateVatCity?: string
 
-  /** Pre-fills the "VAT State" field on the checkout */
-  preFillVatState?: string
+  /** Populates the "VAT State" field on the checkout */
+  populateVatState?: string
 
-  /** Pre-fills the "VAT Country" field on the checkout, required if `preFillVatNumber` is set */
-  preFillVatCountry?: PaddleSdkCountry
+  /** Populates the "VAT Country" field on the checkout, required if `populateVatNumber` is set */
+  populateVatCountry?: PaddleSdkCountry
 
   /**
-   * Pre-fills the "VAT Postcode" field on the checkout, required if `preFillVatNumber` is set and
-   * the `preFillVatCountry` requires a postcode
+   * Populates the "VAT Postcode" field on the checkout, required if `populateVatNumber` is set and
+   * the `populateVatCountry` requires a postcode
    *
    * See the [Supported Countries](https://developer.paddle.com/reference/platform-parameters/supported-countries#countries-requiring-postcode) for countries requiring this field.
    */
-  preFillVatPostcode?: string
+  populateVatPostcode?: string
 }
 
 /** The API response for creating a product pay link */
@@ -558,25 +543,17 @@ export type PaddleSdkListSubscriptionsRequest = {
 export type PaddleSdkListSubscriptionsResponse = Array<{
   // ORDER ---
 
-  /** The payment information of the order */
-  paymentInformation:
-    | {
-        /** The payment method used to make the transaction */
-        paymentMethod: 'CARD'
+  /** The payment method used to make the transaction */
+  paymentMethod: 'CARD' | 'PAYPAL'
 
-        /** The brand of the card */
-        cardBrand: string
+  /** The brand of the card, set if `paymentMethod` is "CARD" */
+  cardBrand: string | null
 
-        /** The last four digits of the card */
-        cardLastFour: string
+  /** The last four digits of the card, set if `paymentMethod` is "CARD" */
+  cardLastFour: string | null
 
-        /** The expiration date of the card */
-        cardExpirationDate: Date
-      }
-    | {
-        /** The payment method used to make the transaction */
-        paymentMethod: 'PAYPAL'
-      }
+  /** The expiration date of the card, set if `paymentMethod` is "CARD" */
+  cardExpirationDate: Date | null
 
   // SUBSCRIPTION ---
 
@@ -592,11 +569,23 @@ export type PaddleSdkListSubscriptionsResponse = Array<{
   /** The date and time the subscription was created */
   signupDate: Date
 
-  /** The last payment of the subscription */
-  lastPayment: PaddleSdkPayment
+  /** The date the last payment was due for the subscription */
+  lastPaymentDate: Date
 
-  /** The next payment of the subscription */
-  nextPayment: PaddleSdkPayment | null
+  /** The currency of the last payment of the subscription */
+  lastPaymentCurrency: PaddleSdkCurrency
+
+  /** The total amount charged for the last payment of the subscription */
+  lastPaymentAmount: number
+
+  /** The date the next payment is due for the subscription */
+  nextPaymentDate: Date | null
+
+  /** The currency of the next payment of the subscription */
+  nextPaymentCurrency: PaddleSdkCurrency | null
+
+  /** The total amount charged for the next payment of the subscription */
+  nextPaymentAmount: number | null
 
   /** The URL of the "Update Billing Information" page for the subscription */
   updateUrl: string
@@ -626,7 +615,7 @@ export type PaddleSdkListSubscriptionsResponse = Array<{
 }>
 
 /** The API request parameters for updating a subscription */
-export type PaddleSdkUpdateSubscriptionRequest<T> = {
+export type PaddleSdkUpdateSubscriptionRequest<TMetadata> = {
   /** The unique ID of the subscription to be updated */
   subscriptionId: number
 
@@ -655,10 +644,10 @@ export type PaddleSdkUpdateSubscriptionRequest<T> = {
   shouldKeepModifiers?: boolean
 
   /**
-   * The passthrough data stored with the checkout, will be sent with all events associated with the order
+   * The metadata data stored with the checkout, will be sent with all events associated with the order
    * This field is used to link payments/subscriptions to existing application entities
    */
-  passthrough?: T
+  metadata?: TMetadata
 
   /**
    * Whether a subscription should be paused (true) or restarted (false)
@@ -680,8 +669,14 @@ export type PaddleSdkUpdateSubscriptionResponse = {
   /** The ID of the product the subscription is for */
   productId: number
 
-  /** The next payment of the subscription */
-  nextPayment: PaddleSdkPayment
+  /** The date the next payment is due for the subscription */
+  nextPaymentDate: Date | null
+
+  /** The currency of the next payment of the subscription */
+  nextPaymentCurrency: PaddleSdkCurrency | null
+
+  /** The total amount charged for the next payment of the subscription */
+  nextPaymentAmount: number | null
 }
 
 /** The API request parameters for creating a subscription modifier */
