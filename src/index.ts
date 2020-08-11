@@ -9,10 +9,10 @@ import {
 } from './__generated__/webhook-alert-interfaces'
 import { PaddleSdkException, PaddleSdkApiException } from './exceptions'
 import {
-  PaddleSdkSubscriptionCreatedAlert,
-  PaddleSdkSubscriptionUpdatedAlert,
-  PaddleSdkSubscriptionCancelledAlert,
-  PaddleSdkSubscriptionPaymentSucceededAlert,
+  PaddleSdkSubscriptionCreatedEvent,
+  PaddleSdkSubscriptionUpdatedEvent,
+  PaddleSdkSubscriptionCancelledEvent,
+  PaddleSdkSubscriptionPaymentSucceededEvent,
   PaddleSdkCreateProductPayLinkRequest,
   PaddleSdkListSubscriptionsRequest,
   PaddleSdkUpdateSubscriptionRequest,
@@ -54,6 +54,9 @@ import {
   convertApiPaymentMethod,
   convertApiCardType,
   convertSdkSubscriptionStatus,
+  convertSdkBoolean,
+  convertSdkDate,
+  convertApiCountry,
 } from './helpers/converters'
 
 export * from './interfaces'
@@ -62,14 +65,14 @@ export interface PaddleSdkOptions {
   publicKey: string
   vendorId: number
   vendorAuthCode: string
-  passthroughEncryptionKey: string
+  metadataEncryptionKey: string
 }
 
-export class PaddleSdk<TPassthrough = any> {
+export class PaddleSdk<TMetadata = any> {
   private readonly publicKey: string
   private readonly vendorId: number
   private readonly vendorAuthCode: string
-  private readonly passthroughEncryptionKey: string
+  private readonly metadataEncryptionKey: string
 
   constructor(options: PaddleSdkOptions) {
     if (!options.publicKey) {
@@ -84,17 +87,17 @@ export class PaddleSdk<TPassthrough = any> {
       throw new PaddleSdkException('PaddleSdk was called without a vendorAuthCode')
     }
 
-    if (!options.passthroughEncryptionKey || options.passthroughEncryptionKey.length !== 32) {
-      throw new PaddleSdkException('PaddleSdk was called with an invalid passthroughEncryptionKey')
+    if (!options.metadataEncryptionKey || options.metadataEncryptionKey.length !== 32) {
+      throw new PaddleSdkException('PaddleSdk was called with an invalid metadataEncryptionKey')
     }
 
     this.publicKey = options.publicKey
     this.vendorId = options.vendorId
     this.vendorAuthCode = options.vendorAuthCode
-    this.passthroughEncryptionKey = options.passthroughEncryptionKey
+    this.metadataEncryptionKey = options.metadataEncryptionKey
   }
 
-  verifyWebhookAlert(body: any): body is RawPaddleWebhookAlert {
+  verifyWebhookEvent(body: any): body is RawPaddleWebhookAlert {
     if (typeof body !== 'object') return false
 
     const { p_signature: signature, ...postBodyRest } = body || {}
@@ -109,159 +112,170 @@ export class PaddleSdk<TPassthrough = any> {
     return verifier.verify(this.publicKey, signature, 'base64')
   }
 
-  parseWebhookAlert(body: any) {
-    if (!this.verifyWebhookAlert(body)) {
-      throw new PaddleSdkException('Failed validating alert body')
+  parseWebhookEvent(body: any) {
+    if (!this.verifyWebhookEvent(body)) {
+      throw new PaddleSdkException('Failed validating webhook event body')
     }
 
     switch (body.alert_name) {
       case 'subscription_created':
-        return this.parseSubscriptionCreatedWebhookAlert(body)
+        return this.parseSubscriptionCreatedWebhookEvent(body)
       case 'subscription_updated':
-        return this.parseSubscriptionUpdatedWebhookAlert(body)
+        return this.parseSubscriptionUpdatedWebhookEvent(body)
       case 'subscription_cancelled':
-        return this.parseSubscriptionCancelledWebhookAlert(body)
+        return this.parseSubscriptionCancelledWebhookEvent(body)
       case 'subscription_payment_succeeded':
-        return this.parseSubscriptionPaymentSucceededWebhookAlert(body)
+        return this.parseSubscriptionPaymentSucceededWebhookEvent(body)
     }
 
     throw new PaddleSdkException(
-      `Implementation missing: Can not parse alert of type ${body.alert_name}`
+      `Implementation missing: Can not parse event of type ${body.alert_name}`
     )
   }
 
-  private stringifyPassthrough(passthrough: any) {
-    return encrypt(this.passthroughEncryptionKey, JSON.stringify(passthrough))
+  private stringifyMetadata(metadata: any) {
+    return encrypt(this.metadataEncryptionKey, JSON.stringify(metadata))
   }
 
-  private parsePassthrough(passthrough: string): TPassthrough {
+  private parseMetadata(metadata: string): TMetadata {
     try {
-      return JSON.parse(decrypt(this.passthroughEncryptionKey, passthrough))
+      return JSON.parse(decrypt(this.metadataEncryptionKey, metadata))
     } catch (err) {
-      throw new PaddleSdkException('Failed parsing passthrough: ' + err.message)
+      throw new PaddleSdkException('Failed parsing metadata: ' + err.message)
     }
   }
 
-  private parseSubscriptionCreatedWebhookAlert(
+  private parseSubscriptionCreatedWebhookEvent(
     body: RawPaddleSubscriptionCreatedAlert
-  ): PaddleSdkSubscriptionCreatedAlert<TPassthrough> {
+  ): PaddleSdkSubscriptionCreatedEvent<TMetadata> {
+    const quantity = convertApiInteger(body.quantity)
+    const unitPrice = convertApiFloat(body.unit_price)
+
     return {
-      alert_id: convertApiInteger(body.alert_id),
-      alert_name: 'SUBSCRIPTION_CREATED',
-      cancel_url: body.cancel_url,
-      checkout_id: body.checkout_id,
+      eventId: convertApiInteger(body.alert_id),
+      eventType: 'SUBSCRIPTION_CREATED',
+      cancelUrl: body.cancel_url,
+      checkoutId: body.checkout_id,
       currency: convertApiCurrency(body.currency),
-      email: body.email,
-      event_time: convertApiDate(body.event_time, 'DATE_TIME'),
-      marketing_consent: convertApiBoolean(body.marketing_consent),
-      next_bill_date: convertApiDate(body.next_bill_date, 'DATE'),
-      passthrough: this.parsePassthrough(body.passthrough),
-      quantity: convertApiInteger(body.quantity),
-      source: body.source,
+      customerEmail: body.email,
+      eventTime: convertApiDate(body.event_time, 'DATE_TIME'),
+      hasMarketingConsent: convertApiBoolean(body.marketing_consent),
+      nextPaymentDate: convertApiDate(body.next_bill_date, 'DATE'),
+      metadata: this.parseMetadata(body.passthrough),
+      quantity,
+      referrerUrl: body.source,
       status: convertApiSubscriptionStatus(body.status),
-      subscription_id: convertApiInteger(body.subscription_id),
-      subscription_plan_id: convertApiInteger(body.subscription_plan_id),
-      unit_price: convertApiFloat(body.unit_price),
-      update_url: body.update_url,
-      user_id: convertApiInteger(body.user_id),
+      subscriptionId: convertApiInteger(body.subscription_id),
+      productId: convertApiInteger(body.subscription_plan_id),
+      unitPrice,
+      price: quantity * unitPrice,
+      updateUrl: body.update_url,
+      customerId: convertApiInteger(body.user_id),
     }
   }
 
-  private parseSubscriptionUpdatedWebhookAlert(
+  private parseSubscriptionUpdatedWebhookEvent(
     body: RawPaddleSubscriptionUpdatedAlert
-  ): PaddleSdkSubscriptionUpdatedAlert<TPassthrough> {
+  ): PaddleSdkSubscriptionUpdatedEvent<TMetadata> {
     return {
-      alert_id: convertApiInteger(body.alert_id),
-      alert_name: 'SUBSCRIPTION_UPDATED',
-      cancel_url: body.cancel_url,
-      checkout_id: body.checkout_id,
+      eventId: convertApiInteger(body.alert_id),
+      eventType: 'SUBSCRIPTION_UPDATED',
+      cancelUrl: body.cancel_url,
+      checkoutId: body.checkout_id,
       currency: convertApiCurrency(body.currency),
-      email: body.email,
-      event_time: convertApiDate(body.event_time, 'DATE_TIME'),
-      marketing_consent: convertApiBoolean(body.marketing_consent),
-      new_next_bill_date: convertApiDate(body.next_bill_date, 'DATE'),
-      new_price: convertApiFloat(body.new_price),
-      new_quantity: convertApiInteger(body.new_quantity),
-      new_status: convertApiSubscriptionStatus(body.status),
-      new_subscription_plan_id: convertApiInteger(body.subscription_plan_id),
-      new_unit_price: convertApiFloat(body.new_unit_price),
-      old_next_bill_date: convertApiDate(body.old_next_bill_date, 'DATE'),
-      old_price: convertApiFloat(body.old_price),
-      old_quantity: convertApiInteger(body.old_quantity),
-      old_status: convertApiSubscriptionStatus(body.old_status),
-      old_subscription_plan_id: convertApiInteger(body.old_subscription_plan_id),
-      old_unit_price: convertApiFloat(body.old_unit_price),
-      passthrough: this.parsePassthrough(body.passthrough),
-      paused_at: body.paused_at ? convertApiDate(body.paused_at, 'DATE_TIME') : null,
-      paused_from: body.paused_from ? convertApiDate(body.paused_from, 'DATE_TIME') : null,
-      paused_reason: body.paused_reason ? convertApiPausedReason(body.paused_reason) : null,
-      subscription_id: convertApiInteger(body.subscription_id),
-      update_url: body.update_url,
-      user_id: convertApiInteger(body.user_id),
-    }
-  }
-
-  private parseSubscriptionCancelledWebhookAlert(
-    body: RawPaddleSubscriptionCancelledAlert
-  ): PaddleSdkSubscriptionCancelledAlert<TPassthrough> {
-    return {
-      alert_id: convertApiInteger(body.alert_id),
-      alert_name: 'SUBSCRIPTION_CANCELLED',
-      cancellation_effective_date: convertApiDate(body.cancellation_effective_date, 'DATE'),
-      checkout_id: body.checkout_id,
-      currency: convertApiCurrency(body.currency),
-      email: body.email,
-      event_time: convertApiDate(body.event_time, 'DATE_TIME'),
-      marketing_consent: convertApiBoolean(body.marketing_consent),
-      passthrough: this.parsePassthrough(body.passthrough),
-      quantity: convertApiInteger(body.quantity),
+      customerEmail: body.email,
+      eventTime: convertApiDate(body.event_time, 'DATE_TIME'),
+      hasMarketingConsent: convertApiBoolean(body.marketing_consent),
+      nextPaymentDate: convertApiDate(body.next_bill_date, 'DATE'),
+      price: convertApiFloat(body.new_price),
+      quantity: convertApiInteger(body.new_quantity),
       status: convertApiSubscriptionStatus(body.status),
-      subscription_id: convertApiInteger(body.subscription_id),
-      subscription_plan_id: convertApiInteger(body.subscription_plan_id),
-      unit_price: convertApiFloat(body.unit_price),
-      user_id: convertApiInteger(body.user_id),
+      productId: convertApiInteger(body.subscription_plan_id),
+      unitPrice: convertApiFloat(body.new_unit_price),
+      oldNextPaymentDate: convertApiDate(body.old_next_bill_date, 'DATE'),
+      oldPrice: convertApiFloat(body.old_price),
+      oldQuantity: convertApiInteger(body.old_quantity),
+      oldStatus: convertApiSubscriptionStatus(body.old_status),
+      oldProductId: convertApiInteger(body.old_subscription_plan_id),
+      oldUnitPrice: convertApiFloat(body.old_unit_price),
+      metadata: this.parseMetadata(body.passthrough),
+      pausedAt: body.paused_at ? convertApiDate(body.paused_at, 'DATE_TIME') : null,
+      pausedFrom: body.paused_from ? convertApiDate(body.paused_from, 'DATE_TIME') : null,
+      pausedReason: body.paused_reason ? convertApiPausedReason(body.paused_reason) : null,
+      subscriptionId: convertApiInteger(body.subscription_id),
+      updateUrl: body.update_url,
+      customerId: convertApiInteger(body.user_id),
     }
   }
 
-  private parseSubscriptionPaymentSucceededWebhookAlert(
-    body: RawPaddleSubscriptionPaymentSucceededAlert
-  ): PaddleSdkSubscriptionPaymentSucceededAlert<TPassthrough> {
+  private parseSubscriptionCancelledWebhookEvent(
+    body: RawPaddleSubscriptionCancelledAlert
+  ): PaddleSdkSubscriptionCancelledEvent<TMetadata> {
+    const quantity = convertApiInteger(body.quantity)
+    const unitPrice = convertApiFloat(body.unit_price)
+
     return {
-      alert_id: convertApiInteger(body.alert_id),
-      alert_name: 'SUBSCRIPTION_PAYMENT_SUCCEEDED',
-      balance_currency: convertApiCurrency(body.balance_currency),
-      balance_earnings: convertApiFloat(body.balance_earnings),
-      balance_fee: convertApiFloat(body.balance_fee),
-      balance_gross: convertApiFloat(body.balance_gross),
-      balance_tax: convertApiFloat(body.balance_tax),
-      checkout_id: body.checkout_id,
-      country: body.country,
+      eventId: convertApiInteger(body.alert_id),
+      eventType: 'SUBSCRIPTION_CANCELLED',
+      cancelledFrom: convertApiDate(body.cancellation_effective_date, 'DATE'),
+      checkoutId: body.checkout_id,
+      currency: convertApiCurrency(body.currency),
+      customerEmail: body.email,
+      eventTime: convertApiDate(body.event_time, 'DATE_TIME'),
+      hasMarketingConsent: convertApiBoolean(body.marketing_consent),
+      metadata: this.parseMetadata(body.passthrough),
+      quantity,
+      status: convertApiSubscriptionStatus(body.status),
+      subscriptionId: convertApiInteger(body.subscription_id),
+      productId: convertApiInteger(body.subscription_plan_id),
+      unitPrice,
+      price: quantity * unitPrice,
+      customerId: convertApiInteger(body.user_id),
+    }
+  }
+
+  private parseSubscriptionPaymentSucceededWebhookEvent(
+    body: RawPaddleSubscriptionPaymentSucceededAlert
+  ): PaddleSdkSubscriptionPaymentSucceededEvent<TMetadata> {
+    const quantity = convertApiInteger(body.quantity)
+    const unitPrice = convertApiFloat(body.unit_price)
+
+    return {
+      eventId: convertApiInteger(body.alert_id),
+      eventType: 'SUBSCRIPTION_PAYMENT_SUCCEEDED',
+      balanceCurrency: convertApiCurrency(body.balance_currency),
+      balanceEarnings: convertApiFloat(body.balance_earnings),
+      balanceFee: convertApiFloat(body.balance_fee),
+      balanceGross: convertApiFloat(body.balance_gross),
+      balanceTax: convertApiFloat(body.balance_tax),
+      checkoutId: body.checkout_id,
+      customerCountry: convertApiCountry(body.country),
       coupon: body.coupon,
       currency: convertApiCurrency(body.currency),
-      customer_name: body.customer_name,
+      customerName: body.customer_name,
       earnings: convertApiFloat(body.earnings),
-      email: body.email,
-      event_time: convertApiDate(body.event_time, 'DATE_TIME'),
+      customerEmail: body.email,
+      eventTime: convertApiDate(body.event_time, 'DATE_TIME'),
       fee: convertApiFloat(body.fee),
-      initial_payment: convertApiBoolean(body.initial_payment),
-      instalments: convertApiInteger(body.instalments),
-      marketing_consent: convertApiBoolean(body.marketing_consent),
-      next_bill_date: convertApiDate(body.next_bill_date, 'DATE'),
-      next_payment_amount: convertApiFloat(body.next_payment_amount),
-      order_id: body.order_id,
-      passthrough: this.parsePassthrough(body.passthrough),
-      payment_method: convertApiPaymentMethod(body.payment_method),
-      payment_tax: convertApiFloat(body.payment_tax),
-      plan_name: body.plan_name,
-      quantity: convertApiInteger(body.quantity),
-      receipt_url: body.receipt_url,
-      sale_gross: convertApiFloat(body.sale_gross),
+      isInitialPayment: convertApiBoolean(body.initial_payment),
+      installments: convertApiInteger(body.instalments),
+      hasMarketingConsent: convertApiBoolean(body.marketing_consent),
+      nextPaymentDate: convertApiDate(body.next_bill_date, 'DATE'),
+      nextPaymentAmount: convertApiFloat(body.next_payment_amount),
+      orderId: body.order_id,
+      metadata: this.parseMetadata(body.passthrough),
+      paymentMethod: convertApiPaymentMethod(body.payment_method),
+      tax: convertApiFloat(body.payment_tax),
+      quantity,
+      receiptUrl: body.receipt_url,
+      gross: convertApiFloat(body.sale_gross),
       status: convertApiSubscriptionStatus(body.status),
-      subscription_id: convertApiInteger(body.subscription_id),
-      subscription_payment_id: convertApiInteger(body.subscription_payment_id),
-      subscription_plan_id: convertApiInteger(body.subscription_plan_id),
-      unit_price: convertApiFloat(body.unit_price),
-      user_id: convertApiInteger(body.user_id),
+      subscriptionId: convertApiInteger(body.subscription_id),
+      subscriptionPaymentId: convertApiInteger(body.subscription_payment_id),
+      productId: convertApiInteger(body.subscription_plan_id),
+      unitPrice,
+      price: quantity * unitPrice,
+      customerId: convertApiInteger(body.user_id),
     }
   }
 
@@ -288,35 +302,88 @@ export class PaddleSdk<TPassthrough = any> {
   }
 
   async createProductPayLink(
-    data: PaddleSdkCreateProductPayLinkRequest<TPassthrough>
+    data: PaddleSdkCreateProductPayLinkRequest<TMetadata>
   ): Promise<PaddleSdkCreateProductPayLinkResponse> {
+    const formatRequest = (
+      request: PaddleSdkCreateProductPayLinkRequest<TMetadata>
+    ): RawPaddlePostProductGeneratePayLinkRequest => {
+      return {
+        product_id: request.productId,
+        title: request.title,
+        webhook_url: request.webhookUrl,
+        prices: request.prices?.map((x) => `${x[0]}:${x[1]}`),
+        recurring_prices: request.recurringPrices?.map((x) => `${x[0]}:${x[1]}`),
+        trial_days: request.trialDays,
+        custom_message: request.customMessage,
+        coupon_code: request.populateCoupon,
+        discountable: convertSdkBoolean(request.isDiscountable),
+        image_url: request.imageUrl,
+        return_url: request.returnUrl,
+        quantity_variable: convertSdkBoolean(request.isQuantityVariable),
+        quantity: request.populateQuantity,
+        expires: request.expirationDate
+          ? convertSdkDate(request.expirationDate, 'DATE')
+          : undefined,
+        affiliates: request.affiliates?.map((x) => x.toString()),
+        recurring_affiliate_limit: request.recurringAffiliateLimit,
+        marketing_consent: convertSdkBoolean(request.populateHasMarketingConsent),
+        customer_email: request.populateCustomerEmail,
+        customer_country: request.populateCustomerCountry,
+        customer_postcode: request.populateCustomerPostcode,
+        vat_number: request.populateVatNumber,
+        vat_company_name: request.populateVatCompanyName,
+        vat_street: request.populateVatStreet,
+        vat_city: request.populateVatCity,
+        vat_state: request.populateVatState,
+        vat_country: request.populateVatCountry,
+        vat_postcode: request.populateVatPostcode,
+        passthrough: this.stringifyMetadata(data.metadata),
+      }
+    }
+
     return this.apiRequest<
       RawPaddlePostProductGeneratePayLinkRequest,
       RawPaddlePostProductGeneratePayLinkResponse
-    >(PADDLE_PRODUCT_GENERATE_PAY_LINK.url, PADDLE_PRODUCT_GENERATE_PAY_LINK.method, {
-      ...data,
-      passthrough: this.stringifyPassthrough(data.passthrough),
-    })
+    >(
+      PADDLE_PRODUCT_GENERATE_PAY_LINK.url,
+      PADDLE_PRODUCT_GENERATE_PAY_LINK.method,
+      formatRequest(data)
+    )
   }
 
   async listSubscriptions(
     data: PaddleSdkListSubscriptionsRequest
   ): Promise<PaddleSdkListSubscriptionsResponse> {
+    function formatRequest(
+      request: PaddleSdkListSubscriptionsRequest
+    ): RawPaddlePostSubscriptionUsersRequest {
+      return {
+        subscription_id: request.subscriptionId?.toString(),
+        plan_id: request.productId?.toString(),
+        state: request.status ? convertSdkSubscriptionStatus(request.status) : undefined,
+        page: request.page,
+        results_per_page: request.resultsPerPage,
+      }
+    }
+
     function formatPaymentInformation(
       paymentInformation: RawPaddlePostSubscriptionUsersResponse[0]['payment_information']
     ) {
       if (paymentInformation.payment_method === 'card') {
         return {
-          payment_method: 'CARD' as const,
-          card_type: convertApiCardType(paymentInformation.card_type),
-          last_four_digits: paymentInformation.last_four_digits,
-          expiry_date: convertApiDate(paymentInformation.expiry_date, 'EXPIRY_DATE'),
+          paymentMethod: 'CARD' as const,
+          cardBrand: convertApiCardType(paymentInformation.card_type),
+          cardLastFour: paymentInformation.last_four_digits,
+          cardExpirationDate: convertApiDate(paymentInformation.expiry_date, 'EXPIRY_DATE'),
         }
       }
 
       if (paymentInformation.payment_method === 'paypal') {
         return {
-          payment_method: 'PAYPAL' as const,
+          paymentMethod: 'PAYPAL' as const,
+          cardBrand: null,
+          cardLastFour: null,
+          cardExpirationDate: null,
         }
       }
 
@@ -325,76 +392,143 @@ export class PaddleSdk<TPassthrough = any> {
       throw new PaddleSdkException(message)
     }
 
-    function formatPayment(payment: RawPaddlePostSubscriptionUsersResponse[0]['last_payment']) {
-      return {
-        amount: payment.amount,
-        currency: convertApiCurrency(payment.currency),
-        date: convertApiDate(payment.date, 'DATE'),
-      }
-    }
-
     const formatSubscription = (subscription: RawPaddlePostSubscriptionUsersResponse[0]) => {
       return {
-        subscription_id: subscription.subscription_id,
-        plan_id: subscription.plan_id,
-        user_id: subscription.user_id,
-        user_email: subscription.user_email,
-        marketing_consent: subscription.marketing_consent,
+        subscriptionId: subscription.subscription_id,
+        productId: subscription.plan_id,
+        customerId: subscription.user_id,
+        customerEmail: subscription.user_email,
+        hasMarketingConsent: subscription.marketing_consent,
         status: convertApiSubscriptionStatus(subscription.state),
-        signup_date: convertApiDate(subscription.signup_date, 'DATE_TIME'),
-        update_url: subscription.update_url,
-        cancel_url: subscription.cancel_url,
-        paused_at: subscription.paused_at
+        signupDate: convertApiDate(subscription.signup_date, 'DATE_TIME'),
+        updateUrl: subscription.update_url,
+        cancelUrl: subscription.cancel_url,
+        pausedAt: subscription.paused_at
           ? convertApiDate(subscription.paused_at, 'DATE_TIME')
           : null,
-        paused_from: subscription.paused_from
+        pausedFrom: subscription.paused_from
           ? convertApiDate(subscription.paused_from, 'DATE_TIME')
           : null,
-        payment_information: formatPaymentInformation(subscription.payment_information),
-        last_payment: formatPayment(subscription.last_payment),
-        next_payment: subscription.next_payment ? formatPayment(subscription.next_payment) : null,
+
+        ...formatPaymentInformation(subscription.payment_information),
+
+        lastPaymentAmount: subscription.last_payment.amount,
+        lastPaymentCurrency: convertApiCurrency(subscription.last_payment.currency),
+        lastPaymentDate: convertApiDate(subscription.last_payment.date, 'DATE'),
+        nextPaymentAmount: subscription.next_payment ? subscription.next_payment.amount : null,
+        nextPaymentCurrency: subscription.next_payment
+          ? convertApiCurrency(subscription.next_payment.currency)
+          : null,
+        nextPaymentDate: subscription.next_payment
+          ? convertApiDate(subscription.next_payment.date, 'DATE')
+          : null,
       }
     }
 
     return this.apiRequest<
       RawPaddlePostSubscriptionUsersRequest,
       RawPaddlePostSubscriptionUsersResponse
-    >(PADDLE_SUBSCRIPTION_USERS.url, PADDLE_SUBSCRIPTION_USERS.method, {
-      subscription_id: data.subscription_id?.toString(),
-      plan_id: data.plan_id?.toString(),
-      state: data.status ? convertSdkSubscriptionStatus(data.status) : undefined,
-      page: data.page,
-      results_per_page: data.results_per_page,
-    }).then((subscriptions) => subscriptions.map(formatSubscription))
+    >(
+      PADDLE_SUBSCRIPTION_USERS.url,
+      PADDLE_SUBSCRIPTION_USERS.method,
+      formatRequest(data)
+    ).then((subscriptions) => subscriptions.map(formatSubscription))
   }
 
   async updateSubscription(
-    data: PaddleSdkUpdateSubscriptionRequest<TPassthrough>
+    data: PaddleSdkUpdateSubscriptionRequest<TMetadata>
   ): Promise<PaddleSdkUpdateSubscriptionResponse> {
+    const formatRequest = (
+      request: PaddleSdkUpdateSubscriptionRequest<TMetadata>
+    ): RawPaddlePostSubscriptionUsersUpdateRequest => {
+      return {
+        subscription_id: request.subscriptionId,
+        quantity: request.quantity,
+        currency: request.currency,
+        recurring_price: request.unitPrice,
+        bill_immediately: request.shouldMakeImmediatePayment,
+        plan_id: request.productId,
+        prorate: request.shouldProrate,
+        keep_modifiers: request.shouldKeepModifiers,
+        passthrough: this.stringifyMetadata(data.metadata),
+        pause: request.shouldPause,
+      }
+    }
+
+    const formatResponse = (
+      response: RawPaddlePostSubscriptionUsersUpdateResponse
+    ): PaddleSdkUpdateSubscriptionResponse => {
+      return {
+        subscriptionId: response.subscription_id,
+        customerId: response.user_id,
+        productId: response.plan_id,
+        nextPaymentAmount: response.next_payment.amount,
+        nextPaymentCurrency: convertApiCurrency(response.next_payment.currency),
+        nextPaymentDate: convertApiDate(response.next_payment.date, 'DATE'),
+      }
+    }
+
     return this.apiRequest<
       RawPaddlePostSubscriptionUsersUpdateRequest,
       RawPaddlePostSubscriptionUsersUpdateResponse
-    >(PADDLE_SUBSCRIPTION_USERS_UPDATE.url, PADDLE_SUBSCRIPTION_USERS_UPDATE.method, {
-      ...data,
-      passthrough: this.stringifyPassthrough(data.passthrough),
-    })
+    >(
+      PADDLE_SUBSCRIPTION_USERS_UPDATE.url,
+      PADDLE_SUBSCRIPTION_USERS_UPDATE.method,
+      formatRequest(data)
+    ).then((x) => formatResponse(x))
   }
 
   async cancelSubscription(
     data: PaddleSdkCancelSubscriptionRequest
   ): Promise<PaddleSdkCancelSubscriptionResponse> {
+    const formatRequest = (
+      request: PaddleSdkCancelSubscriptionRequest
+    ): RawPaddlePostSubscriptionUsersCancelRequest => {
+      return {
+        subscription_id: request.subscriptionId,
+      }
+    }
+
     return this.apiRequest<
       RawPaddlePostSubscriptionUsersCancelRequest,
       RawPaddlePostSubscriptionUsersCancelResponse
-    >(PADDLE_SUBSCRIPTION_USERS_CANCEL.url, PADDLE_SUBSCRIPTION_USERS_CANCEL.method, data)
+    >(
+      PADDLE_SUBSCRIPTION_USERS_CANCEL.url,
+      PADDLE_SUBSCRIPTION_USERS_CANCEL.method,
+      formatRequest(data)
+    )
   }
 
   async createSubscriptionModifier(
     data: PaddleSdkCreateSubscriptionModifierRequest
   ): Promise<PaddleSdkCreateSubscriptionModifierResponse> {
+    const formatRequest = (
+      request: PaddleSdkCreateSubscriptionModifierRequest
+    ): RawPaddlePostSubscriptionModifiersCreateRequest => {
+      return {
+        subscription_id: request.subscriptionId,
+        modifier_recurring: request.isRecurring,
+        modifier_amount: request.amount,
+        modifier_description: request.description,
+      }
+    }
+
+    const formatResponse = (
+      response: RawPaddlePostSubscriptionModifiersCreateResponse
+    ): PaddleSdkCreateSubscriptionModifierResponse => {
+      return {
+        subscriptionId: response.subscription_id,
+        modifierId: response.modifier_id,
+      }
+    }
+
     return this.apiRequest<
       RawPaddlePostSubscriptionModifiersCreateRequest,
       RawPaddlePostSubscriptionModifiersCreateResponse
-    >(PADDLE_SUBSCRIPTION_MODIFIERS_CREATE.url, PADDLE_SUBSCRIPTION_MODIFIERS_CREATE.method, data)
+    >(
+      PADDLE_SUBSCRIPTION_MODIFIERS_CREATE.url,
+      PADDLE_SUBSCRIPTION_MODIFIERS_CREATE.method,
+      formatRequest(data)
+    ).then((response) => formatResponse(response))
   }
 }

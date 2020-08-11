@@ -17,7 +17,7 @@ describe('webhooks -> api methods', () => {
     publicKey: FIXTURES.publicKey,
     vendorId: FIXTURES.vendorId,
     vendorAuthCode: FIXTURES.vendorAuthCode,
-    passthroughEncryptionKey: FIXTURES.passthroughEncryptionKey,
+    metadataEncryptionKey: FIXTURES.metadataEncryptionKey,
   })
 
   beforeEach(() => {
@@ -28,11 +28,11 @@ describe('webhooks -> api methods', () => {
     mockNextApiResponse(FIXTURES.listSubscriptionsApiResponse)
 
     const response = await paddleSdk.listSubscriptions({
-      subscription_id: 123,
-      plan_id: 123,
+      subscriptionId: 123,
+      productId: 123,
       status: 'CANCELLED',
       page: 0,
-      results_per_page: 100,
+      resultsPerPage: 100,
     })
 
     expect(response).toMatchSnapshot()

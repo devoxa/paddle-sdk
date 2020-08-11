@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`webhooks -> parse webhook event parses a webhook correctly 1`] = `
+Object {
+  "cancelUrl": "https://checkout.paddle.com/subscription/cancel?user=6&subscription=1&hash=acb15fc760b9d4cb4fae9abf67b7b4d52f12441e",
+  "checkoutId": "2-461ecbe710cab0e-f2e284ef00",
+  "currency": "GBP",
+  "customerEmail": "gordon35@example.org",
+  "customerId": 9,
+  "eventId": 2091557455,
+  "eventTime": 2020-08-09T22:11:09.000Z,
+  "eventType": "SUBSCRIPTION_CREATED",
+  "hasMarketingConsent": true,
+  "metadata": Object {
+    "foo": "bar",
+  },
+  "nextPaymentDate": 2020-09-03T00:00:00.000Z,
+  "price": 229.77,
+  "productId": 7,
+  "quantity": 23,
+  "referrerUrl": "https://genesis.devoxa.io/",
+  "status": "TRIALING",
+  "subscriptionId": 6,
+  "unitPrice": 9.99,
+  "updateUrl": "https://checkout.paddle.com/subscription/update?user=3&subscription=3&hash=ce39e713407ccffbc867dba87e39e88324114274",
+}
+`;

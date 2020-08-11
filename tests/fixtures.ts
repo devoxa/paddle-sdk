@@ -17,7 +17,7 @@ export const vendorId = 123456
 
 export const vendorAuthCode = 'FooBarBaz'
 
-export const passthroughEncryptionKey = 'ZtdDl3Ex7ycFfgdbAC3uTLNk8eLVDcEd'
+export const metadataEncryptionKey = 'ZtdDl3Ex7ycFfgdbAC3uTLNk8eLVDcEd'
 
 export const subscriptionCreatedWebhook = {
   alert_id: `2091557455`,

@@ -6,12 +6,12 @@ function verify(publicKey: string, body: any) {
     publicKey,
     vendorId: FIXTURES.vendorId,
     vendorAuthCode: FIXTURES.vendorAuthCode,
-    passthroughEncryptionKey: FIXTURES.passthroughEncryptionKey,
+    metadataEncryptionKey: FIXTURES.metadataEncryptionKey,
   })
-  return paddleSdk.verifyWebhookAlert(body)
+  return paddleSdk.verifyWebhookEvent(body)
 }
 
-describe('webhooks -> verify webhook body', () => {
+describe('webhooks -> verify webhook event', () => {
   it('errors when not providing a public key', () => {
     expect(() => verify('', FIXTURES.subscriptionCreatedWebhook)).toThrowError(
       'PaddleSdk was called without a publicKey'
@@ -23,11 +23,11 @@ describe('webhooks -> verify webhook body', () => {
   })
 
   it('verifies valid signature for pre-parsed body', () => {
-    const alertBodyParsed: any = FIXTURES.subscriptionCreatedWebhook
-    alertBodyParsed.linked_subscriptions = [8, 9, 4]
-    alertBodyParsed.subscription_plan_id = 7
+    const eventBodyParsed: any = FIXTURES.subscriptionCreatedWebhook
+    eventBodyParsed.linked_subscriptions = [8, 9, 4]
+    eventBodyParsed.subscription_plan_id = 7
 
-    expect(verify(FIXTURES.publicKey, alertBodyParsed)).toEqual(true)
+    expect(verify(FIXTURES.publicKey, eventBodyParsed)).toEqual(true)
   })
 
   it('rejects for wrong body type', () => {

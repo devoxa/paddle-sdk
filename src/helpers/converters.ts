@@ -29,6 +29,14 @@ export function convertApiBoolean(booleanString: '0' | '1'): boolean {
   return booleanString === '1'
 }
 
+export function convertSdkBoolean(boolean?: boolean): 0 | 1 | undefined {
+  if (typeof boolean === 'undefined') {
+    return undefined
+  }
+
+  return boolean ? 1 : 0
+}
+
 export function convertApiDate(
   dateString: string,
   type: 'DATE' | 'DATE_TIME' | 'EXPIRY_DATE'
@@ -40,6 +48,17 @@ export function convertApiDate(
       return dayjs.utc(dateString, 'YYYY-MM-DD HH:mm:ss').toDate()
     case 'EXPIRY_DATE':
       return dayjs.utc(dateString, 'MM/YYYY').toDate()
+  }
+}
+
+export function convertSdkDate(date: Date, type: 'DATE' | 'DATE_TIME' | 'EXPIRY_DATE'): string {
+  switch (type) {
+    case 'DATE':
+      return dayjs(date).format('YYYY-MM-DD')
+    case 'DATE_TIME':
+      return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
+    case 'EXPIRY_DATE':
+      return dayjs(date).format('MM/YYYY')
   }
 }
 

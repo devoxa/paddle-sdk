@@ -6,12 +6,12 @@ function parse(body: any) {
     publicKey: FIXTURES.publicKey,
     vendorId: FIXTURES.vendorId,
     vendorAuthCode: FIXTURES.vendorAuthCode,
-    passthroughEncryptionKey: FIXTURES.passthroughEncryptionKey,
+    metadataEncryptionKey: FIXTURES.metadataEncryptionKey,
   })
-  return paddleSdk.parseWebhookAlert(body)
+  return paddleSdk.parseWebhookEvent(body)
 }
 
-describe('webhooks -> parse webhook alert', () => {
+describe('webhooks -> parse webhook event', () => {
   it('parses a webhook correctly', () => {
     expect(parse(FIXTURES.subscriptionCreatedWebhook)).toMatchSnapshot()
   })
