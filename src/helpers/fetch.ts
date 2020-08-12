@@ -17,7 +17,7 @@ function objectToFormData(object: { [key: string]: any }): FormData {
   const formData = new FormData()
 
   Object.entries(object)
-    .filter(([_, value]) => typeof value !== 'undefined')
+    .filter(([, value]) => typeof value !== 'undefined')
     .forEach(([key, value]) => {
       formData.append(key, value.toString())
     })

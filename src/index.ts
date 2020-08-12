@@ -377,6 +377,33 @@ export class PaddleSdk<TMetadata = any> {
       }
     }
 
+    const convertPaymentInformation = (
+      paymentInformation: RawPaddlePostSubscriptionUsersResponse[0]['payment_information']
+    ) => {
+      if (paymentInformation.payment_method === 'card') {
+        return {
+          paymentMethod: 'CARD' as const,
+          cardBrand: convertApiCardBrand(paymentInformation.card_type),
+          cardLastFour: paymentInformation.last_four_digits,
+          cardExpirationDate: convertApiDate(paymentInformation.expiry_date, 'EXPIRY_DATE'),
+        }
+      }
+
+      // istanbul ignore else
+      if (paymentInformation.payment_method === 'paypal') {
+        return {
+          paymentMethod: 'PAYPAL' as const,
+          cardBrand: null,
+          cardLastFour: null,
+          cardExpirationDate: null,
+        }
+      }
+
+      // @ts-expect-error TS errors here because we handled all types that should exist according to the API docs
+      // istanbul ignore next
+      throw new PaddleSdkException(`Unknown payment method "${paymentInformation.payment_method}"`)
+    }
+
     const convertResponseElement = (subscription: RawPaddlePostSubscriptionUsersResponse[0]) => {
       return {
         subscriptionId: subscription.subscription_id,
@@ -407,33 +434,6 @@ export class PaddleSdk<TMetadata = any> {
           : null,
         ...convertPaymentInformation(subscription.payment_information),
       }
-    }
-
-    const convertPaymentInformation = (
-      paymentInformation: RawPaddlePostSubscriptionUsersResponse[0]['payment_information']
-    ) => {
-      if (paymentInformation.payment_method === 'card') {
-        return {
-          paymentMethod: 'CARD' as const,
-          cardBrand: convertApiCardBrand(paymentInformation.card_type),
-          cardLastFour: paymentInformation.last_four_digits,
-          cardExpirationDate: convertApiDate(paymentInformation.expiry_date, 'EXPIRY_DATE'),
-        }
-      }
-
-      // istanbul ignore else
-      if (paymentInformation.payment_method === 'paypal') {
-        return {
-          paymentMethod: 'PAYPAL' as const,
-          cardBrand: null,
-          cardLastFour: null,
-          cardExpirationDate: null,
-        }
-      }
-
-      // @ts-expect-error TS errors here because we handled all types that should exist according to the API docs
-      // istanbul ignore next
-      throw new PaddleSdkException(`Unknown payment method "${paymentInformation.payment_method}"`)
     }
 
     return this.apiRequest<
