@@ -1,0 +1,51 @@
+{
+  "name": "@devoxa/paddle-sdk",
+  "description": "An SDK to interface with the API and webhooks from paddle.com",
+  "version": "0.0.1",
+  "main": "dist/src/index.js",
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/devoxa/paddle-sdk"
+  },
+  "scripts": {
+    "test": "jest",
+    "format": "prettier --ignore-path='.gitignore' --list-different --write .",
+    "format:check": "prettier --ignore-path='.gitignore' --check .",
+    "lint": "eslint --ignore-path='.gitignore' '{src,tests}/**/*.ts'",
+    "build": "rm -rf dist/ && tsc",
+    "preversion": "yarn build",
+    "generate": "sh generate.sh"
+  },
+  "eslintConfig": {
+    "extends": "@devoxa",
+    "rules": {
+      "@typescript-eslint/camelcase": "off"
+    }
+  },
+  "prettier": "@devoxa/prettier-config",
+  "dependencies": {
+    "@devoxa/aes-encryption": "^1.0.2",
+    "dayjs": "^1.8.33",
+    "form-data": "^3.0.0",
+    "node-fetch": "^2.6.0",
+    "php-serialize": "^4.0.2"
+  },
+  "devDependencies": {
+    "@devoxa/eslint-config": "^1.0.0",
+    "@devoxa/prettier-config": "^1.0.0",
+    "@types/jest": "^26.0.9",
+    "@types/node": "^14.0.27",
+    "@types/node-fetch": "^2.5.7",
+    "eslint": "^7.6.0",
+    "execall": "^2.0.0",
+    "jest": "^26.4.0",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.0.5",
+    "ts-jest": "^26.2.0",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

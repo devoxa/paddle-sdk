@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PaddleSDK throws an error when initialized with a wrong metadata encryption key 1`] = `"PaddleSdk was called with an invalid metadataEncryptionKey"`;
+
+exports[`PaddleSDK throws an error when initialized without a metadata encryption key 1`] = `"PaddleSdk was called with an invalid metadataEncryptionKey"`;
+
+exports[`PaddleSDK throws an error when initialized without a public key 1`] = `"PaddleSdk was called without a publicKey"`;
+
+exports[`PaddleSDK throws an error when initialized without a vendor auth code 1`] = `"PaddleSdk was called without a vendorAuthCode"`;
+
+exports[`PaddleSDK throws an error when initialized without a vendor id 1`] = `"PaddleSdk was called without a vendorId"`;
