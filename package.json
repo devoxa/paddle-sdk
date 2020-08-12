@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@devoxa/aes-encryption": "^1.0.2",
-    "dayjs": "^1.8.32",
+    "dayjs": "^1.8.33",
     "form-data": "^3.0.0",
     "php-serialize": "^4.0.2"
   },
