@@ -1,6 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`webhooks -> parse webhook event parses a webhook correctly 1`] = `
+exports[`webhooks -> parse webhook event fails if metadata is malformed 1`] = `"Failed parsing metadata: Invalid authentication tag length: 0"`;
+
+exports[`webhooks -> parse webhook event fails if not validated 1`] = `"Failed validating webhook event body"`;
+
+exports[`webhooks -> parse webhook event parses subscriptionCreatedWebhook webhooks correctly 1`] = `
 Object {
   "cancelUrl": "https://checkout.paddle.com/subscription/cancel?user=6&subscription=1&hash=acb15fc760b9d4cb4fae9abf67b7b4d52f12441e",
   "checkoutId": "2-461ecbe710cab0e-f2e284ef00",
@@ -23,5 +27,138 @@ Object {
   "subscriptionId": 6,
   "unitPrice": 9.99,
   "updateUrl": "https://checkout.paddle.com/subscription/update?user=3&subscription=3&hash=ce39e713407ccffbc867dba87e39e88324114274",
+}
+`;
+
+exports[`webhooks -> parse webhook event parses the subscriptionCancelledWebhook correctly 1`] = `
+Object {
+  "cancelledFrom": 2020-08-12T00:00:00.000Z,
+  "checkoutId": "1-25b286e64f4a228-65f3aadbbb",
+  "currency": "GBP",
+  "customerEmail": "monroe84@example.com",
+  "customerId": 5,
+  "eventId": 1523571645,
+  "eventTime": 2020-08-12T02:13:06.000Z,
+  "eventType": "SUBSCRIPTION_CANCELLED",
+  "hasMarketingConsent": false,
+  "metadata": Object {
+    "foo": "bar",
+  },
+  "price": 464.07,
+  "productId": 5,
+  "quantity": 93,
+  "status": "CANCELLED",
+  "subscriptionId": 8,
+  "unitPrice": 4.99,
+}
+`;
+
+exports[`webhooks -> parse webhook event parses the subscriptionPaymentSucceededWebhook correctly 1`] = `
+Object {
+  "balanceCurrency": "GBP",
+  "balanceEarnings": 729.47,
+  "balanceFee": 785.64,
+  "balanceGross": 980.26,
+  "balanceTax": 971.99,
+  "checkoutId": "9-359ab07057ba49c-af1eda8ba3",
+  "coupon": "COUPON_CODE",
+  "currency": "EUR",
+  "customerCountry": "FR",
+  "customerEmail": "onitzsche@example.com",
+  "customerId": 4,
+  "customerName": "Ela Example",
+  "earnings": 848.25,
+  "eventId": 1641599885,
+  "eventTime": 2020-08-12T02:15:09.000Z,
+  "eventType": "SUBSCRIPTION_PAYMENT_SUCCEEDED",
+  "fee": 0.58,
+  "gross": 860.24,
+  "hasMarketingConsent": true,
+  "installments": 5,
+  "isInitialPayment": false,
+  "metadata": Object {
+    "foo": "bar",
+  },
+  "nextPaymentAmount": 4.99,
+  "nextPaymentDate": 2020-09-09T00:00:00.000Z,
+  "orderId": "8",
+  "paymentMethod": "PAYPAL",
+  "price": 239.52,
+  "productId": 2,
+  "quantity": 48,
+  "receiptUrl": "https://my.paddle.com/receipt/4/ad16dce51374732-1dc2bcd84a",
+  "status": "ACTIVE",
+  "subscriptionId": 7,
+  "subscriptionPaymentId": 6,
+  "tax": 0.82,
+  "unitPrice": 4.99,
+}
+`;
+
+exports[`webhooks -> parse webhook event parses the subscriptionUpdatedWebhook correctly (paused) 1`] = `
+Object {
+  "cancelUrl": "https://checkout.paddle.com/subscription/cancel?user=7&subscription=1&hash=539134462da7ff8bce9581704ff3f462994caf05",
+  "checkoutId": "6-1d95a8cd27317a6-f8810efc48",
+  "currency": "USD",
+  "customerEmail": "rconnelly@example.org",
+  "customerId": 3,
+  "eventId": 1251568959,
+  "eventTime": 2020-08-12T02:12:03.000Z,
+  "eventType": "SUBSCRIPTION_UPDATED",
+  "hasMarketingConsent": true,
+  "metadata": Object {
+    "foo": "bar",
+  },
+  "nextPaymentDate": 2020-09-04T00:00:00.000Z,
+  "oldNextPaymentDate": 2020-08-02T00:00:00.000Z,
+  "oldPrice": 4.99,
+  "oldProductId": 2,
+  "oldQuantity": 1,
+  "oldStatus": "TRIALING",
+  "oldUnitPrice": 4.99,
+  "pausedAt": 2020-01-01T12:13:14.000Z,
+  "pausedFrom": 2020-02-01T12:13:14.000Z,
+  "pausedReason": "DELINQUENT",
+  "price": 19.98,
+  "productId": 3,
+  "quantity": 2,
+  "status": "ACTIVE",
+  "subscriptionId": 1,
+  "unitPrice": 9.99,
+  "updateUrl": "https://checkout.paddle.com/subscription/update?user=7&subscription=9&hash=89fc4d8da91884f626157cc6095dc857510a1d21",
+}
+`;
+
+exports[`webhooks -> parse webhook event parses the subscriptionUpdatedWebhook correctly 1`] = `
+Object {
+  "cancelUrl": "https://checkout.paddle.com/subscription/cancel?user=7&subscription=1&hash=539134462da7ff8bce9581704ff3f462994caf05",
+  "checkoutId": "6-1d95a8cd27317a6-f8810efc48",
+  "currency": "USD",
+  "customerEmail": "rconnelly@example.org",
+  "customerId": 3,
+  "eventId": 1251568959,
+  "eventTime": 2020-08-12T02:12:03.000Z,
+  "eventType": "SUBSCRIPTION_UPDATED",
+  "hasMarketingConsent": true,
+  "metadata": Object {
+    "foo": "bar",
+  },
+  "nextPaymentDate": 2020-09-04T00:00:00.000Z,
+  "oldNextPaymentDate": 2020-08-02T00:00:00.000Z,
+  "oldPrice": 4.99,
+  "oldProductId": 2,
+  "oldQuantity": 1,
+  "oldStatus": "TRIALING",
+  "oldUnitPrice": 4.99,
+  "pausedAt": null,
+  "pausedFrom": null,
+  "pausedReason": null,
+  "price": 19.98,
+  "productId": 3,
+  "quantity": 2,
+  "status": "ACTIVE",
+  "subscriptionId": 1,
+  "unitPrice": 9.99,
+  "updateUrl": "https://checkout.paddle.com/subscription/update?user=7&subscription=9&hash=89fc4d8da91884f626157cc6095dc857510a1d21",
 }
 `;

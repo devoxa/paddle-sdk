@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`webhooks -> api methods can not with wrong metadata encryption key 1`] = `"PaddleSdk was called with an invalid metadataEncryptionKey"`;
+
+exports[`webhooks -> api methods can not without metadata encryption key 1`] = `"PaddleSdk was called with an invalid metadataEncryptionKey"`;
+
+exports[`webhooks -> api methods can not without public key 1`] = `"PaddleSdk was called without a publicKey"`;
+
+exports[`webhooks -> api methods can not without vendor auth 1`] = `"PaddleSdk was called without a vendorAuthCode"`;
+
+exports[`webhooks -> api methods can not without vendor id 1`] = `"PaddleSdk was called without a vendorId"`;

@@ -135,6 +135,5 @@ export function convertApiPaymentMethod(
 }
 
 export function convertApiCardType(cardType: string): string {
-  // TODO Add exact types here
   return cardType.toUpperCase()
 }

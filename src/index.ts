@@ -128,12 +128,17 @@ export class PaddleSdk<TMetadata = any> {
         return this.parseSubscriptionPaymentSucceededWebhookEvent(body)
     }
 
+    // istanbul ignore next
     throw new PaddleSdkException(
       `Implementation missing: Can not parse event of type ${body.alert_name}`
     )
   }
 
-  private stringifyMetadata(metadata: any) {
+  private stringifyMetadata(metadata?: any) {
+    if (typeof metadata === 'undefined') {
+      metadata = null
+    }
+
     return encrypt(this.metadataEncryptionKey, JSON.stringify(metadata))
   }
 
@@ -337,7 +342,7 @@ export class PaddleSdk<TMetadata = any> {
         vat_state: request.populateVatState,
         vat_country: request.populateVatCountry,
         vat_postcode: request.populateVatPostcode,
-        passthrough: this.stringifyMetadata(data.metadata),
+        passthrough: this.stringifyMetadata(request.metadata),
       }
     }
 
@@ -378,6 +383,7 @@ export class PaddleSdk<TMetadata = any> {
         }
       }
 
+      // istanbul ignore else
       if (paymentInformation.payment_method === 'paypal') {
         return {
           paymentMethod: 'PAYPAL' as const,
@@ -388,7 +394,9 @@ export class PaddleSdk<TMetadata = any> {
       }
 
       // @ts-expect-error TS error here because we handled all types that should exist according to the API docs
+      // istanbul ignore next
       const message = `Unknown payment method "${paymentInformation.payment_method}" for subscriptions`
+      // istanbul ignore next
       throw new PaddleSdkException(message)
     }
 
@@ -400,6 +408,7 @@ export class PaddleSdk<TMetadata = any> {
         customerEmail: subscription.user_email,
         hasMarketingConsent: subscription.marketing_consent,
         status: convertApiSubscriptionStatus(subscription.state),
+        quantity: subscription.quantity || 1,
         signupDate: convertApiDate(subscription.signup_date, 'DATE_TIME'),
         updateUrl: subscription.update_url,
         cancelUrl: subscription.cancel_url,
@@ -450,7 +459,7 @@ export class PaddleSdk<TMetadata = any> {
         plan_id: request.productId,
         prorate: request.shouldProrate,
         keep_modifiers: request.shouldKeepModifiers,
-        passthrough: this.stringifyMetadata(data.metadata),
+        passthrough: this.stringifyMetadata(request.metadata),
         pause: request.shouldPause,
       }
     }

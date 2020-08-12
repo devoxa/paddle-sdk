@@ -1,7 +1,148 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`webhooks -> api methods cancelSubscription 1`] = `undefined`;
+
+exports[`webhooks -> api methods cancelSubscription 2`] = `
+Array [
+  "https://vendors.paddle.com/api/2.0/subscription/users_cancel",
+  Object {
+    "body": Object {
+      "subscription_id": 123,
+      "vendor_auth_code": "FooBarBaz",
+      "vendor_id": 123456,
+    },
+    "method": "POST",
+  },
+]
+`;
+
+exports[`webhooks -> api methods createProductPayLink 1`] = `
+Object {
+  "url": "https://checkout.paddle.com/checkout/custom/5686a6515f1eb5c9c679dc5494dd1b6b",
+}
+`;
+
+exports[`webhooks -> api methods createProductPayLink 2`] = `
+Array [
+  "https://vendors.paddle.com/api/2.0/product/generate_pay_link",
+  Object {
+    "body": Object {
+      "affiliates": Array [
+        "123",
+      ],
+      "coupon_code": "COUPON-AAA",
+      "custom_message": "Custom message under the product name",
+      "customer_country": "DE",
+      "customer_email": "david@devoxa.io",
+      "customer_postcode": "37688",
+      "discountable": 1,
+      "expires": "2020-07-03",
+      "image_url": "https://devoxa.io/image.png",
+      "marketing_consent": 1,
+      "passthrough": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+      "prices": Array [
+        "USD:9.99",
+      ],
+      "product_id": 123,
+      "quantity": 9,
+      "quantity_variable": 1,
+      "recurring_affiliate_limit": 2,
+      "recurring_prices": Array [
+        "EUR:12.99",
+      ],
+      "return_url": "https://devoxa.io/return",
+      "title": "Product name",
+      "trial_days": 14,
+      "vat_city": "Ripon",
+      "vat_company_name": "Devoxa",
+      "vat_country": "GB",
+      "vat_number": "123456789",
+      "vat_postcode": "HG4 1LH",
+      "vat_state": "Yorkshire",
+      "vat_street": "4 Stonebridgegate",
+      "vendor_auth_code": "FooBarBaz",
+      "vendor_id": 123456,
+      "webhook_url": "https://webhook.devoxa.io",
+    },
+    "method": "POST",
+  },
+]
+`;
+
+exports[`webhooks -> api methods createSubscriptionModifier 1`] = `
+Object {
+  "modifierId": 2,
+  "subscriptionId": 1,
+}
+`;
+
+exports[`webhooks -> api methods createSubscriptionModifier 2`] = `
+Array [
+  "https://vendors.paddle.com/api/2.0/subscription/modifiers/create",
+  Object {
+    "body": Object {
+      "modifier_amount": 9.99,
+      "modifier_description": "Extra sparkles",
+      "modifier_recurring": true,
+      "subscription_id": 123,
+      "vendor_auth_code": "FooBarBaz",
+      "vendor_id": 123456,
+    },
+    "method": "POST",
+  },
+]
+`;
+
 exports[`webhooks -> api methods listSubscriptions 1`] = `
 Array [
+  Object {
+    "cancelUrl": "https://checkout.paddle.com/subscription/cancel?user=18124595&subscription=7908253&hash=9A4EE7D7645833AB6F90F81287DA92E139FE8DF6AF2090081357104138EC6937",
+    "cardBrand": null,
+    "cardExpirationDate": null,
+    "cardLastFour": null,
+    "customerEmail": "foo@bar.com",
+    "customerId": 18124595,
+    "hasMarketingConsent": false,
+    "lastPaymentAmount": 2.99,
+    "lastPaymentCurrency": "USD",
+    "lastPaymentDate": 2020-08-08T00:00:00.000Z,
+    "nextPaymentAmount": null,
+    "nextPaymentCurrency": null,
+    "nextPaymentDate": null,
+    "pausedAt": 2020-09-01T23:15:48.000Z,
+    "pausedFrom": 2020-09-08T23:15:48.000Z,
+    "paymentMethod": "PAYPAL",
+    "productId": 124890,
+    "quantity": 1,
+    "signupDate": 2020-08-08T23:15:48.000Z,
+    "status": "PAUSED",
+    "subscriptionId": 7908253,
+    "updateUrl": "https://checkout.paddle.com/subscription/update?user=18124595&subscription=7908253&hash=AEA72A29FABC23692043D8B6D55FD29C625F532552AA8AC6EB137E604FC13E1A",
+  },
+  Object {
+    "cancelUrl": "https://checkout.paddle.com/subscription/cancel?user=18124595&subscription=7908253&hash=9A4EE7D7645833AB6F90F81287DA92E139FE8DF6AF2090081357104138EC6937",
+    "cardBrand": "VISA",
+    "cardExpirationDate": 2021-08-01T00:00:00.000Z,
+    "cardLastFour": "1824",
+    "customerEmail": "foo@bar.com",
+    "customerId": 18124595,
+    "hasMarketingConsent": false,
+    "lastPaymentAmount": 2.99,
+    "lastPaymentCurrency": "USD",
+    "lastPaymentDate": 2020-08-08T00:00:00.000Z,
+    "nextPaymentAmount": 2.99,
+    "nextPaymentCurrency": "USD",
+    "nextPaymentDate": 2020-09-08T00:00:00.000Z,
+    "pausedAt": null,
+    "pausedFrom": null,
+    "paymentMethod": "CARD",
+    "productId": 124890,
+    "quantity": 1,
+    "signupDate": 2020-08-08T23:15:48.000Z,
+    "status": "ACTIVE",
+    "subscriptionId": 7908253,
+    "updateUrl": "https://checkout.paddle.com/subscription/update?user=18124595&subscription=7908253&hash=AEA72A29FABC23692043D8B6D55FD29C625F532552AA8AC6EB137E604FC13E1A",
+  },
   Object {
     "cancelUrl": "https://checkout.paddle.com/subscription/cancel?user=18124595&subscription=7908253&hash=9A4EE7D7645833AB6F90F81287DA92E139FE8DF6AF2090081357104138EC6937",
     "cardBrand": "VISA",
@@ -20,6 +161,7 @@ Array [
     "pausedFrom": null,
     "paymentMethod": "CARD",
     "productId": 124890,
+    "quantity": 1,
     "signupDate": 2020-08-08T23:15:48.000Z,
     "status": "CANCELLED",
     "subscriptionId": 7908253,
@@ -38,6 +180,60 @@ Array [
       "results_per_page": 100,
       "state": "deleted",
       "subscription_id": "123",
+      "vendor_auth_code": "FooBarBaz",
+      "vendor_id": 123456,
+    },
+    "method": "POST",
+  },
+]
+`;
+
+exports[`webhooks -> api methods listSubscriptions no params 1`] = `
+Array [
+  "https://vendors.paddle.com/api/2.0/subscription/users",
+  Object {
+    "body": Object {
+      "page": undefined,
+      "plan_id": undefined,
+      "results_per_page": undefined,
+      "state": undefined,
+      "subscription_id": undefined,
+      "vendor_auth_code": "FooBarBaz",
+      "vendor_id": 123456,
+    },
+    "method": "POST",
+  },
+]
+`;
+
+exports[`webhooks -> api methods throw on error 1`] = `[Error: Foo]`;
+
+exports[`webhooks -> api methods updateSubscription 1`] = `
+Object {
+  "customerId": 2,
+  "nextPaymentAmount": 9.99,
+  "nextPaymentCurrency": "EUR",
+  "nextPaymentDate": 2020-03-04T00:00:00.000Z,
+  "productId": 3,
+  "subscriptionId": 1,
+}
+`;
+
+exports[`webhooks -> api methods updateSubscription 2`] = `
+Array [
+  "https://vendors.paddle.com/api/2.0/subscription/users/update",
+  Object {
+    "body": Object {
+      "bill_immediately": false,
+      "currency": "EUR",
+      "keep_modifiers": true,
+      "passthrough": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+      "pause": true,
+      "plan_id": 3,
+      "prorate": true,
+      "quantity": 9,
+      "recurring_price": 9.99,
+      "subscription_id": 1,
       "vendor_auth_code": "FooBarBaz",
       "vendor_id": 123456,
     },

@@ -566,6 +566,9 @@ export type PaddleSdkListSubscriptionsResponse = Array<{
   /** The status of the subscription */
   status: PaddleSdkSubscriptionStatus
 
+  /** The number of subscription seats */
+  quantity: number
+
   /** The date and time the subscription was created */
   signupDate: Date
 

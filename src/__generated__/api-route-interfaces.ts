@@ -124,8 +124,8 @@ export type RawPaddlePostSubscriptionUsersResponse = Array<{
   }
   update_url: string
   cancel_url: string
-  paused_at: string
-  paused_from: string
+  paused_at?: string
+  paused_from?: string
   payment_information:
     | {
         payment_method: 'card'
@@ -136,6 +136,7 @@ export type RawPaddlePostSubscriptionUsersResponse = Array<{
     | {
         payment_method: 'paypal'
       }
+  quantity?: number
 }>
 
 export const PADDLE_SUBSCRIPTION_USERS_UPDATE = {
