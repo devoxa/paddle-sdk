@@ -31,7 +31,7 @@
     "@types/node-fetch": "^2.5.7",
     "eslint": "^7.0.0",
     "execall": "^2.0.0",
-    "jest": "^26.0.1",
+    "jest": "^26.3.0",
     "node-fetch": "^2.6.0",
     "nodemon": "^2.0.4",
     "prettier": "^2.0.5",
