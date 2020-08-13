@@ -3,7 +3,7 @@ import FormData from 'form-data'
 
 export async function fetch(
   url: string,
-  options: { method: string; body: { [key: string]: any } }
+  options: { method: string; body: Record<string, any> }
 ): Promise<any> {
   const response = await nodeFetch(url, {
     method: options.method,
@@ -13,7 +13,7 @@ export async function fetch(
   return response.json()
 }
 
-function objectToFormData(object: { [key: string]: any }): FormData {
+function objectToFormData(object: Record<string, any>): FormData {
   const formData = new FormData()
 
   Object.entries(object)

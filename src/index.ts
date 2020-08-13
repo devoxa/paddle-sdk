@@ -59,6 +59,7 @@ import {
   convertSdkBoolean,
   convertSdkDate,
   convertApiCountry,
+  convertSdkPriceList,
 } from './helpers/converters'
 
 export * from './exceptions'
@@ -298,7 +299,7 @@ export class PaddleSdk<TMetadata = any> {
     })
 
     // Turn errors from the Paddle API into a unique exception with the error message
-    if (json.success === false) {
+    if (!json.success) {
       throw new PaddleSdkApiException(json.error.message)
     }
 
@@ -308,15 +309,17 @@ export class PaddleSdk<TMetadata = any> {
   async createProductPayLink(
     data: PaddleSdkCreateProductPayLinkRequest<TMetadata>
   ): Promise<PaddleSdkCreateProductPayLinkResponse> {
-    const convertRequest = (
+    const convertProductPayLinkRequest = (
       request: PaddleSdkCreateProductPayLinkRequest<TMetadata>
     ): RawPaddlePostProductGeneratePayLinkRequest => {
       return {
         product_id: request.productId,
         title: request.title,
         webhook_url: request.webhookUrl,
-        prices: request.prices?.map((x) => `${x[0]}:${x[1]}`),
-        recurring_prices: request.recurringPrices?.map((x) => `${x[0]}:${x[1]}`),
+        prices: request.prices ? convertSdkPriceList(request.prices) : undefined,
+        recurring_prices: request.recurringPrices
+          ? convertSdkPriceList(request.recurringPrices)
+          : undefined,
         trial_days: request.trialDays,
         custom_message: request.customMessage,
         coupon_code: request.populateCoupon,
@@ -360,14 +363,14 @@ export class PaddleSdk<TMetadata = any> {
     >(
       PADDLE_PRODUCT_GENERATE_PAY_LINK.url,
       PADDLE_PRODUCT_GENERATE_PAY_LINK.method,
-      convertRequest(data)
+      convertProductPayLinkRequest(data)
     )
   }
 
   async listSubscriptions(
     data: PaddleSdkListSubscriptionsRequest
   ): Promise<PaddleSdkListSubscriptionsResponse> {
-    const convertRequest = (
+    const convertListSubscriptionsRequest = (
       request: PaddleSdkListSubscriptionsRequest
     ): RawPaddlePostSubscriptionUsersRequest => {
       return {
@@ -406,7 +409,9 @@ export class PaddleSdk<TMetadata = any> {
       throw new PaddleSdkException(`Unknown payment method "${paymentInformation.payment_method}"`)
     }
 
-    const convertResponseElement = (subscription: RawPaddlePostSubscriptionUsersResponse[0]) => {
+    const convertListSubscriptionsResponseElement = (
+      subscription: RawPaddlePostSubscriptionUsersResponse[0]
+    ) => {
       return {
         subscriptionId: subscription.subscription_id,
         productId: subscription.plan_id,
@@ -444,14 +449,14 @@ export class PaddleSdk<TMetadata = any> {
     >(
       PADDLE_SUBSCRIPTION_USERS.url,
       PADDLE_SUBSCRIPTION_USERS.method,
-      convertRequest(data)
-    ).then((subscriptions) => subscriptions.map(convertResponseElement))
+      convertListSubscriptionsRequest(data)
+    ).then((subscriptions) => subscriptions.map(convertListSubscriptionsResponseElement))
   }
 
   async updateSubscription(
     data: PaddleSdkUpdateSubscriptionRequest<TMetadata>
   ): Promise<PaddleSdkUpdateSubscriptionResponse> {
-    const convertRequest = (
+    const convertUpdateSubscriptionRequest = (
       request: PaddleSdkUpdateSubscriptionRequest<TMetadata>
     ): RawPaddlePostSubscriptionUsersUpdateRequest => {
       return {
@@ -468,7 +473,7 @@ export class PaddleSdk<TMetadata = any> {
       }
     }
 
-    const convertResponse = (
+    const convertUpdateSubscriptionResponse = (
       response: RawPaddlePostSubscriptionUsersUpdateResponse
     ): PaddleSdkUpdateSubscriptionResponse => {
       return {
@@ -487,14 +492,14 @@ export class PaddleSdk<TMetadata = any> {
     >(
       PADDLE_SUBSCRIPTION_USERS_UPDATE.url,
       PADDLE_SUBSCRIPTION_USERS_UPDATE.method,
-      convertRequest(data)
-    ).then((x) => convertResponse(x))
+      convertUpdateSubscriptionRequest(data)
+    ).then((x) => convertUpdateSubscriptionResponse(x))
   }
 
   async cancelSubscription(
     data: PaddleSdkCancelSubscriptionRequest
   ): Promise<PaddleSdkCancelSubscriptionResponse> {
-    const convertRequest = (
+    const convertCancelSubscriptionRequest = (
       request: PaddleSdkCancelSubscriptionRequest
     ): RawPaddlePostSubscriptionUsersCancelRequest => {
       return {
@@ -508,14 +513,14 @@ export class PaddleSdk<TMetadata = any> {
     >(
       PADDLE_SUBSCRIPTION_USERS_CANCEL.url,
       PADDLE_SUBSCRIPTION_USERS_CANCEL.method,
-      convertRequest(data)
+      convertCancelSubscriptionRequest(data)
     )
   }
 
   async createSubscriptionModifier(
     data: PaddleSdkCreateSubscriptionModifierRequest
   ): Promise<PaddleSdkCreateSubscriptionModifierResponse> {
-    const convertRequest = (
+    const convertCreateSubscriptionModifierRequest = (
       request: PaddleSdkCreateSubscriptionModifierRequest
     ): RawPaddlePostSubscriptionModifiersCreateRequest => {
       return {
@@ -526,7 +531,7 @@ export class PaddleSdk<TMetadata = any> {
       }
     }
 
-    const convertResponse = (
+    const convertCreateSubscriptionModifierResponse = (
       response: RawPaddlePostSubscriptionModifiersCreateResponse
     ): PaddleSdkCreateSubscriptionModifierResponse => {
       return {
@@ -541,7 +546,7 @@ export class PaddleSdk<TMetadata = any> {
     >(
       PADDLE_SUBSCRIPTION_MODIFIERS_CREATE.url,
       PADDLE_SUBSCRIPTION_MODIFIERS_CREATE.method,
-      convertRequest(data)
-    ).then((response) => convertResponse(response))
+      convertCreateSubscriptionModifierRequest(data)
+    ).then((response) => convertCreateSubscriptionModifierResponse(response))
   }
 }

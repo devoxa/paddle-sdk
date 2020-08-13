@@ -1,6 +1,6 @@
 import { serialize as phpSerialize } from 'php-serialize'
 
-export function stableSerialize(object: { [key: string]: any }): string {
+export function stableSerialize(object: Record<string, any>): string {
   // 1) Sort the object alphabetically by it's keys
   object = sortByKey(object)
 
@@ -20,10 +20,10 @@ export function stableSerialize(object: { [key: string]: any }): string {
   return phpSerialize(object)
 }
 
-function sortByKey(object: { [key: string]: any }) {
+function sortByKey(object: Record<string, any>) {
   const keys = Object.keys(object).sort()
 
-  const sortedObject: { [key: string]: any } = {}
+  const sortedObject: Record<string, any> = {}
   for (const i in keys) {
     sortedObject[keys[i]] = object[keys[i]]
   }

@@ -154,3 +154,9 @@ export function convertApiCardBrand(cardBrand: string): PaddleSdkCardBrand {
 
   return PaddleSdkCardBrand.UNKNOWN
 }
+
+export function convertSdkPriceList(
+  currencyList: Array<[PaddleSdkCurrency, number]>
+): Array<string> {
+  return currencyList.map(([currency, amount]) => `${currency}:${amount}`)
+}

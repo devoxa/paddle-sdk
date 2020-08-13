@@ -1,5 +1,5 @@
 import * as converters from '../../src/helpers/converters'
-import { PaddleSdkSubscriptionStatus } from '../../src'
+import { PaddleSdkSubscriptionStatus, PaddleSdkCurrency } from '../../src'
 
 describe('helpers -> converters', () => {
   it('can convert an API integer', () => {
@@ -109,5 +109,14 @@ describe('helpers -> converters', () => {
     expect(converters.convertApiCardBrand('maestro')).toEqual('MAESTRO')
     expect(converters.convertApiCardBrand('diners_club')).toEqual('DINERS_CLUB')
     expect(converters.convertApiCardBrand('xxx')).toEqual('UNKNOWN')
+  })
+
+  it('can convert an SDK price list', () => {
+    expect(
+      converters.convertSdkPriceList([
+        [PaddleSdkCurrency.EUR, 7.99],
+        [PaddleSdkCurrency.USD, 9.99],
+      ])
+    ).toEqual(['EUR:7.99', 'USD:9.99'])
   })
 })
