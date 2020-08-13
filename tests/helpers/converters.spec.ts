@@ -1,4 +1,5 @@
 import * as converters from '../../src/helpers/converters'
+import { PaddleSdkSubscriptionStatus } from '../../src'
 
 describe('helpers -> converters', () => {
   it('can convert an API integer', () => {
@@ -53,11 +54,21 @@ describe('helpers -> converters', () => {
   })
 
   it('can convert an SDK subscription status', () => {
-    expect(converters.convertSdkSubscriptionStatus('ACTIVE')).toEqual('active')
-    expect(converters.convertSdkSubscriptionStatus('TRIALING')).toEqual('trialing')
-    expect(converters.convertSdkSubscriptionStatus('PAST_DUE')).toEqual('past_due')
-    expect(converters.convertSdkSubscriptionStatus('PAUSED')).toEqual('paused')
-    expect(converters.convertSdkSubscriptionStatus('CANCELLED')).toEqual('deleted')
+    expect(converters.convertSdkSubscriptionStatus(PaddleSdkSubscriptionStatus.ACTIVE)).toEqual(
+      'active'
+    )
+    expect(converters.convertSdkSubscriptionStatus(PaddleSdkSubscriptionStatus.TRIALING)).toEqual(
+      'trialing'
+    )
+    expect(converters.convertSdkSubscriptionStatus(PaddleSdkSubscriptionStatus.PAST_DUE)).toEqual(
+      'past_due'
+    )
+    expect(converters.convertSdkSubscriptionStatus(PaddleSdkSubscriptionStatus.PAUSED)).toEqual(
+      'paused'
+    )
+    expect(converters.convertSdkSubscriptionStatus(PaddleSdkSubscriptionStatus.CANCELLED)).toEqual(
+      'deleted'
+    )
   })
 
   it('can convert an API paused reason', () => {

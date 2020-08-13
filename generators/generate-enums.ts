@@ -26,16 +26,20 @@ ${types.map((x) => x.sourceCode).join('\n\n')}`
 }
 
 async function buildType(name: string, url: string) {
-  const unionType = await getUnionType(url)
-  const sourceCode = `export type ${name} = ` + unionType.map((x) => `"${x}"`).join(' | ')
+  const enumFields = await getEnumFields(url)
+  const sourceCode =
+    `export enum ${name} {\n` + enumFields.map((x) => `  ${x} = "${x}",`).join('\n') + `\n}`
 
   return { sourceCode }
 }
 
-async function getUnionType(url: string) {
+async function getEnumFields(url: string) {
   const response = await fetch(url)
   const text = await response.text()
 
   const matches = execall(/<code>(.*?)<\/code>/g, text)
-  return matches.map((match) => match.subMatches[0])
+  return matches
+    .map((match) => match.subMatches[0])
+    .filter((x, i, self) => self.indexOf(x) === i)
+    .sort()
 }

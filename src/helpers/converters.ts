@@ -64,15 +64,15 @@ export function convertApiSubscriptionStatus(
 ): PaddleSdkSubscriptionStatus {
   switch (subscriptionStatus) {
     case 'active':
-      return 'ACTIVE'
+      return PaddleSdkSubscriptionStatus.ACTIVE
     case 'trialing':
-      return 'TRIALING'
+      return PaddleSdkSubscriptionStatus.TRIALING
     case 'past_due':
-      return 'PAST_DUE'
+      return PaddleSdkSubscriptionStatus.PAST_DUE
     case 'paused':
-      return 'PAUSED'
+      return PaddleSdkSubscriptionStatus.PAUSED
     case 'deleted':
-      return 'CANCELLED'
+      return PaddleSdkSubscriptionStatus.CANCELLED
   }
 }
 
@@ -80,15 +80,15 @@ export function convertSdkSubscriptionStatus(
   subscriptionStatus: PaddleSdkSubscriptionStatus
 ): RawPaddleSubscriptionCreatedAlert['status'] {
   switch (subscriptionStatus) {
-    case 'ACTIVE':
+    case PaddleSdkSubscriptionStatus.ACTIVE:
       return 'active'
-    case 'TRIALING':
+    case PaddleSdkSubscriptionStatus.TRIALING:
       return 'trialing'
-    case 'PAST_DUE':
+    case PaddleSdkSubscriptionStatus.PAST_DUE:
       return 'past_due'
-    case 'PAUSED':
+    case PaddleSdkSubscriptionStatus.PAUSED:
       return 'paused'
-    case 'CANCELLED':
+    case PaddleSdkSubscriptionStatus.CANCELLED:
       return 'deleted'
   }
 }
@@ -98,9 +98,9 @@ export function convertApiPausedReason(
 ): PaddleSdkPausedReason {
   switch (pausedReason) {
     case 'delinquent':
-      return 'DELINQUENT'
+      return PaddleSdkPausedReason.DELINQUENT
     case 'voluntary':
-      return 'VOLUNTARY'
+      return PaddleSdkPausedReason.VOLUNTARY
   }
 }
 
@@ -119,38 +119,38 @@ export function convertApiPaymentMethod(
 ): PaddleSdkPaymentMethod {
   switch (paymentMethod) {
     case 'card':
-      return 'CARD'
+      return PaddleSdkPaymentMethod.CARD
     case 'paypal':
-      return 'PAYPAL'
+      return PaddleSdkPaymentMethod.PAYPAL
     case 'apple-pay':
-      return 'APPLE_PAY'
+      return PaddleSdkPaymentMethod.APPLE_PAY
     case 'wire-transfer':
-      return 'WIRE_TRANSFER'
+      return PaddleSdkPaymentMethod.WIRE_TRANSFER
     case 'free':
-      return 'FREE'
+      return PaddleSdkPaymentMethod.FREE
   }
 }
 
 export function convertApiCardBrand(cardBrand: string): PaddleSdkCardBrand {
   switch (cardBrand) {
     case 'visa':
-      return 'VISA'
+      return PaddleSdkCardBrand.VISA
     case 'american_express':
-      return 'AMERICAN_EXPRESS'
+      return PaddleSdkCardBrand.AMERICAN_EXPRESS
     case 'discover':
-      return 'DISCOVER'
+      return PaddleSdkCardBrand.DISCOVER
     case 'jcb':
-      return 'JCB'
+      return PaddleSdkCardBrand.JCB
     case 'elo':
-      return 'ELO'
+      return PaddleSdkCardBrand.ELO
     case 'master':
     case 'mastercard':
-      return 'MASTERCARD'
+      return PaddleSdkCardBrand.MASTERCARD
     case 'maestro':
-      return 'MAESTRO'
+      return PaddleSdkCardBrand.MAESTRO
     case 'diners_club':
-      return 'DINERS_CLUB'
+      return PaddleSdkCardBrand.DINERS_CLUB
   }
 
-  return 'UNKNOWN'
+  return PaddleSdkCardBrand.UNKNOWN
 }
