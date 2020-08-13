@@ -23,6 +23,8 @@ import {
   PaddleSdkUpdateSubscriptionResponse,
   PaddleSdkCancelSubscriptionResponse,
   PaddleSdkCreateSubscriptionModifierResponse,
+  PaddleSdkPaymentMethod,
+  PaddleSdkWebhookEventType,
 } from './interfaces'
 import {
   RawPaddlePostProductGeneratePayLinkRequest,
@@ -155,7 +157,7 @@ export class PaddleSdk<TMetadata = any> {
 
     return {
       eventId: convertApiInteger(body.alert_id),
-      eventType: 'SUBSCRIPTION_CREATED',
+      eventType: PaddleSdkWebhookEventType.SUBSCRIPTION_CREATED,
       cancelUrl: body.cancel_url,
       checkoutId: body.checkout_id,
       currency: convertApiCurrency(body.currency),
@@ -181,7 +183,7 @@ export class PaddleSdk<TMetadata = any> {
   ): PaddleSdkSubscriptionUpdatedEvent<TMetadata> {
     return {
       eventId: convertApiInteger(body.alert_id),
-      eventType: 'SUBSCRIPTION_UPDATED',
+      eventType: PaddleSdkWebhookEventType.SUBSCRIPTION_UPDATED,
       cancelUrl: body.cancel_url,
       checkoutId: body.checkout_id,
       currency: convertApiCurrency(body.currency),
@@ -218,7 +220,7 @@ export class PaddleSdk<TMetadata = any> {
 
     return {
       eventId: convertApiInteger(body.alert_id),
-      eventType: 'SUBSCRIPTION_CANCELLED',
+      eventType: PaddleSdkWebhookEventType.SUBSCRIPTION_CANCELLED,
       cancelledFrom: convertApiDate(body.cancellation_effective_date, 'DATE'),
       checkoutId: body.checkout_id,
       currency: convertApiCurrency(body.currency),
@@ -244,7 +246,7 @@ export class PaddleSdk<TMetadata = any> {
 
     return {
       eventId: convertApiInteger(body.alert_id),
-      eventType: 'SUBSCRIPTION_PAYMENT_SUCCEEDED',
+      eventType: PaddleSdkWebhookEventType.SUBSCRIPTION_PAYMENT_SUCCEEDED,
       balanceCurrency: convertApiCurrency(body.balance_currency),
       balanceEarnings: convertApiFloat(body.balance_earnings),
       balanceFee: convertApiFloat(body.balance_fee),
@@ -382,7 +384,7 @@ export class PaddleSdk<TMetadata = any> {
     ) => {
       if (paymentInformation.payment_method === 'card') {
         return {
-          paymentMethod: 'CARD' as const,
+          paymentMethod: PaddleSdkPaymentMethod.CARD as const,
           cardBrand: convertApiCardBrand(paymentInformation.card_type),
           cardLastFour: paymentInformation.last_four_digits,
           cardExpirationDate: convertApiDate(paymentInformation.expiry_date, 'EXPIRY_DATE'),
@@ -392,7 +394,7 @@ export class PaddleSdk<TMetadata = any> {
       // istanbul ignore else
       if (paymentInformation.payment_method === 'paypal') {
         return {
-          paymentMethod: 'PAYPAL' as const,
+          paymentMethod: PaddleSdkPaymentMethod.PAYPAL as const,
           cardBrand: null,
           cardLastFour: null,
           cardExpirationDate: null,

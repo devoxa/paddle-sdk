@@ -1,533 +1,274 @@
 // THIS FILE IS GENERATED AUTOMATICALLY. DO NOT EDIT.
 
-export type RawPaddleEnumCurrencies =
-  | 'USD'
-  | 'EUR'
-  | 'GBP'
-  | 'ARS'
-  | 'AUD'
-  | 'BRL'
-  | 'CAD'
-  | 'CHF'
-  | 'CNY'
-  | 'CZK'
-  | 'DKK'
-  | 'HKD'
-  | 'HUF'
-  | 'INR'
-  | 'JPY'
-  | 'KRW'
-  | 'MXN'
-  | 'NOK'
-  | 'NZD'
-  | 'PLN'
-  | 'RUB'
-  | 'SEK'
-  | 'SGD'
-  | 'THB'
-  | 'TWD'
-  | 'ZAR'
+export enum RawPaddleEnumCurrencies {
+  ARS = 'ARS',
+  AUD = 'AUD',
+  BRL = 'BRL',
+  CAD = 'CAD',
+  CHF = 'CHF',
+  CNY = 'CNY',
+  CZK = 'CZK',
+  DKK = 'DKK',
+  EUR = 'EUR',
+  GBP = 'GBP',
+  HKD = 'HKD',
+  HUF = 'HUF',
+  INR = 'INR',
+  JPY = 'JPY',
+  KRW = 'KRW',
+  MXN = 'MXN',
+  NOK = 'NOK',
+  NZD = 'NZD',
+  PLN = 'PLN',
+  RUB = 'RUB',
+  SEK = 'SEK',
+  SGD = 'SGD',
+  THB = 'THB',
+  TWD = 'TWD',
+  USD = 'USD',
+  ZAR = 'ZAR',
+}
 
-export type RawPaddleEnumCountries =
-  | 'AF'
-  | 'AL'
-  | 'DZ'
-  | 'AS'
-  | 'AD'
-  | 'AO'
-  | 'AI'
-  | 'AG'
-  | 'AR'
-  | 'AM'
-  | 'AW'
-  | 'AU'
-  | 'AT'
-  | 'AZ'
-  | 'BS'
-  | 'BH'
-  | 'BD'
-  | 'BB'
-  | 'BY'
-  | 'BE'
-  | 'BZ'
-  | 'BJ'
-  | 'BM'
-  | 'BT'
-  | 'BO'
-  | 'BA'
-  | 'BW'
-  | 'BV'
-  | 'BR'
-  | 'IO'
-  | 'VG'
-  | 'BN'
-  | 'BG'
-  | 'BF'
-  | 'BI'
-  | 'KH'
-  | 'CM'
-  | 'CA'
-  | 'CV'
-  | 'KY'
-  | 'CF'
-  | 'TD'
-  | 'CL'
-  | 'CN'
-  | 'CX'
-  | 'CC'
-  | 'CO'
-  | 'KM'
-  | 'CG'
-  | 'CK'
-  | 'CR'
-  | 'CI'
-  | 'HR'
-  | 'CU'
-  | 'CW'
-  | 'CY'
-  | 'CZ'
-  | 'DK'
-  | 'DJ'
-  | 'DM'
-  | 'DO'
-  | 'EC'
-  | 'EG'
-  | 'SV'
-  | 'GQ'
-  | 'ER'
-  | 'EE'
-  | 'ET'
-  | 'FK'
-  | 'FO'
-  | 'FJ'
-  | 'FI'
-  | 'FR'
-  | 'GF'
-  | 'PF'
-  | 'TF'
-  | 'GA'
-  | 'GM'
-  | 'GE'
-  | 'DE'
-  | 'GH'
-  | 'GI'
-  | 'GR'
-  | 'GL'
-  | 'GD'
-  | 'GP'
-  | 'GU'
-  | 'GT'
-  | 'GG'
-  | 'GN'
-  | 'GW'
-  | 'GY'
-  | 'HT'
-  | 'HM'
-  | 'VA'
-  | 'HN'
-  | 'HK'
-  | 'HU'
-  | 'IS'
-  | 'IN'
-  | 'ID'
-  | 'IR'
-  | 'IQ'
-  | 'IE'
-  | 'IL'
-  | 'IT'
-  | 'JM'
-  | 'JP'
-  | 'JE'
-  | 'JO'
-  | 'KZ'
-  | 'KE'
-  | 'KI'
-  | 'KW'
-  | 'KG'
-  | 'LA'
-  | 'LV'
-  | 'LB'
-  | 'LS'
-  | 'LR'
-  | 'LY'
-  | 'LI'
-  | 'LT'
-  | 'LU'
-  | 'MO'
-  | 'MK'
-  | 'MG'
-  | 'MW'
-  | 'MY'
-  | 'MV'
-  | 'ML'
-  | 'MT'
-  | 'MH'
-  | 'MQ'
-  | 'MR'
-  | 'MU'
-  | 'YT'
-  | 'MX'
-  | 'FM'
-  | 'MD'
-  | 'MC'
-  | 'MN'
-  | 'ME'
-  | 'MS'
-  | 'MA'
-  | 'MZ'
-  | 'MM'
-  | 'NA'
-  | 'NR'
-  | 'NP'
-  | 'NL'
-  | 'AN'
-  | 'NC'
-  | 'NZ'
-  | 'NI'
-  | 'NE'
-  | 'NG'
-  | 'NU'
-  | 'NF'
-  | 'KP'
-  | 'MP'
-  | 'NO'
-  | 'OM'
-  | 'PK'
-  | 'PW'
-  | 'PS'
-  | 'PA'
-  | 'PG'
-  | 'PY'
-  | 'PE'
-  | 'PH'
-  | 'PN'
-  | 'PL'
-  | 'PT'
-  | 'PR'
-  | 'QA'
-  | 'RS'
-  | 'RE'
-  | 'RO'
-  | 'RU'
-  | 'RW'
-  | 'GS'
-  | 'SH'
-  | 'KN'
-  | 'LC'
-  | 'PM'
-  | 'VC'
-  | 'WS'
-  | 'SM'
-  | 'ST'
-  | 'SA'
-  | 'SN'
-  | 'SC'
-  | 'SL'
-  | 'SG'
-  | 'SK'
-  | 'SI'
-  | 'SB'
-  | 'SO'
-  | 'ZA'
-  | 'KR'
-  | 'ES'
-  | 'LK'
-  | 'SD'
-  | 'SR'
-  | 'SJ'
-  | 'SZ'
-  | 'SE'
-  | 'CH'
-  | 'SY'
-  | 'TW'
-  | 'TJ'
-  | 'TZ'
-  | 'TH'
-  | 'TL'
-  | 'TG'
-  | 'TK'
-  | 'TO'
-  | 'TT'
-  | 'TN'
-  | 'TR'
-  | 'TM'
-  | 'TC'
-  | 'TV'
-  | 'VI'
-  | 'UG'
-  | 'UA'
-  | 'AE'
-  | 'GB'
-  | 'US'
-  | 'UM'
-  | 'UY'
-  | 'UZ'
-  | 'VU'
-  | 'VE'
-  | 'VN'
-  | 'WF'
-  | 'EH'
-  | 'YE'
-  | 'ZM'
-  | 'ZW'
-  | 'AU'
-  | 'CA'
-  | 'FR'
-  | 'DE'
-  | 'IN'
-  | 'IT'
-  | 'NL'
-  | 'ES'
-  | 'GB'
-  | 'US'
-  | 'AF'
-  | 'AL'
-  | 'DZ'
-  | 'AS'
-  | 'AD'
-  | 'AO'
-  | 'AI'
-  | 'AG'
-  | 'AR'
-  | 'AM'
-  | 'AW'
-  | 'AU'
-  | 'AT'
-  | 'AZ'
-  | 'BS'
-  | 'BH'
-  | 'BD'
-  | 'BB'
-  | 'BY'
-  | 'BE'
-  | 'BZ'
-  | 'BJ'
-  | 'BM'
-  | 'BT'
-  | 'BO'
-  | 'BA'
-  | 'BW'
-  | 'BV'
-  | 'BR'
-  | 'IO'
-  | 'VG'
-  | 'BN'
-  | 'BG'
-  | 'BF'
-  | 'BI'
-  | 'KH'
-  | 'CM'
-  | 'CA'
-  | 'CV'
-  | 'KY'
-  | 'CF'
-  | 'TD'
-  | 'CL'
-  | 'CN'
-  | 'CX'
-  | 'CC'
-  | 'CO'
-  | 'KM'
-  | 'CG'
-  | 'CK'
-  | 'CR'
-  | 'CI'
-  | 'HR'
-  | 'CU'
-  | 'CW'
-  | 'CY'
-  | 'CZ'
-  | 'DK'
-  | 'DJ'
-  | 'DM'
-  | 'DO'
-  | 'EC'
-  | 'EG'
-  | 'SV'
-  | 'GQ'
-  | 'ER'
-  | 'EE'
-  | 'ET'
-  | 'FK'
-  | 'FO'
-  | 'FJ'
-  | 'FI'
-  | 'FR'
-  | 'GF'
-  | 'PF'
-  | 'TF'
-  | 'GA'
-  | 'GM'
-  | 'GE'
-  | 'DE'
-  | 'GH'
-  | 'GI'
-  | 'GR'
-  | 'GL'
-  | 'GD'
-  | 'GP'
-  | 'GU'
-  | 'GT'
-  | 'GG'
-  | 'GN'
-  | 'GW'
-  | 'GY'
-  | 'HT'
-  | 'HM'
-  | 'VA'
-  | 'HN'
-  | 'HK'
-  | 'HU'
-  | 'IS'
-  | 'IN'
-  | 'ID'
-  | 'IR'
-  | 'IQ'
-  | 'IE'
-  | 'IL'
-  | 'IT'
-  | 'JM'
-  | 'JP'
-  | 'JE'
-  | 'JO'
-  | 'KZ'
-  | 'KE'
-  | 'KI'
-  | 'KW'
-  | 'KG'
-  | 'LA'
-  | 'LV'
-  | 'LB'
-  | 'LS'
-  | 'LR'
-  | 'LY'
-  | 'LI'
-  | 'LT'
-  | 'LU'
-  | 'MO'
-  | 'MK'
-  | 'MG'
-  | 'MW'
-  | 'MY'
-  | 'MV'
-  | 'ML'
-  | 'MT'
-  | 'MH'
-  | 'MQ'
-  | 'MR'
-  | 'MU'
-  | 'YT'
-  | 'MX'
-  | 'FM'
-  | 'MD'
-  | 'MC'
-  | 'MN'
-  | 'ME'
-  | 'MS'
-  | 'MA'
-  | 'MZ'
-  | 'MM'
-  | 'NA'
-  | 'NR'
-  | 'NP'
-  | 'NL'
-  | 'AN'
-  | 'NC'
-  | 'NZ'
-  | 'NI'
-  | 'NE'
-  | 'NG'
-  | 'NU'
-  | 'NF'
-  | 'KP'
-  | 'MP'
-  | 'NO'
-  | 'OM'
-  | 'PK'
-  | 'PW'
-  | 'PS'
-  | 'PA'
-  | 'PG'
-  | 'PY'
-  | 'PE'
-  | 'PH'
-  | 'PN'
-  | 'PL'
-  | 'PT'
-  | 'PR'
-  | 'QA'
-  | 'RS'
-  | 'RE'
-  | 'RO'
-  | 'RU'
-  | 'RW'
-  | 'GS'
-  | 'SH'
-  | 'KN'
-  | 'LC'
-  | 'PM'
-  | 'VC'
-  | 'WS'
-  | 'SM'
-  | 'ST'
-  | 'SA'
-  | 'SN'
-  | 'SC'
-  | 'SL'
-  | 'SG'
-  | 'SK'
-  | 'SI'
-  | 'SB'
-  | 'SO'
-  | 'ZA'
-  | 'KR'
-  | 'ES'
-  | 'LK'
-  | 'SD'
-  | 'SR'
-  | 'SJ'
-  | 'SZ'
-  | 'SE'
-  | 'CH'
-  | 'SY'
-  | 'TW'
-  | 'TJ'
-  | 'TZ'
-  | 'TH'
-  | 'TL'
-  | 'TG'
-  | 'TK'
-  | 'TO'
-  | 'TT'
-  | 'TN'
-  | 'TR'
-  | 'TM'
-  | 'TC'
-  | 'TV'
-  | 'VI'
-  | 'UG'
-  | 'UA'
-  | 'AE'
-  | 'GB'
-  | 'US'
-  | 'UM'
-  | 'UY'
-  | 'UZ'
-  | 'VU'
-  | 'VE'
-  | 'VN'
-  | 'WF'
-  | 'EH'
-  | 'YE'
-  | 'ZM'
-  | 'ZW'
-  | 'AU'
-  | 'CA'
-  | 'FR'
-  | 'DE'
-  | 'IN'
-  | 'IT'
-  | 'NL'
-  | 'ES'
-  | 'GB'
-  | 'US'
+export enum RawPaddleEnumCountries {
+  AD = 'AD',
+  AE = 'AE',
+  AF = 'AF',
+  AG = 'AG',
+  AI = 'AI',
+  AL = 'AL',
+  AM = 'AM',
+  AN = 'AN',
+  AO = 'AO',
+  AR = 'AR',
+  AS = 'AS',
+  AT = 'AT',
+  AU = 'AU',
+  AW = 'AW',
+  AZ = 'AZ',
+  BA = 'BA',
+  BB = 'BB',
+  BD = 'BD',
+  BE = 'BE',
+  BF = 'BF',
+  BG = 'BG',
+  BH = 'BH',
+  BI = 'BI',
+  BJ = 'BJ',
+  BM = 'BM',
+  BN = 'BN',
+  BO = 'BO',
+  BR = 'BR',
+  BS = 'BS',
+  BT = 'BT',
+  BV = 'BV',
+  BW = 'BW',
+  BY = 'BY',
+  BZ = 'BZ',
+  CA = 'CA',
+  CC = 'CC',
+  CF = 'CF',
+  CG = 'CG',
+  CH = 'CH',
+  CI = 'CI',
+  CK = 'CK',
+  CL = 'CL',
+  CM = 'CM',
+  CN = 'CN',
+  CO = 'CO',
+  CR = 'CR',
+  CU = 'CU',
+  CV = 'CV',
+  CW = 'CW',
+  CX = 'CX',
+  CY = 'CY',
+  CZ = 'CZ',
+  DE = 'DE',
+  DJ = 'DJ',
+  DK = 'DK',
+  DM = 'DM',
+  DO = 'DO',
+  DZ = 'DZ',
+  EC = 'EC',
+  EE = 'EE',
+  EG = 'EG',
+  EH = 'EH',
+  ER = 'ER',
+  ES = 'ES',
+  ET = 'ET',
+  FI = 'FI',
+  FJ = 'FJ',
+  FK = 'FK',
+  FM = 'FM',
+  FO = 'FO',
+  FR = 'FR',
+  GA = 'GA',
+  GB = 'GB',
+  GD = 'GD',
+  GE = 'GE',
+  GF = 'GF',
+  GG = 'GG',
+  GH = 'GH',
+  GI = 'GI',
+  GL = 'GL',
+  GM = 'GM',
+  GN = 'GN',
+  GP = 'GP',
+  GQ = 'GQ',
+  GR = 'GR',
+  GS = 'GS',
+  GT = 'GT',
+  GU = 'GU',
+  GW = 'GW',
+  GY = 'GY',
+  HK = 'HK',
+  HM = 'HM',
+  HN = 'HN',
+  HR = 'HR',
+  HT = 'HT',
+  HU = 'HU',
+  ID = 'ID',
+  IE = 'IE',
+  IL = 'IL',
+  IN = 'IN',
+  IO = 'IO',
+  IQ = 'IQ',
+  IR = 'IR',
+  IS = 'IS',
+  IT = 'IT',
+  JE = 'JE',
+  JM = 'JM',
+  JO = 'JO',
+  JP = 'JP',
+  KE = 'KE',
+  KG = 'KG',
+  KH = 'KH',
+  KI = 'KI',
+  KM = 'KM',
+  KN = 'KN',
+  KP = 'KP',
+  KR = 'KR',
+  KW = 'KW',
+  KY = 'KY',
+  KZ = 'KZ',
+  LA = 'LA',
+  LB = 'LB',
+  LC = 'LC',
+  LI = 'LI',
+  LK = 'LK',
+  LR = 'LR',
+  LS = 'LS',
+  LT = 'LT',
+  LU = 'LU',
+  LV = 'LV',
+  LY = 'LY',
+  MA = 'MA',
+  MC = 'MC',
+  MD = 'MD',
+  ME = 'ME',
+  MG = 'MG',
+  MH = 'MH',
+  MK = 'MK',
+  ML = 'ML',
+  MM = 'MM',
+  MN = 'MN',
+  MO = 'MO',
+  MP = 'MP',
+  MQ = 'MQ',
+  MR = 'MR',
+  MS = 'MS',
+  MT = 'MT',
+  MU = 'MU',
+  MV = 'MV',
+  MW = 'MW',
+  MX = 'MX',
+  MY = 'MY',
+  MZ = 'MZ',
+  NA = 'NA',
+  NC = 'NC',
+  NE = 'NE',
+  NF = 'NF',
+  NG = 'NG',
+  NI = 'NI',
+  NL = 'NL',
+  NO = 'NO',
+  NP = 'NP',
+  NR = 'NR',
+  NU = 'NU',
+  NZ = 'NZ',
+  OM = 'OM',
+  PA = 'PA',
+  PE = 'PE',
+  PF = 'PF',
+  PG = 'PG',
+  PH = 'PH',
+  PK = 'PK',
+  PL = 'PL',
+  PM = 'PM',
+  PN = 'PN',
+  PR = 'PR',
+  PS = 'PS',
+  PT = 'PT',
+  PW = 'PW',
+  PY = 'PY',
+  QA = 'QA',
+  RE = 'RE',
+  RO = 'RO',
+  RS = 'RS',
+  RU = 'RU',
+  RW = 'RW',
+  SA = 'SA',
+  SB = 'SB',
+  SC = 'SC',
+  SD = 'SD',
+  SE = 'SE',
+  SG = 'SG',
+  SH = 'SH',
+  SI = 'SI',
+  SJ = 'SJ',
+  SK = 'SK',
+  SL = 'SL',
+  SM = 'SM',
+  SN = 'SN',
+  SO = 'SO',
+  SR = 'SR',
+  ST = 'ST',
+  SV = 'SV',
+  SY = 'SY',
+  SZ = 'SZ',
+  TC = 'TC',
+  TD = 'TD',
+  TF = 'TF',
+  TG = 'TG',
+  TH = 'TH',
+  TJ = 'TJ',
+  TK = 'TK',
+  TL = 'TL',
+  TM = 'TM',
+  TN = 'TN',
+  TO = 'TO',
+  TR = 'TR',
+  TT = 'TT',
+  TV = 'TV',
+  TW = 'TW',
+  TZ = 'TZ',
+  UA = 'UA',
+  UG = 'UG',
+  UM = 'UM',
+  US = 'US',
+  UY = 'UY',
+  UZ = 'UZ',
+  VA = 'VA',
+  VC = 'VC',
+  VE = 'VE',
+  VG = 'VG',
+  VI = 'VI',
+  VN = 'VN',
+  VU = 'VU',
+  WF = 'WF',
+  WS = 'WS',
+  YE = 'YE',
+  YT = 'YT',
+  ZA = 'ZA',
+  ZM = 'ZM',
+  ZW = 'ZW',
+}

@@ -1,4 +1,19 @@
-import { RawPaddleEnumCountries, RawPaddleEnumCurrencies } from './__generated__/enums'
+import {
+  RawPaddleEnumCurrencies as PaddleSdkCurrency,
+  RawPaddleEnumCountries as PaddleSdkCountry,
+} from './__generated__/enums'
+
+// ----------------------------------------------------------------------------
+// ENUMS
+// ----------------------------------------------------------------------------
+
+/** A type of a webhook event */
+export enum PaddleSdkWebhookEventType {
+  'SUBSCRIPTION_CREATED' = 'SUBSCRIPTION_CREATED',
+  'SUBSCRIPTION_UPDATED' = 'SUBSCRIPTION_UPDATED',
+  'SUBSCRIPTION_CANCELLED' = 'SUBSCRIPTION_CANCELLED',
+  'SUBSCRIPTION_PAYMENT_SUCCEEDED' = 'SUBSCRIPTION_PAYMENT_SUCCEEDED',
+}
 
 /**
  * A status of a subscription
@@ -9,18 +24,19 @@ import { RawPaddleEnumCountries, RawPaddleEnumCurrencies } from './__generated__
  * - PAUSED: Indicates that this subscription has been paused. The customer will not be charged for subsequent payments. The status will change to ACTIVE once the subscription is restarted.
  * - CANCELLED: Indicates that this subscription has been cancelled.
  */
-export type PaddleSdkSubscriptionStatus =
-  | 'ACTIVE'
-  | 'TRIALING'
-  | 'PAST_DUE'
-  | 'PAUSED'
-  | 'CANCELLED'
+export enum PaddleSdkSubscriptionStatus {
+  'ACTIVE' = 'ACTIVE',
+  'TRIALING' = 'TRIALING',
+  'PAST_DUE' = 'PAST_DUE',
+  'PAUSED' = 'PAUSED',
+  'CANCELLED' = 'CANCELLED',
+}
 
 /** A three-letter ISO currency code */
-export type PaddleSdkCurrency = RawPaddleEnumCurrencies
+export { PaddleSdkCurrency }
 
 /** A two letter ISO country code */
-export type PaddleSdkCountry = RawPaddleEnumCountries
+export { PaddleSdkCountry }
 
 /**
  * A reason why a subscription was paused
@@ -28,22 +44,32 @@ export type PaddleSdkCountry = RawPaddleEnumCountries
  * - DELINQUENT: The payment failed and the rule specified in the dunning settings was to pause the subscription.
  * - VOLUNTARY: The subscription was paused via the API.
  */
-export type PaddleSdkPausedReason = 'DELINQUENT' | 'VOLUNTARY'
+export enum PaddleSdkPausedReason {
+  'DELINQUENT' = 'DELINQUENT',
+  'VOLUNTARY' = 'VOLUNTARY',
+}
 
 /** A payment method used to make a transaction */
-export type PaddleSdkPaymentMethod = 'CARD' | 'PAYPAL' | 'APPLE_PAY' | 'WIRE_TRANSFER' | 'FREE'
+export enum PaddleSdkPaymentMethod {
+  'CARD' = 'CARD',
+  'PAYPAL' = 'PAYPAL',
+  'APPLE_PAY' = 'APPLE_PAY',
+  'WIRE_TRANSFER' = 'WIRE_TRANSFER',
+  'FREE' = 'FREE',
+}
 
 /** A brand of card used to make a transaction */
-export type PaddleSdkCardBrand =
-  | 'AMERICAN_EXPRESS'
-  | 'DINERS_CLUB'
-  | 'DISCOVER'
-  | 'ELO'
-  | 'JCB'
-  | 'MAESTRO'
-  | 'MASTERCARD'
-  | 'VISA'
-  | 'UNKNOWN'
+export enum PaddleSdkCardBrand {
+  'AMERICAN_EXPRESS' = 'AMERICAN_EXPRESS',
+  'DINERS_CLUB' = 'DINERS_CLUB',
+  'DISCOVER' = 'DISCOVER',
+  'ELO' = 'ELO',
+  'JCB' = 'JCB',
+  'MAESTRO' = 'MAESTRO',
+  'MASTERCARD' = 'MASTERCARD',
+  'VISA' = 'VISA',
+  'UNKNOWN' = 'UNKNOWN',
+}
 
 // ----------------------------------------------------------------------------
 // WEBHOOKS
@@ -54,7 +80,7 @@ export type PaddleSdkSubscriptionCreatedEvent<TMetadata> = {
   // EVENT ---
 
   /** The type of this event */
-  eventType: 'SUBSCRIPTION_CREATED'
+  eventType: PaddleSdkWebhookEventType.SUBSCRIPTION_CREATED
 
   /** The unique ID for this event */
   eventId: number
@@ -122,7 +148,7 @@ export type PaddleSdkSubscriptionUpdatedEvent<TMetadata> = {
   // EVENT ---
 
   /** The type of this event */
-  eventType: 'SUBSCRIPTION_UPDATED'
+  eventType: PaddleSdkWebhookEventType.SUBSCRIPTION_UPDATED
 
   /** The unique ID for this event */
   eventId: number
@@ -217,7 +243,7 @@ export type PaddleSdkSubscriptionCancelledEvent<TMetadata> = {
   // EVENT ---
 
   /** The type of this event */
-  eventType: 'SUBSCRIPTION_CANCELLED'
+  eventType: PaddleSdkWebhookEventType.SUBSCRIPTION_CANCELLED
 
   /** The unique ID for this event */
   eventId: number
@@ -282,7 +308,7 @@ export type PaddleSdkSubscriptionPaymentSucceededEvent<TMetadata> = {
   // EVENT ---
 
   /** The type of this event */
-  eventType: 'SUBSCRIPTION_PAYMENT_SUCCEEDED'
+  eventType: PaddleSdkWebhookEventType.SUBSCRIPTION_PAYMENT_SUCCEEDED
 
   /** The unique ID for this event */
   eventId: number
@@ -556,7 +582,7 @@ export type PaddleSdkListSubscriptionsResponse = Array<{
   // ORDER ---
 
   /** The payment method used to make the transaction */
-  paymentMethod: 'CARD' | 'PAYPAL'
+  paymentMethod: PaddleSdkPaymentMethod.CARD | PaddleSdkPaymentMethod.PAYPAL
 
   /** The brand of the card, set if `paymentMethod` is "CARD" */
   cardBrand: PaddleSdkCardBrand | null

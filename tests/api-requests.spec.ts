@@ -1,5 +1,10 @@
 import * as FIXTURES from './fixtures'
-import { PaddleSdk } from '../src/index'
+import {
+  PaddleSdk,
+  PaddleSdkCurrency,
+  PaddleSdkCountry,
+  PaddleSdkSubscriptionStatus,
+} from '../src/index'
 import { fetch } from '../src/helpers/fetch'
 import { PaddleSdkApiException } from '../src/exceptions'
 
@@ -32,8 +37,8 @@ describe('api requests', () => {
       productId: 123,
       title: 'Product name',
       webhookUrl: 'https://webhook.devoxa.io',
-      prices: [['USD', 9.99]],
-      recurringPrices: [['EUR', 12.99]],
+      prices: [[PaddleSdkCurrency.USD, 9.99]],
+      recurringPrices: [[PaddleSdkCurrency.EUR, 12.99]],
       trialDays: 14,
       customMessage: 'Custom message under the product name',
       populateCoupon: 'COUPON-AAA',
@@ -47,14 +52,14 @@ describe('api requests', () => {
       recurringAffiliateLimit: 2,
       populateHasMarketingConsent: true,
       populateCustomerEmail: 'david@devoxa.io',
-      populateCustomerCountry: 'DE',
+      populateCustomerCountry: PaddleSdkCountry.DE,
       populateCustomerPostcode: '37688',
       populateVatNumber: '123456789',
       populateVatCompanyName: 'Devoxa',
       populateVatStreet: '4 Stonebridgegate',
       populateVatCity: 'Ripon',
       populateVatState: 'Yorkshire',
-      populateVatCountry: 'GB',
+      populateVatCountry: PaddleSdkCountry.GB,
       populateVatPostcode: 'HG4 1LH',
       metadata: { foo: 'bar' },
     })
@@ -72,7 +77,7 @@ describe('api requests', () => {
     const response = await paddleSdk.listSubscriptions({
       subscriptionId: 123,
       productId: 123,
-      status: 'CANCELLED',
+      status: PaddleSdkSubscriptionStatus.CANCELLED,
       page: 0,
       resultsPerPage: 100,
     })
@@ -95,7 +100,7 @@ describe('api requests', () => {
     const response = await paddleSdk.updateSubscription({
       subscriptionId: 1,
       quantity: 9,
-      currency: 'EUR',
+      currency: PaddleSdkCurrency.EUR,
       unitPrice: 9.99,
       shouldMakeImmediatePayment: false,
       productId: 3,
