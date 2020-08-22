@@ -17,9 +17,9 @@
     />
   </a>
 
-  <a href="https://app.circleci.com/pipelines/github/devoxa/paddle-sdk?branch=master">
+  <a href="https://github.com/devoxa/paddle-sdk/actions?query=branch%3Amaster+workflow%3A%22Continuous+Integration%22">
     <img
-      src="https://img.shields.io/circleci/build/github/devoxa/paddle-sdk/master?style=flat-square"
+      src="https://img.shields.io/github/workflow/status/devoxa/paddle-sdk/Continuous%20Integration?style=flat-square"
       alt="Build Status"
     />
   </a>
