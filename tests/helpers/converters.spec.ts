@@ -79,14 +79,14 @@ describe('helpers -> converters', () => {
   it('can convert an API currency', () => {
     expect(converters.convertApiCurrency('EUR')).toEqual('EUR')
 
-    // @ts-expect-error
+    // @ts-expect-error types have no overlap
     converters.convertApiCurrency('EUR') === 'NOOP'
   })
 
   it('can convert an API country', () => {
     expect(converters.convertApiCountry('GB')).toEqual('GB')
 
-    // @ts-expect-error
+    // @ts-expect-error types have no overlap
     converters.convertApiCurrency('GB') === 'NOOP'
   })
 
