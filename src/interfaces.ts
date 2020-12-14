@@ -71,6 +71,13 @@ export enum PaddleSdkCardBrand {
   'UNKNOWN' = 'UNKNOWN',
 }
 
+/** Refund type */
+export enum PaddleSdkRefundType {
+  'FULL' = 'FULL',
+  'VAT' = 'VAT',
+  'PARTIAL' = 'PARTIAL',
+}
+
 // ----------------------------------------------------------------------------
 // WEBHOOKS
 // ----------------------------------------------------------------------------

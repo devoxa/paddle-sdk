@@ -113,6 +113,12 @@ describe('helpers -> converters', () => {
     expect(converters.convertApiCardBrand('xxx')).toEqual('UNKNOWN')
   })
 
+  it('can convert an refund type', () => {
+    expect(converters.convertApiRefundType('full')).toEqual('FULL')
+    expect(converters.convertApiRefundType('vat')).toEqual('VAT')
+    expect(converters.convertApiRefundType('partial')).toEqual('PARTIAL')
+  })
+
   it('can convert an SDK price list', () => {
     expect(
       converters.convertSdkPriceList([

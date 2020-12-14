@@ -2,6 +2,7 @@ import {
   RawPaddleSubscriptionCreatedAlert,
   RawPaddleSubscriptionUpdatedAlert,
   RawPaddleSubscriptionPaymentSucceededAlert,
+  RawPaddlePaymentRefundedAlert,
 } from '../__generated__/webhook-alerts'
 import {
   PaddleSdkSubscriptionStatus,
@@ -10,6 +11,7 @@ import {
   PaddleSdkCurrency,
   PaddleSdkCountry,
   PaddleSdkCardBrand,
+  PaddleSdkRefundType,
 } from '../interfaces'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
@@ -153,6 +155,19 @@ export function convertApiCardBrand(cardBrand: string): PaddleSdkCardBrand {
   }
 
   return PaddleSdkCardBrand.UNKNOWN
+}
+
+export function convertApiRefundType(
+  refundType: RawPaddlePaymentRefundedAlert['refund_type']
+): PaddleSdkRefundType {
+  switch (refundType) {
+    case 'full':
+      return PaddleSdkRefundType.FULL
+    case 'vat':
+      return PaddleSdkRefundType.VAT
+    case 'partial':
+      return PaddleSdkRefundType.PARTIAL
+  }
 }
 
 export function convertSdkPriceList(
