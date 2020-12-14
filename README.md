@@ -55,12 +55,12 @@ yarn add @devoxa/paddle-sdk
 > something feel free to add them via a pull request!
 
 ```ts
-import { PaddleSDK } from '@devoxa/paddle-sdk'
+import { PaddleSdk } from '@devoxa/paddle-sdk'
 
 // The metadata you want to attach to subscriptions, to link them to your application entities
 type PaddleMetadata = { userId: 123 }
 
-const paddleSdk = new PaddleSDK<PaddleMetadata>({
+const paddleSdk = new PaddleSdk<PaddleMetadata>({
   publicKey: '...', // Your public key from the paddle dashboard
   vendorId: 123, // Your vendor ID from the paddle dashboard
   vendorAuthCode: 'AAA', // Your vendor auth code from the paddle dashboard
