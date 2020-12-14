@@ -43,7 +43,6 @@ import {
   RawPaddlePostSubscriptionUsersResponse,
   PADDLE_SUBSCRIPTION_USERS,
 } from './__generated__/api-routes'
-import { encrypt, decrypt } from '@devoxa/aes-encryption'
 import { fetch } from './helpers/fetch'
 import {
   convertApiInteger,
@@ -61,44 +60,53 @@ import {
   convertApiCountry,
   convertSdkPriceList,
 } from './helpers/converters'
+import { MetadataCodec } from './metadata'
 
 export * from './exceptions'
 export * from './interfaces'
+export * from './metadata'
 
-export interface PaddleSdkOptions {
-  publicKey: string
-  vendorId: number
-  vendorAuthCode: string
-  metadataEncryptionKey: string
+export interface PaddleSdkOptions<TMetadata = unknown> {
+  /** Public key from the paddle dashboard to validate webhook requests */
+  readonly publicKey: string
+
+  /** Vendor ID from the paddle dashboard to authenticate API requests */
+  readonly vendorId: number
+
+  /** Vendor auth code from the paddle dashboard to authenticate API requests */
+  readonly vendorAuthCode: string
+
+  /**
+   * Metadata codec encodes and decodes additional pass-through data for an order
+   *
+   * @see https://developer.paddle.com/guides/how-tos/checkout/pass-parameters
+   */
+  readonly metadataCodec: MetadataCodec<TMetadata>
 }
 
-export class PaddleSdk<TMetadata = any> {
+export class PaddleSdk<TMetadata = unknown> {
   private readonly publicKey: string
   private readonly vendorId: number
   private readonly vendorAuthCode: string
-  private readonly metadataEncryptionKey: string
+  private readonly metadataCodec: MetadataCodec<TMetadata>
 
-  constructor(options: PaddleSdkOptions) {
+  constructor(options: PaddleSdkOptions<TMetadata>) {
     if (!options.publicKey) {
       throw new PaddleSdkException('PaddleSdk was called without a publicKey')
     }
-
     if (!options.vendorId) {
       throw new PaddleSdkException('PaddleSdk was called without a vendorId')
     }
-
     if (!options.vendorAuthCode) {
       throw new PaddleSdkException('PaddleSdk was called without a vendorAuthCode')
     }
-
-    if (!options.metadataEncryptionKey || options.metadataEncryptionKey.length !== 32) {
-      throw new PaddleSdkException('PaddleSdk was called with an invalid metadataEncryptionKey')
+    if (!options.metadataCodec) {
+      throw new PaddleSdkException('PaddleSdk was called without a metadataCodec')
     }
-
     this.publicKey = options.publicKey
     this.vendorId = options.vendorId
     this.vendorAuthCode = options.vendorAuthCode
-    this.metadataEncryptionKey = options.metadataEncryptionKey
+    this.metadataCodec = options.metadataCodec
   }
 
   verifyWebhookEvent(body: any): body is RawPaddleWebhookAlert {
@@ -138,16 +146,12 @@ export class PaddleSdk<TMetadata = any> {
     )
   }
 
-  private stringifyMetadata(metadata: TMetadata): string {
-    return encrypt(this.metadataEncryptionKey, JSON.stringify(metadata))
+  private stringifyMetadata(value: TMetadata): string {
+    return this.metadataCodec.stringify(value)
   }
 
-  private parseMetadata(metadata: string): TMetadata {
-    try {
-      return JSON.parse(decrypt(this.metadataEncryptionKey, metadata))
-    } catch (err) {
-      throw new PaddleSdkException('Failed parsing metadata: ' + err.message)
-    }
+  private parseMetadata(value: string): TMetadata {
+    return this.metadataCodec.parse(value)
   }
 
   private parseSubscriptionCreatedWebhookEvent(
