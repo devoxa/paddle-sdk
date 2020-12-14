@@ -1,66 +1,71 @@
+import { decrypt, encrypt } from '@devoxa/aes-encryption'
 import { createVerify } from 'crypto'
-import { stableSerialize } from './helpers/stableSerialize'
 import {
-  RawPaddleWebhookAlert,
-  RawPaddleSubscriptionCreatedAlert,
-  RawPaddleSubscriptionUpdatedAlert,
-  RawPaddleSubscriptionCancelledAlert,
-  RawPaddleSubscriptionPaymentSucceededAlert,
-} from './__generated__/webhook-alerts'
-import { PaddleSdkException, PaddleSdkApiException } from './exceptions'
-import {
-  PaddleSdkSubscriptionCreatedEvent,
-  PaddleSdkSubscriptionUpdatedEvent,
-  PaddleSdkSubscriptionCancelledEvent,
-  PaddleSdkSubscriptionPaymentSucceededEvent,
-  PaddleSdkCreateProductPayLinkRequest,
-  PaddleSdkListSubscriptionsRequest,
-  PaddleSdkUpdateSubscriptionRequest,
-  PaddleSdkCancelSubscriptionRequest,
-  PaddleSdkCreateSubscriptionModifierRequest,
-  PaddleSdkCreateProductPayLinkResponse,
-  PaddleSdkListSubscriptionsResponse,
-  PaddleSdkUpdateSubscriptionResponse,
-  PaddleSdkCancelSubscriptionResponse,
-  PaddleSdkCreateSubscriptionModifierResponse,
-  PaddleSdkPaymentMethod,
-  PaddleSdkWebhookEventType,
-} from './interfaces'
-import {
+  PADDLE_PRODUCT_GENERATE_PAY_LINK,
+  PADDLE_SUBSCRIPTION_MODIFIERS_CREATE,
+  PADDLE_SUBSCRIPTION_USERS,
+  PADDLE_SUBSCRIPTION_USERS_CANCEL,
+  PADDLE_SUBSCRIPTION_USERS_UPDATE,
   RawPaddlePostProductGeneratePayLinkRequest,
   RawPaddlePostProductGeneratePayLinkResponse,
-  PADDLE_PRODUCT_GENERATE_PAY_LINK,
-  RawPaddlePostSubscriptionUsersUpdateRequest,
-  RawPaddlePostSubscriptionUsersUpdateResponse,
-  PADDLE_SUBSCRIPTION_USERS_UPDATE,
   RawPaddlePostSubscriptionModifiersCreateRequest,
   RawPaddlePostSubscriptionModifiersCreateResponse,
-  PADDLE_SUBSCRIPTION_MODIFIERS_CREATE,
   RawPaddlePostSubscriptionUsersCancelRequest,
   RawPaddlePostSubscriptionUsersCancelResponse,
-  PADDLE_SUBSCRIPTION_USERS_CANCEL,
   RawPaddlePostSubscriptionUsersRequest,
   RawPaddlePostSubscriptionUsersResponse,
-  PADDLE_SUBSCRIPTION_USERS,
+  RawPaddlePostSubscriptionUsersUpdateRequest,
+  RawPaddlePostSubscriptionUsersUpdateResponse,
 } from './__generated__/api-routes'
-import { encrypt, decrypt } from '@devoxa/aes-encryption'
-import { fetch } from './helpers/fetch'
 import {
-  convertApiInteger,
+  RawPaddlePaymentRefundedAlert,
+  RawPaddlePaymentSucceededAlert,
+  RawPaddleSubscriptionCancelledAlert,
+  RawPaddleSubscriptionCreatedAlert,
+  RawPaddleSubscriptionPaymentSucceededAlert,
+  RawPaddleSubscriptionUpdatedAlert,
+  RawPaddleWebhookAlert,
+} from './__generated__/webhook-alerts'
+import { PaddleSdkApiException, PaddleSdkException } from './exceptions'
+import {
+  convertApiBoolean,
+  convertApiCardBrand,
+  convertApiCountry,
   convertApiCurrency,
   convertApiDate,
-  convertApiBoolean,
-  convertApiSubscriptionStatus,
   convertApiFloat,
+  convertApiInteger,
   convertApiPausedReason,
   convertApiPaymentMethod,
-  convertApiCardBrand,
-  convertSdkSubscriptionStatus,
+  convertApiRefundType,
+  convertApiSubscriptionStatus,
   convertSdkBoolean,
   convertSdkDate,
-  convertApiCountry,
   convertSdkPriceList,
+  convertSdkSubscriptionStatus,
 } from './helpers/converters'
+import { fetch } from './helpers/fetch'
+import { stableSerialize } from './helpers/stableSerialize'
+import {
+  PaddleSdkCancelSubscriptionRequest,
+  PaddleSdkCancelSubscriptionResponse,
+  PaddleSdkCreateProductPayLinkRequest,
+  PaddleSdkCreateProductPayLinkResponse,
+  PaddleSdkCreateSubscriptionModifierRequest,
+  PaddleSdkCreateSubscriptionModifierResponse,
+  PaddleSdkListSubscriptionsRequest,
+  PaddleSdkListSubscriptionsResponse,
+  PaddleSdkPaymentMethod,
+  PaddleSdkPaymentRefundedEvent,
+  PaddleSdkPaymentSucceededEvent,
+  PaddleSdkSubscriptionCancelledEvent,
+  PaddleSdkSubscriptionCreatedEvent,
+  PaddleSdkSubscriptionPaymentSucceededEvent,
+  PaddleSdkSubscriptionUpdatedEvent,
+  PaddleSdkUpdateSubscriptionRequest,
+  PaddleSdkUpdateSubscriptionResponse,
+  PaddleSdkWebhookEventType,
+} from './interfaces'
 
 export * from './exceptions'
 export * from './interfaces'
@@ -122,6 +127,10 @@ export class PaddleSdk<TMetadata = any> {
     }
 
     switch (body.alert_name) {
+      case 'payment_succeeded':
+        return this.parsePaymentSucceededWebhookEvent(body)
+      case 'payment_refunded':
+        return this.parsePaymentRefundedWebhookEvent(body)
       case 'subscription_created':
         return this.parseSubscriptionCreatedWebhookEvent(body)
       case 'subscription_updated':
@@ -147,6 +156,91 @@ export class PaddleSdk<TMetadata = any> {
       return JSON.parse(decrypt(this.metadataEncryptionKey, metadata))
     } catch (err) {
       throw new PaddleSdkException('Failed parsing metadata: ' + err.message)
+    }
+  }
+
+  private parsePaymentSucceededWebhookEvent(
+    body: RawPaddlePaymentSucceededAlert
+  ): PaddleSdkPaymentSucceededEvent<TMetadata> {
+    return {
+      // EVENT ---
+
+      eventType: PaddleSdkWebhookEventType.PAYMENT_SUCCEEDED,
+      eventId: convertApiInteger(body.alert_id),
+      eventTime: convertApiDate(body.event_time, 'DATE_TIME'),
+
+      // ORDER ---
+
+      metadata: this.parseMetadata(body.passthrough),
+      orderId: body.order_id,
+      checkoutId: body.checkout_id,
+      coupon: body.coupon,
+      receiptUrl: body.receipt_url,
+      productId: body.product_id,
+      productName: body.product_name,
+      quantity: convertApiInteger(body.quantity),
+      paymentMethod: convertApiPaymentMethod(body.payment_method),
+      currency: convertApiCurrency(body.currency),
+      gross: convertApiFloat(body.sale_gross),
+      tax: convertApiFloat(body.payment_tax),
+      fee: convertApiFloat(body.fee),
+      earnings: convertApiFloat(body.earnings),
+      usedPriceOverride: convertApiBoolean(body.used_price_override),
+
+      // CUSTOMER ---
+
+      customerName: body.customer_name,
+      customerEmail: body.email,
+      customerCountry: convertApiCountry(body.country),
+      hasMarketingConsent: convertApiBoolean(body.marketing_consent),
+
+      // BALANCE ---
+
+      balanceCurrency: convertApiCurrency(body.balance_currency),
+      balanceGross: convertApiFloat(body.balance_gross),
+      balanceTax: convertApiFloat(body.balance_tax),
+      balanceFee: convertApiFloat(body.balance_fee),
+      balanceEarnings: convertApiFloat(body.balance_earnings),
+    }
+  }
+
+  private parsePaymentRefundedWebhookEvent(
+    body: RawPaddlePaymentRefundedAlert
+  ): PaddleSdkPaymentRefundedEvent<TMetadata> {
+    return {
+      // EVENT ---
+
+      eventType: PaddleSdkWebhookEventType.PAYMENT_REFUNDED,
+      eventId: convertApiInteger(body.alert_id),
+      eventTime: convertApiDate(body.event_time, 'DATE_TIME'),
+
+      // ORDER ---
+
+      metadata: this.parseMetadata(body.passthrough),
+      orderId: body.order_id,
+      checkoutId: body.checkout_id,
+      refundType: convertApiRefundType(body.refund_type),
+      refundReason: body.refund_reason,
+      quantity: convertApiInteger(body.quantity),
+      currency: convertApiCurrency(body.currency),
+      amount: convertApiFloat(body.amount),
+      taxRefund: convertApiFloat(body.tax_refund),
+      feeRefund: convertApiFloat(body.fee_refund),
+      grossRefund: convertApiFloat(body.gross_refund),
+      earningsDecrease: convertApiFloat(body.earnings_decrease),
+
+      // CUSTOMER ---
+
+      customerEmail: body.email,
+      hasMarketingConsent: convertApiBoolean(body.marketing_consent),
+
+      // BALANCE ---
+
+      balanceCurrency: convertApiCurrency(body.balance_currency),
+      balanceGrossRefund: convertApiFloat(body.balance_gross_refund),
+      balanceTaxRefund: convertApiFloat(body.balance_tax_refund),
+      balanceFeeRefund: convertApiFloat(body.balance_fee_refund),
+      balanceEarningsDecrease: convertApiFloat(body.balance_earnings_decrease),
     }
   }
 

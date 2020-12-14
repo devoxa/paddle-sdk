@@ -1,6 +1,6 @@
 import {
-  RawPaddleEnumCurrencies as PaddleSdkCurrency,
   RawPaddleEnumCountries as PaddleSdkCountry,
+  RawPaddleEnumCurrencies as PaddleSdkCurrency,
 } from './__generated__/enums'
 
 // ----------------------------------------------------------------------------
@@ -9,6 +9,8 @@ import {
 
 /** A type of a webhook event */
 export enum PaddleSdkWebhookEventType {
+  'PAYMENT_SUCCEEDED' = 'PAYMENT_SUCCEEDED',
+  'PAYMENT_REFUNDED' = 'PAYMENT_REFUNDED',
   'SUBSCRIPTION_CREATED' = 'SUBSCRIPTION_CREATED',
   'SUBSCRIPTION_UPDATED' = 'SUBSCRIPTION_UPDATED',
   'SUBSCRIPTION_CANCELLED' = 'SUBSCRIPTION_CANCELLED',
@@ -81,6 +83,175 @@ export enum PaddleSdkRefundType {
 // ----------------------------------------------------------------------------
 // WEBHOOKS
 // ----------------------------------------------------------------------------
+
+/** An event fired when a one-off purchase payment is made */
+export type PaddleSdkPaymentSucceededEvent<TMetadata> = {
+  // EVENT ---
+
+  /** The type of this event */
+  eventType: PaddleSdkWebhookEventType.PAYMENT_SUCCEEDED
+
+  /** The unique ID for this event */
+  eventId: number
+
+  /** The date and time the event was fired */
+  eventTime: Date
+
+  // ORDER ---
+
+  /** The value passed into the pay link / set via the API using the `metadata` parameter */
+  metadata: TMetadata
+
+  /** The unique order ID for this payment */
+  orderId: string
+
+  /** The unique checkout ID of the order */
+  checkoutId: string
+
+  /** The coupon code used on this order */
+  coupon: string
+
+  /** The URL containing the customer receipt for this order */
+  receiptUrl: string
+
+  /** The dashboard ID of the product purchased in this order */
+  productId: string
+
+  /** The name of the product included in the order */
+  productName: string
+
+  /** The number of products or in this order */
+  quantity: number
+
+  /** The payment method used to make the transaction */
+  paymentMethod: PaddleSdkPaymentMethod
+
+  /** The currency of the order */
+  currency: PaddleSdkCurrency
+
+  /** The total amount the customer was charged for this payment */
+  gross: number
+
+  /** The amount of tax paid for this payment */
+  tax: number
+
+  /** The amount of fees paid for this payment */
+  fee: number
+
+  /** The total amount (after taxes and fees) earned from this payment */
+  earnings: number
+
+  /** Whether the dashboard price was overridden */
+  usedPriceOverride: boolean
+
+  // CUSTOMER ---
+
+  /** The name of the customer */
+  customerName: string
+
+  /** The email address of the customer */
+  customerEmail: string
+
+  /** The country of the customer */
+  customerCountry: PaddleSdkCountry
+
+  /** Whether the customer has agreed to receive marketing messages */
+  hasMarketingConsent: boolean
+
+  // BALANCE ---
+
+  /** The currency of the vendor */
+  balanceCurrency: PaddleSdkCurrency
+
+  /** The total amount received from the customer (in the vendor's currency) */
+  balanceGross: number
+
+  /** The amount of tax received from the customer (in the vendor's currency) */
+  balanceTax: number
+
+  /** The amount of fees taken from the vendor (in the vendor's currency) */
+  balanceFee: number
+
+  /** The amount earned from this payment (in the vendor's currency) */
+  balanceEarnings: number
+}
+
+/** An event fired when a one-off purchase payment is refunded */
+export type PaddleSdkPaymentRefundedEvent<TMetadata> = {
+  // EVENT ---
+
+  /** The type of this event */
+  eventType: PaddleSdkWebhookEventType.PAYMENT_REFUNDED
+
+  /** The unique ID for this event */
+  eventId: number
+
+  /** The date and time the event was fired */
+  eventTime: Date
+
+  // ORDER ---
+
+  /** The value passed into the pay link / set via the API using the `metadata` parameter */
+  metadata: TMetadata
+
+  /** The unique order ID for this payment */
+  orderId: string
+
+  /** The unique checkout ID of the order */
+  checkoutId: string
+
+  /** The type of refund */
+  refundType: PaddleSdkRefundType
+
+  /** Refund reason note */
+  refundReason: string
+
+  /** The number of products or subscription seats sold in the transaction */
+  quantity: number
+
+  /** The currency of the order */
+  currency: PaddleSdkCurrency
+
+  /** The amount refunded, partial refunds are possible */
+  amount: number
+
+  /** The amount of tax returned to the customer, in the currency of the original transaction */
+  taxRefund: number
+
+  /** The fee amount returned to the vendor, in the currency of the original transaction */
+  feeRefund: number
+
+  /** The total amount returned to the customer as a result of this refund, in the currency of the original transaction */
+  grossRefund: number
+
+  /** The amount of revenue taken from the vendor’s earnings as a result of this refund, in the currency of the original transaction */
+  earningsDecrease: number
+
+  // CUSTOMER ---
+
+  /** The email address of the customer */
+  customerEmail: string
+
+  /** Whether the customer has agreed to receive marketing messages */
+  hasMarketingConsent: boolean
+
+  // BALANCE ---
+
+  /** The currency of the vendor */
+  balanceCurrency: PaddleSdkCurrency
+
+  /** The total amount returned to the customer as a result of this refund, in the vendor’s default currency at the time of the transaction */
+  balanceGrossRefund: number
+
+  /** The amount of tax returned to the customer, in the vendor’s default currency at the time of the transaction */
+  balanceTaxRefund: number
+
+  /** The fee amount returned to the vendor, in the vendor’s default currency at the time of the transaction */
+  balanceFeeRefund: number
+
+  /** The amount of revenue taken from the vendor’s earnings as a result of this refund, in the vendor’s default currency at the time of the transaction */
+  balanceEarningsDecrease: number
+}
 
 /** An event fired when a subscription is created */
 export type PaddleSdkSubscriptionCreatedEvent<TMetadata> = {

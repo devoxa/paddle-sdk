@@ -11,6 +11,14 @@ const paddleSdk = new PaddleSdk({
 ;(paddleSdk as any).verifyWebhookEvent = () => true
 
 describe('parse webhook event', () => {
+  it('parses a "payment succeeded" event correctly', () => {
+    expect(paddleSdk.parseWebhookEvent(FIXTURES.paymentSucceededEvent)).toMatchSnapshot()
+  })
+
+  it('parses a "payment refunded" event correctly', () => {
+    expect(paddleSdk.parseWebhookEvent(FIXTURES.paymentRefundedEvent)).toMatchSnapshot()
+  })
+
   it('parses a "subscription created" event correctly', () => {
     expect(paddleSdk.parseWebhookEvent(FIXTURES.subscriptionCreatedEvent)).toMatchSnapshot()
   })

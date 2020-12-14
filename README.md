@@ -83,10 +83,12 @@ const paddleSdk = new PaddleSdk<PaddleMetadata>({
 If you are using `parseWebhookEvent` on raw events, only enable the following events in your
 dashboard to prevent `ImplementationMissing` errors being thrown.
 
-- Subscription Created
-- Subscription Updated
-- Subscription Cancelled
-- Subscription Payment Success
+- [Payment Succeeded](https://developer.paddle.com/webhook-reference/one-off-purchase-alerts/payment-succeeded)
+- [Payment Refunded](https://developer.paddle.com/webhook-reference/one-off-purchase-alerts/payment-refunded)
+- [Subscription Created](https://developer.paddle.com/webhook-reference/subscription-alerts/subscription-created)
+- [Subscription Updated](https://developer.paddle.com/webhook-reference/subscription-alerts/subscription-updated)
+- [Subscription Cancelled](https://developer.paddle.com/webhook-reference/subscription-alerts/subscription-cancelled)
+- [Subscription Payment Succeeded](https://developer.paddle.com/webhook-reference/subscription-alerts/subscription-payment-succeeded)
 
 ## Contributors
 

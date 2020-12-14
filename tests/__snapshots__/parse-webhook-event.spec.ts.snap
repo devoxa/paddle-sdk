@@ -4,6 +4,69 @@ exports[`parse webhook event errors if the metadata can not be parsed 1`] = `"Fa
 
 exports[`parse webhook event errors if the webhook signature can not be validated 1`] = `"Failed validating webhook event body"`;
 
+exports[`parse webhook event parses a "payment refunded" event correctly 1`] = `
+Object {
+  "amount": 414.43,
+  "balanceCurrency": "USD",
+  "balanceEarningsDecrease": 0.34,
+  "balanceFeeRefund": 0.11,
+  "balanceGrossRefund": 0.28,
+  "balanceTaxRefund": 0.96,
+  "checkoutId": "9-a568055ec8edc7b-e57313c2c0",
+  "currency": "EUR",
+  "customerEmail": "foo@bar.com",
+  "earningsDecrease": 0.08,
+  "eventId": 123456789,
+  "eventTime": 2020-08-12T21:01:30.000Z,
+  "eventType": "PAYMENT_REFUNDED",
+  "feeRefund": 0.86,
+  "grossRefund": 0.61,
+  "hasMarketingConsent": true,
+  "metadata": Object {
+    "foo": "bar",
+  },
+  "orderId": "8",
+  "quantity": 68,
+  "refundReason": "Example Reason",
+  "refundType": "FULL",
+  "taxRefund": 0.76,
+}
+`;
+
+exports[`parse webhook event parses a "payment succeeded" event correctly 1`] = `
+Object {
+  "balanceCurrency": "USD",
+  "balanceEarnings": 317.23,
+  "balanceFee": 875.73,
+  "balanceGross": 800.96,
+  "balanceTax": 412.02,
+  "checkoutId": "9-656d6c95693cd5b-77ea2a55f9",
+  "coupon": "Coupon 9",
+  "currency": "EUR",
+  "customerCountry": "AU",
+  "customerEmail": "foo@bar.com",
+  "customerName": "Customer Name",
+  "earnings": 140.26,
+  "eventId": 123456789,
+  "eventTime": 2020-08-12T21:01:30.000Z,
+  "eventType": "PAYMENT_SUCCEEDED",
+  "fee": 0.75,
+  "gross": 804.76,
+  "hasMarketingConsent": true,
+  "metadata": Object {
+    "foo": "bar",
+  },
+  "orderId": "3",
+  "paymentMethod": "PAYPAL",
+  "productId": "4",
+  "productName": "Example Product Name",
+  "quantity": 77,
+  "receiptUrl": "https://my.paddle.com/receipt/5/2fe1b313345427e-2e6b05993f",
+  "tax": 0.48,
+  "usedPriceOverride": true,
+}
+`;
+
 exports[`parse webhook event parses a "subscription cancelled" event correctly 1`] = `
 Object {
   "cancelledFrom": 2020-08-12T00:00:00.000Z,
