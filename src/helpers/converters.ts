@@ -51,11 +51,11 @@ export function convertApiDate(
 export function convertSdkDate(date: Date, type: 'DATE' | 'DATE_TIME' | 'EXPIRY_DATE'): string {
   switch (type) {
     case 'DATE':
-      return dayjs(date).format('YYYY-MM-DD')
+      return dayjs.utc(date).format('YYYY-MM-DD')
     case 'DATE_TIME':
-      return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
+      return dayjs.utc(date).format('YYYY-MM-DD HH:mm:ss')
     case 'EXPIRY_DATE':
-      return dayjs(date).format('MM/YYYY')
+      return dayjs.utc(date).format('MM/YYYY')
   }
 }
 
