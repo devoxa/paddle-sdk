@@ -26,8 +26,8 @@ export function convertApiFloat(floatString: string): number {
   return parseFloat(floatString)
 }
 
-export function convertApiBoolean(booleanString: '0' | '1'): boolean {
-  return booleanString === '1'
+export function convertApiBoolean(booleanString: '0' | '1' | 'false' | 'true'): boolean {
+  return booleanString === '1' || booleanString === 'true'
 }
 
 export function convertSdkBoolean(boolean: boolean): 0 | 1 {

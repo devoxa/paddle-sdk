@@ -14,6 +14,8 @@ describe('helpers -> converters', () => {
   it('can convert an API boolean', () => {
     expect(converters.convertApiBoolean('1')).toEqual(true)
     expect(converters.convertApiBoolean('0')).toEqual(false)
+    expect(converters.convertApiBoolean('true')).toEqual(true)
+    expect(converters.convertApiBoolean('false')).toEqual(false)
   })
 
   it('can convert an SDK boolean', () => {
