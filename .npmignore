@@ -8,3 +8,5 @@ yarn-error.log*
 
 # Development Environments
 .history/
+.idea/
+.vscode/
