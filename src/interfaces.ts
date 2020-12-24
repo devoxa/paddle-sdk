@@ -115,7 +115,7 @@ export type PaddleSdkPaymentSucceededEvent<TMetadata> = {
   receiptUrl: string
 
   /** The dashboard ID of the product purchased in this order */
-  productId: string
+  productId: number
 
   /** The name of the product included in the order */
   productName: string

@@ -176,7 +176,7 @@ export class PaddleSdk<TMetadata = any> {
       checkoutId: body.checkout_id,
       coupon: body.coupon,
       receiptUrl: body.receipt_url,
-      productId: body.product_id,
+      productId: convertApiInteger(body.product_id),
       productName: body.product_name,
       quantity: convertApiInteger(body.quantity),
       paymentMethod: convertApiPaymentMethod(body.payment_method),

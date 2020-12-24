@@ -58,7 +58,7 @@ Object {
   },
   "orderId": "3",
   "paymentMethod": "PAYPAL",
-  "productId": "4",
+  "productId": 4,
   "productName": "Example Product Name",
   "quantity": 77,
   "receiptUrl": "https://my.paddle.com/receipt/5/2fe1b313345427e-2e6b05993f",
