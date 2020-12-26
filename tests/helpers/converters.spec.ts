@@ -14,6 +14,8 @@ describe('helpers -> converters', () => {
   it('can convert an API boolean', () => {
     expect(converters.convertApiBoolean('1')).toEqual(true)
     expect(converters.convertApiBoolean('0')).toEqual(false)
+    expect(converters.convertApiBoolean('true')).toEqual(true)
+    expect(converters.convertApiBoolean('false')).toEqual(false)
   })
 
   it('can convert an SDK boolean', () => {
@@ -109,6 +111,12 @@ describe('helpers -> converters', () => {
     expect(converters.convertApiCardBrand('maestro')).toEqual('MAESTRO')
     expect(converters.convertApiCardBrand('diners_club')).toEqual('DINERS_CLUB')
     expect(converters.convertApiCardBrand('xxx')).toEqual('UNKNOWN')
+  })
+
+  it('can convert an refund type', () => {
+    expect(converters.convertApiRefundType('full')).toEqual('FULL')
+    expect(converters.convertApiRefundType('vat')).toEqual('VAT')
+    expect(converters.convertApiRefundType('partial')).toEqual('PARTIAL')
   })
 
   it('can convert an SDK price list', () => {

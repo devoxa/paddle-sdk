@@ -1,15 +1,17 @@
 import {
   RawPaddlePostProductGeneratePayLinkResponse,
+  RawPaddlePostSubscriptionModifiersCreateResponse,
+  RawPaddlePostSubscriptionUsersCancelResponse,
   RawPaddlePostSubscriptionUsersResponse,
   RawPaddlePostSubscriptionUsersUpdateResponse,
-  RawPaddlePostSubscriptionUsersCancelResponse,
-  RawPaddlePostSubscriptionModifiersCreateResponse,
 } from '../src/__generated__/api-routes'
 import {
-  RawPaddleSubscriptionCreatedAlert,
-  RawPaddleSubscriptionUpdatedAlert,
+  RawPaddlePaymentRefundedAlert,
+  RawPaddlePaymentSucceededAlert,
   RawPaddleSubscriptionCancelledAlert,
+  RawPaddleSubscriptionCreatedAlert,
   RawPaddleSubscriptionPaymentSucceededAlert,
+  RawPaddleSubscriptionUpdatedAlert,
 } from '../src/__generated__/webhook-alerts'
 
 export const publicKey = `-----BEGIN PUBLIC KEY-----
@@ -32,6 +34,64 @@ export const vendorId = 123456
 export const vendorAuthCode = 'FooBarBaz'
 
 export const metadataEncryptionKey = 'ZtdDl3Ex7ycFfgdbAC3uTLNk8eLVDcEd'
+
+export const paymentSucceededEvent: RawPaddlePaymentSucceededAlert = {
+  alert_id: `123456789`,
+  alert_name: `payment_succeeded`,
+  balance_currency: `USD`,
+  balance_earnings: `317.23`,
+  balance_fee: `875.73`,
+  balance_gross: `800.96`,
+  balance_tax: `412.02`,
+  checkout_id: `9-656d6c95693cd5b-77ea2a55f9`,
+  country: `AU`,
+  coupon: `Coupon 9`,
+  currency: `EUR`,
+  customer_name: `Customer Name`,
+  earnings: `140.26`,
+  email: `foo@bar.com`,
+  event_time: `2020-08-12 21:01:30`,
+  fee: `0.75`,
+  ip: `89.207.217.18`,
+  marketing_consent: `1`,
+  order_id: `3`,
+  p_signature: `GLv7wxZi4E1GLo+SmFnq3OAiZ7ib8wcU/WBh/8sXlmocTIBBx5yBjnvDbE0qaNgxMlew/esYfDv1ApHAnz93J/MziloBoLmu/8YCjDddVFs1R/Y+2sbIhkI5xu84Uz1BobkIPtR/+GVgI0k2XeLudG3weCc6/eUa/T3dxc0p9b9aenKGig1HxHpWTCBi5fnr121c7HDlly6eyPlGrmk5yrwtbfTGBmvrwU3c3X7Nh0lVGEMt1Y2KEqgfFsaGwdg9JnT/xDg33NyEKDPOu0asvb6cPmRS+q+ojUnzBldFCd/+/H9TjE/Qjoqy8bNNjAIKH3kReyZls42631Hf3DuqsTLg2uR6xQCXTxLvRukdkUKsidu2sadLJ5NgibpnWsplgptS7AFXwm7uwvarFmbwSrN1YgI3vvN/Hm3/3xWHlpbfhUKDeOu2O5JW8drsgFNY2DIdE57HqseutKypp0shgZBfDn+aYyk6o0GhbmkY54dmtFRqxCFNFiy5TXfKQcFKi71nvYdd6ILQOj43HKvNScKm4cuiCqoLNOtYs3kY1k8nlvgyTY6EV1vYf+I84bt/BbKDgwNTmJoHwAeRACwVg59wb1hV5upCbHFy/Qn3/M189Nl6FiutlGqnuTwEwxapdGbFegjAd062OA8Ye4yixIOnsPIWGsTGcIkHEQyRLN0=`,
+  passthrough: `kLFV0ZkzYdTrYKIvFhQlkK9vccfQP0FxGpK10j563YK2zCGdhMij2aX/sblM`,
+  payment_method: `paypal`,
+  payment_tax: `0.48`,
+  product_id: `4`,
+  product_name: `Example Product Name`,
+  quantity: `77`,
+  receipt_url: `https://my.paddle.com/receipt/5/2fe1b313345427e-2e6b05993f`,
+  sale_gross: `804.76`,
+  used_price_override: `true`,
+}
+
+export const paymentRefundedEvent: RawPaddlePaymentRefundedAlert = {
+  alert_id: `123456789`,
+  alert_name: 'payment_refunded',
+  amount: `414.43`,
+  balance_currency: `USD`,
+  balance_earnings_decrease: `0.34`,
+  balance_fee_refund: `0.11`,
+  balance_gross_refund: `0.28`,
+  balance_tax_refund: `0.96`,
+  checkout_id: `9-a568055ec8edc7b-e57313c2c0`,
+  currency: `EUR`,
+  earnings_decrease: `0.08`,
+  email: `foo@bar.com`,
+  event_time: `2020-08-12 21:01:30`,
+  fee_refund: `0.86`,
+  gross_refund: `0.61`,
+  marketing_consent: `1`,
+  order_id: `8`,
+  p_signature: `GLv7wxZi4E1GLo+SmFnq3OAiZ7ib8wcU/WBh/8sXlmocTIBBx5yBjnvDbE0qaNgxMlew/esYfDv1ApHAnz93J/MziloBoLmu/8YCjDddVFs1R/Y+2sbIhkI5xu84Uz1BobkIPtR/+GVgI0k2XeLudG3weCc6/eUa/T3dxc0p9b9aenKGig1HxHpWTCBi5fnr121c7HDlly6eyPlGrmk5yrwtbfTGBmvrwU3c3X7Nh0lVGEMt1Y2KEqgfFsaGwdg9JnT/xDg33NyEKDPOu0asvb6cPmRS+q+ojUnzBldFCd/+/H9TjE/Qjoqy8bNNjAIKH3kReyZls42631Hf3DuqsTLg2uR6xQCXTxLvRukdkUKsidu2sadLJ5NgibpnWsplgptS7AFXwm7uwvarFmbwSrN1YgI3vvN/Hm3/3xWHlpbfhUKDeOu2O5JW8drsgFNY2DIdE57HqseutKypp0shgZBfDn+aYyk6o0GhbmkY54dmtFRqxCFNFiy5TXfKQcFKi71nvYdd6ILQOj43HKvNScKm4cuiCqoLNOtYs3kY1k8nlvgyTY6EV1vYf+I84bt/BbKDgwNTmJoHwAeRACwVg59wb1hV5upCbHFy/Qn3/M189Nl6FiutlGqnuTwEwxapdGbFegjAd062OA8Ye4yixIOnsPIWGsTGcIkHEQyRLN0=`,
+  passthrough: `kLFV0ZkzYdTrYKIvFhQlkK9vccfQP0FxGpK10j563YK2zCGdhMij2aX/sblM`,
+  quantity: `68`,
+  refund_reason: `Example Reason`,
+  refund_type: `full`,
+  tax_refund: `0.76`,
+}
 
 export const subscriptionCreatedEvent: RawPaddleSubscriptionCreatedAlert = {
   alert_id: `2091557455`,
