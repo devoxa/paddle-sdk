@@ -120,6 +120,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://www.david-reess.de"><img src="https://avatars3.githubusercontent.com/u/4615516?v=4" width="75px;" alt=""/><br /><sub><b>David Reeß</b></sub></a><br /><a href="https://github.com/devoxa/paddle-sdk/commits?author=queicherius" title="Code">💻</a> <a href="https://github.com/devoxa/paddle-sdk/commits?author=queicherius" title="Documentation">📖</a> <a href="https://github.com/devoxa/paddle-sdk/commits?author=queicherius" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://github.com/atjeff"><img src="https://avatars1.githubusercontent.com/u/10563763?v=4" width="75px;" alt=""/><br /><sub><b>Jeff Hage</b></sub></a><br /><a href="https://github.com/devoxa/paddle-sdk/pulls?q=is%3Apr+reviewed-by%3Aatjeff" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/aradzie"><img src="https://avatars0.githubusercontent.com/u/44386?v=4" width="75px;" alt=""/><br /><sub><b>Aliaksandr Radzivanovich</b></sub></a><br /><a href="https://github.com/devoxa/paddle-sdk/commits?author=aradzie" title="Code">💻</a> <a href="https://github.com/devoxa/paddle-sdk/commits?author=aradzie" title="Documentation">📖</a> <a href="https://github.com/devoxa/paddle-sdk/commits?author=aradzie" title="Tests">⚠️</a></td>
   </tr>
 </table>
 
