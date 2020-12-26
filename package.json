@@ -1,7 +1,7 @@
 {
   "name": "@devoxa/paddle-sdk",
   "description": "An SDK to interface with the API and webhooks from paddle.com",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "main": "dist/src/index.js",
   "license": "MIT",
   "repository": {
