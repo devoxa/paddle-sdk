@@ -1,5 +1,6 @@
 import * as FIXTURES from './fixtures'
 import { PaddleSdk } from '../src/index'
+import { encryptMetadata, stringifyMetadata } from '../src/metadata'
 
 describe('PaddleSDK', () => {
   it('throws an error when initialized without a public key', async () => {
@@ -8,7 +9,7 @@ describe('PaddleSDK', () => {
       new PaddleSdk({
         vendorId: FIXTURES.vendorId,
         vendorAuthCode: FIXTURES.vendorAuthCode,
-        metadataEncryptionKey: FIXTURES.metadataEncryptionKey,
+        metadataCodec: encryptMetadata(stringifyMetadata(), FIXTURES.metadataEncryptionKey),
       })
     }).toThrowErrorMatchingSnapshot()
   })
@@ -19,7 +20,7 @@ describe('PaddleSDK', () => {
       new PaddleSdk({
         publicKey: FIXTURES.publicKey,
         vendorAuthCode: FIXTURES.vendorAuthCode,
-        metadataEncryptionKey: FIXTURES.metadataEncryptionKey,
+        metadataCodec: encryptMetadata(stringifyMetadata(), FIXTURES.metadataEncryptionKey),
       })
     }).toThrowErrorMatchingSnapshot()
   })
@@ -30,12 +31,12 @@ describe('PaddleSDK', () => {
       new PaddleSdk({
         publicKey: FIXTURES.publicKey,
         vendorId: FIXTURES.vendorId,
-        metadataEncryptionKey: FIXTURES.metadataEncryptionKey,
+        metadataCodec: encryptMetadata(stringifyMetadata(), FIXTURES.metadataEncryptionKey),
       })
     }).toThrowErrorMatchingSnapshot()
   })
 
-  it('throws an error when initialized without a metadata encryption key', async () => {
+  it('throws an error when initialized without a metadata codec', async () => {
     expect(() => {
       // @ts-expect-error missing encryption key
       new PaddleSdk({
@@ -52,7 +53,7 @@ describe('PaddleSDK', () => {
         publicKey: FIXTURES.publicKey,
         vendorId: FIXTURES.vendorId,
         vendorAuthCode: FIXTURES.vendorAuthCode,
-        metadataEncryptionKey: 'FooBar',
+        metadataCodec: encryptMetadata(stringifyMetadata(), 'FooBar'),
       })
     }).toThrowErrorMatchingSnapshot()
   })

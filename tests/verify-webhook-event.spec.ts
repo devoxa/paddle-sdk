@@ -1,12 +1,13 @@
 import * as FIXTURES from './fixtures'
 import { PaddleSdk } from '../src/index'
+import { encryptMetadata, stringifyMetadata } from '../src/metadata'
 
 function verify(body: any, publicKey?: string) {
   const paddleSdk = new PaddleSdk({
     publicKey: publicKey || FIXTURES.publicKey,
     vendorId: FIXTURES.vendorId,
     vendorAuthCode: FIXTURES.vendorAuthCode,
-    metadataEncryptionKey: FIXTURES.metadataEncryptionKey,
+    metadataCodec: encryptMetadata(stringifyMetadata(), FIXTURES.metadataEncryptionKey),
   })
 
   return paddleSdk.verifyWebhookEvent(body)

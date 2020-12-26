@@ -7,6 +7,7 @@ import {
 } from '../src/index'
 import { fetch } from '../src/helpers/fetch'
 import { PaddleSdkApiException } from '../src/exceptions'
+import { encryptMetadata, stringifyMetadata } from '../src/metadata'
 
 jest.mock('../src/helpers/fetch', () => ({ fetch: jest.fn() }))
 
@@ -23,7 +24,7 @@ describe('api requests', () => {
     publicKey: FIXTURES.publicKey,
     vendorId: FIXTURES.vendorId,
     vendorAuthCode: FIXTURES.vendorAuthCode,
-    metadataEncryptionKey: FIXTURES.metadataEncryptionKey,
+    metadataCodec: encryptMetadata(stringifyMetadata(), FIXTURES.metadataEncryptionKey),
   })
 
   beforeEach(() => {
