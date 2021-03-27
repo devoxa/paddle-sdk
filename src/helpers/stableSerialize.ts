@@ -8,16 +8,14 @@ export function stableSerialize<T>(object: Record<string, T>): string {
   // 3) Encode any non-strings as their JSON stringified version: `3` -> `'3'`
   const encodedObject: Record<string, string> = {}
   for (const property in object) {
-    if (object.hasOwnProperty(property)) {
-      const value = object[property]
+    const value = object[property]
 
-      if (Array.isArray(value)) {
-        encodedObject[property] = value.join(', ')
-      } else if (typeof value !== 'string') {
-        encodedObject[property] = JSON.stringify(value)
-      } else {
-        encodedObject[property] = value
-      }
+    if (Array.isArray(value)) {
+      encodedObject[property] = value.join(', ')
+    } else if (typeof value !== 'string') {
+      encodedObject[property] = JSON.stringify(value)
+    } else {
+      encodedObject[property] = value
     }
   }
 
