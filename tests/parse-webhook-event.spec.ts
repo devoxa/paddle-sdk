@@ -9,6 +9,7 @@ const paddleSdk = new PaddleSdk({
   metadataCodec: encryptMetadata(stringifyMetadata(), FIXTURES.metadataEncryptionKey),
 })
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 ;(paddleSdk as any).verifyWebhookEvent = () => true
 
 describe('parse webhook event', () => {
@@ -29,10 +30,12 @@ describe('parse webhook event', () => {
   })
 
   it('parses a "subscription updated (paused)" event correctly', () => {
-    const fixture: any = FIXTURES.subscriptionUpdatedEvent
-    fixture.paused_at = '2020-01-01 12:13:14'
-    fixture.paused_from = '2020-02-01 12:13:14'
-    fixture.paused_reason = 'delinquent'
+    const fixture = {
+      ...FIXTURES.subscriptionUpdatedEvent,
+      paused_at: '2020-01-01 12:13:14',
+      paused_from: '2020-02-01 12:13:14',
+      paused_reason: 'delinquent',
+    }
 
     expect(paddleSdk.parseWebhookEvent(fixture)).toMatchSnapshot()
   })
@@ -48,13 +51,16 @@ describe('parse webhook event', () => {
   })
 
   it('errors if the metadata can not be parsed', () => {
-    const fixture: any = FIXTURES.subscriptionCreatedEvent
-    fixture.passthrough = 'FooBar'
+    const fixture = {
+      ...FIXTURES.subscriptionCreatedEvent,
+      passthrough: 'FooBar',
+    }
 
     expect(() => paddleSdk.parseWebhookEvent(fixture)).toThrowErrorMatchingSnapshot()
   })
 
   it('errors if the webhook signature can not be validated', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(paddleSdk as any).verifyWebhookEvent = () => false
 
     expect(() =>

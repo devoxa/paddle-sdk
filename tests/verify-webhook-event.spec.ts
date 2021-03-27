@@ -2,6 +2,7 @@ import * as FIXTURES from './fixtures'
 import { PaddleSdk } from '../src/index'
 import { encryptMetadata, stringifyMetadata } from '../src/metadata'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function verify(body: any, publicKey?: string) {
   const paddleSdk = new PaddleSdk({
     publicKey: publicKey || FIXTURES.publicKey,
@@ -19,9 +20,11 @@ describe('verify webhook event', () => {
   })
 
   it('verifies valid signature for pre-parsed body', () => {
-    const eventBodyParsed: any = FIXTURES.subscriptionCreatedEvent
-    eventBodyParsed.linked_subscriptions = [8, 9, 4]
-    eventBodyParsed.subscription_plan_id = 7
+    const eventBodyParsed = {
+      ...FIXTURES.subscriptionCreatedEvent,
+      linked_subscriptions: [8, 9, 4],
+      subscription_plan_id: 7,
+    }
 
     expect(verify(eventBodyParsed)).toEqual(true)
   })

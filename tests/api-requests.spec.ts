@@ -11,6 +11,7 @@ import { encryptMetadata, stringifyMetadata } from '../src/metadata'
 
 jest.mock('../src/helpers/fetch', () => ({ fetch: jest.fn() }))
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mockNextApiResponse(response: any) {
   ;(fetch as jest.Mock).mockImplementationOnce(async () => ({ success: true, response }))
 }

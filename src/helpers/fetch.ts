@@ -1,10 +1,12 @@
 import nodeFetch from 'node-fetch'
 import FormData from 'form-data'
 
-export async function fetch(
+type Body = Record<string, string | number | undefined>
+
+export async function fetch<T extends unknown>(
   url: string,
-  options: { method: string; body: Record<string, any> }
-): Promise<any> {
+  options: { method: string; body: Body }
+): Promise<T> {
   const response = await nodeFetch(url, {
     method: options.method,
     body: objectToFormData(options.body),
@@ -13,14 +15,14 @@ export async function fetch(
   return response.json()
 }
 
-function objectToFormData(object: Record<string, any>): FormData {
+function objectToFormData(object: Body): FormData {
   const formData = new FormData()
 
-  Object.entries(object)
-    .filter(([, value]) => typeof value !== 'undefined')
-    .forEach(([key, value]) => {
-      formData.append(key, value.toString())
-    })
+  Object.entries(object).forEach(([key, value]) => {
+    if (typeof value === 'undefined') return
+
+    formData.append(key, value.toString())
+  })
 
   return formData
 }
