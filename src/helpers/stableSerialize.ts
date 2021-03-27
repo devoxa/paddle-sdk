@@ -8,19 +8,21 @@ export function stableSerialize<T>(object: Record<string, T>): string {
   // 3) Encode any non-strings as their JSON stringified version: `3` -> `'3'`
   const encodedObject: Record<string, string> = {}
   for (const property in object) {
-    if (object.hasOwnProperty(property) && typeof object[property] !== 'string') {
+    if (object.hasOwnProperty(property)) {
       const value = object[property]
 
       if (Array.isArray(value)) {
         encodedObject[property] = value.join(', ')
-      } else {
+      } else if (typeof value !== 'string') {
         encodedObject[property] = JSON.stringify(value)
+      } else {
+        encodedObject[property] = value
       }
     }
   }
 
   // 4) Serialize in the way that PHP would
-  return phpSerialize(object)
+  return phpSerialize(encodedObject)
 }
 
 function sortByKey<T>(object: Record<string, T>) {
