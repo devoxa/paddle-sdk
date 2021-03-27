@@ -294,10 +294,10 @@
   resolved "https://registry.yarnpkg.com/@devoxa/aes-encryption/-/aes-encryption-1.0.3.tgz#99491ebf4a50df33b0ad30cecc71368c510a89ca"
   integrity sha512-oSNSRenW0QDnEtq7yf/Rw/2BtWkPkKdHDLGZk6srsO966twt3t5u4bOrZnjqnRo/ZCqXyFas2loJz6SMUZrCNA==
 
-"@devoxa/eslint-config@^1.0.0":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@devoxa/eslint-config/-/eslint-config-1.2.2.tgz#c9ed50f520ac05f9e084a9204624085cc977cb0c"
-  integrity sha512-2eAHWhFmGaVpJ3vCpYGhm2E8kNUpAC4s+R2CPA07ipfOsxmjbgnxCiI1ghzrcsSxKIjxMToartZNzeazTHWS2Q==
+"@devoxa/eslint-config@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@devoxa/eslint-config/-/eslint-config-2.0.0.tgz#a10bcf90931526c90b89486befbde6d4a0301c8e"
+  integrity sha512-VkLjv7FCHjmpdN7i4S9iJ3SiDSBxWDvWtX1rwcNqV0+nLeV82v+8NHbd9aR8qFoYLcQkEB06LyQFKlmW8wOReQ==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^4.17.0"
     "@typescript-eslint/parser" "^4.17.0"
