@@ -4,6 +4,7 @@ import nodeFetch from 'node-fetch'
 
 jest.mock('node-fetch', () => jest.fn())
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mockNextNodeFetchCall(json: any) {
   ;((nodeFetch as unknown) as jest.Mock).mockImplementationOnce(async () => ({
     json: async () => json,

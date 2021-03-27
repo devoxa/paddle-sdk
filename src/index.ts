@@ -114,6 +114,7 @@ export class PaddleSdk<TMetadata = unknown> {
     this.metadataCodec = options.metadataCodec
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   verifyWebhookEvent(body: any): body is RawPaddleWebhookAlert {
     if (typeof body !== 'object') return false
 
@@ -129,6 +130,7 @@ export class PaddleSdk<TMetadata = unknown> {
     return verifier.verify(this.publicKey, signature, 'base64')
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   parseWebhookEvent(body: any) {
     if (!this.verifyWebhookEvent(body)) {
       throw new PaddleSdkException('Failed validating webhook event body')
@@ -387,7 +389,16 @@ export class PaddleSdk<TMetadata = unknown> {
     method: 'GET' | 'POST',
     body: TRequest
   ): Promise<TResponse> {
-    const json = await fetch(url, {
+    const json = await fetch<
+      | {
+          success: true
+          response: any // eslint-disable-line @typescript-eslint/no-explicit-any
+        }
+      | {
+          success: false
+          error: { message: string }
+        }
+    >(url, {
       method,
       body: {
         vendor_id: this.vendorId,
