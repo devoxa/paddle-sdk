@@ -278,7 +278,8 @@ export const updateSubscriptionApiResponse: RawPaddlePostSubscriptionUsersUpdate
 
 export const cancelSubscriptionApiResponse: RawPaddlePostSubscriptionUsersCancelResponse = undefined
 
-export const createSubscriptionModifierApiResponse: RawPaddlePostSubscriptionModifiersCreateResponse = {
-  subscription_id: 1,
-  modifier_id: 2,
-}
+export const createSubscriptionModifierApiResponse: RawPaddlePostSubscriptionModifiersCreateResponse =
+  {
+    subscription_id: 1,
+    modifier_id: 2,
+  }

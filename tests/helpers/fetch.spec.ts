@@ -6,18 +6,18 @@ jest.mock('node-fetch', () => jest.fn())
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mockNextNodeFetchCall(json: any) {
-  ;((nodeFetch as unknown) as jest.Mock).mockImplementationOnce(async () => ({
+  ;(nodeFetch as unknown as jest.Mock).mockImplementationOnce(async () => ({
     json: async () => json,
   }))
 }
 
 function getLastNodeFetchCall() {
-  return ((nodeFetch as unknown) as jest.Mock).mock.calls[0]
+  return (nodeFetch as unknown as jest.Mock).mock.calls[0]
 }
 
 describe('helpers -> fetch', () => {
   beforeEach(() => {
-    ;((nodeFetch as unknown) as jest.Mock).mockClear()
+    ;(nodeFetch as unknown as jest.Mock).mockClear()
   })
 
   it('can make a fetch request using a form data body', async () => {
