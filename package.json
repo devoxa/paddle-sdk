@@ -36,7 +36,7 @@
     "@types/jest": "26.0.23",
     "@types/node": "15.12.5",
     "@types/node-fetch": "2.5.10",
-    "eslint": "7.29.0",
+    "eslint": "7.30.0",
     "execall": "2.0.0",
     "jest": "27.0.6",
     "nodemon": "2.0.9",
