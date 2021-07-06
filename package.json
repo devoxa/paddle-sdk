@@ -33,7 +33,7 @@
   "devDependencies": {
     "@devoxa/eslint-config": "2.0.5",
     "@devoxa/prettier-config": "1.0.0",
-    "@types/jest": "26.0.23",
+    "@types/jest": "26.0.24",
     "@types/node": "15.12.5",
     "@types/node-fetch": "2.5.10",
     "eslint": "7.30.0",
