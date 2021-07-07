@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 import fs from 'fs'
-import execall from 'execall'
+import { matchAll } from '@devoxa/flocky'
 
 const DOCUMENTATION_URLS = {
   RawPaddleEnumCurrencies: `https://developer.paddle.com/reference/platform-parameters/supported-currencies`,
@@ -37,7 +37,7 @@ async function getEnumFields(url: string) {
   const response = await fetch(url)
   const text = await response.text()
 
-  const matches = execall(/<code>(.*?)<\/code>/g, text)
+  const matches = matchAll(/<code>(.*?)<\/code>/g, text)
   return matches
     .map((match) => match.subMatches[0])
     .filter((x, i, self) => self.indexOf(x) === i)

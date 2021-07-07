@@ -32,12 +32,12 @@
   },
   "devDependencies": {
     "@devoxa/eslint-config": "2.0.5",
+    "@devoxa/flocky": "1.1.3",
     "@devoxa/prettier-config": "1.0.0",
     "@types/jest": "26.0.24",
     "@types/node": "15.12.5",
     "@types/node-fetch": "2.5.11",
     "eslint": "7.30.0",
-    "execall": "2.0.0",
     "jest": "27.0.6",
     "nodemon": "2.0.9",
     "prettier": "2.3.2",
