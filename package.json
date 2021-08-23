@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@devoxa/eslint-config": "2.0.5",
-    "@devoxa/flocky": "1.2.1",
+    "@devoxa/flocky": "1.2.2",
     "@devoxa/prettier-config": "1.0.0",
     "@types/jest": "27.0.1",
     "@types/node": "15.12.5",
