@@ -519,10 +519,10 @@
     eslint-config-prettier "^8.1.0"
     eslint-plugin-react "^7.21.2"
 
-"@devoxa/flocky@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@devoxa/flocky/-/flocky-1.2.1.tgz#23a09ca141e4ff09ee58bce2f38cd01da4d349d8"
-  integrity sha512-cLJx/SXy/rqAOFsx4x4EQYIM+spgO7oN78KsxlBqWYugjPgaoz8W3dp60eRtrA4zVdAUn7Il15Ju+0Mtj2nWdA==
+"@devoxa/flocky@1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@devoxa/flocky/-/flocky-1.2.2.tgz#835eefa11e86541446025936c3f7e464115ed340"
+  integrity sha512-QO5yN9JBdXZVA3pEOmlMKoZY1i83kNMRJXEBiKhkJLj0zlyUVEB6II/9bnExUX6b1TlLHndF3tpBIx7DYD0xrw==
 
 "@devoxa/prettier-config@1.0.0":
   version "1.0.0"
