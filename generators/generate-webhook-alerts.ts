@@ -53,9 +53,9 @@ type JsonSchemaProperty = {
 run()
 
 async function run() {
-  let types = []
+  const types = []
 
-  for (let url of DOCUMENTATION_URLS) {
+  for (const url of DOCUMENTATION_URLS) {
     types.push(await buildWebhookAlertType(url))
     console.log(`Built type from ${url}`)
   }
@@ -82,10 +82,9 @@ async function buildWebhookAlertType(url: string) {
   const properties = Object.entries(jsonSchema.properties).map(([propertyName, propertySchema]) => {
     const type = inferTypeFromPropertySchema(propertySchema)
 
-    const pattern = propertySchema.pattern ? `\n@pattern ${propertySchema.pattern}` : ''
-    const comment = propertySchema.description
-      ? `/** ${propertySchema.description}${pattern} */\n  `
-      : ''
+    const pattern = 'pattern' in propertySchema ? `\n@pattern ${propertySchema.pattern}` : ''
+    const comment =
+      'description' in propertySchema ? `/** ${propertySchema.description}${pattern} */\n  ` : ''
     return `  ${INCLUDE_COMMENTS ? comment : ''}${propertyName}: ${type}`
   })
 
