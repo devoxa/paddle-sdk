@@ -19,6 +19,7 @@
     "strict": true,
     "skipLibCheck": true,
     "strictPropertyInitialization": false,
+    "useUnknownInCatchVariables": false,
 
     // Module Resolution Options
     "moduleResolution": "node",
