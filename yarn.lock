@@ -524,10 +524,10 @@
   resolved "https://registry.yarnpkg.com/@devoxa/flocky/-/flocky-1.2.3.tgz#45d2e09d2eea749c77abb7a902a448b95c2adae0"
   integrity sha512-cINIFsKxzuwkA/XAAew+HPWPJ0P59qARtht8C0eZ6mebKhV4yHEbx12Ou1y1Qy2bZtc7Y6/6JzGAWNGm4Atklw==
 
-"@devoxa/prettier-config@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@devoxa/prettier-config/-/prettier-config-1.0.1.tgz#3d0094298ad634b9b30bb833285858e35810520b"
-  integrity sha512-A1MFXXv2k/DMSRfFjSspNzcj/zqs+S7u1txC2Us9iCZzKHhh072yMbkHEjUjleF8CDb8/FYTRr/zIQCj5DOSSQ==
+"@devoxa/prettier-config@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@devoxa/prettier-config/-/prettier-config-1.0.2.tgz#0ccde044ec67d5702655f3eac5de2aae7d9005d6"
+  integrity sha512-dAGMCT9uZgcsxfAVVVPf7dQ8ftJUSAfih/Vupy8srSjm6vop4ItImUUch2zFekjKQ97CkxxcYizo21gVb1+U3w==
 
 "@eslint/eslintrc@^0.4.3":
   version "0.4.3"
