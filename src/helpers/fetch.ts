@@ -3,10 +3,7 @@ import FormData from 'form-data'
 
 type Body = Record<string, string | number | undefined>
 
-export async function fetch<T extends unknown>(
-  url: string,
-  options: { method: string; body: Body }
-): Promise<T> {
+export async function fetch<T>(url: string, options: { method: string; body: Body }): Promise<T> {
   const response = await nodeFetch(url, {
     method: options.method,
     body: objectToFormData(options.body),
