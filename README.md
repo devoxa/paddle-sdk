@@ -70,13 +70,15 @@ const paddleSdk = new PaddleSdk<PaddleMetadata>({
 
 ### Available Methods
 
-- `paddleSdk.verifyWebhookEvent(body: any): boolean`
-- `paddleSdk.parseWebhookEvent(body: any): PaddleSdkSubscriptionCreatedEvent | PaddleSdkSubscriptionUpdatedEvent | ...`
-- `async createProductPayLink(data: PaddleSdkCreateProductPayLinkRequest): Promise<PaddleSdkCreateProductPayLinkResponse>`
-- `async listSubscriptions(data: PaddleSdkListSubscriptionsRequest): Promise<PaddleSdkListSubscriptionsResponse>`
-- `async updateSubscription(data: PaddleSdkUpdateSubscriptionRequest): Promise<PaddleSdkUpdateSubscriptionResponse>`
-- `async cancelSubscription(data: PaddleSdkCancelSubscriptionRequest): Promise<PaddleSdkCancelSubscriptionResponse>`
-- `async createSubscriptionModifier(data: PaddleSdkCreateSubscriptionModifierRequest): Promise<PaddleSdkCreateSubscriptionModifierResponse>`
+```
+verifyWebhookEvent(body: any): boolean
+parseWebhookEvent(body: any): PaddleSdkSubscriptionCreatedEvent | PaddleSdkSubscriptionUpdatedEvent | ...
+async createProductPayLink(data: PaddleSdkCreateProductPayLinkRequest): Promise<PaddleSdkCreateProductPayLinkResponse>
+async listSubscriptions(data: PaddleSdkListSubscriptionsRequest): Promise<PaddleSdkListSubscriptionsResponse>
+async updateSubscription(data: PaddleSdkUpdateSubscriptionRequest): Promise<PaddleSdkUpdateSubscriptionResponse>
+async cancelSubscription(data: PaddleSdkCancelSubscriptionRequest): Promise<PaddleSdkCancelSubscriptionResponse>
+async createSubscriptionModifier(data: PaddleSdkCreateSubscriptionModifierRequest): Promise<PaddleSdkCreateSubscriptionModifierResponse>
+```
 
 **A note on parsing webhooks:**
 
