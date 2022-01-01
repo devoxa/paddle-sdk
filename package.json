@@ -37,7 +37,7 @@
     "@types/jest": "27.4.0",
     "@types/node": "16.11.17",
     "@types/node-fetch": "2.5.12",
-    "eslint": "8.5.0",
+    "eslint": "8.6.0",
     "jest": "27.4.5",
     "nodemon": "2.0.15",
     "prettier": "2.5.1",
