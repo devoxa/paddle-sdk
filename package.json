@@ -27,7 +27,7 @@
     "@devoxa/aes-encryption": "^1.0.2",
     "dayjs": "^1.8.33",
     "form-data": "^4.0.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^3.0.0",
     "php-serialize": "^4.0.2"
   },
   "devDependencies": {
@@ -36,7 +36,7 @@
     "@devoxa/prettier-config": "1.0.2",
     "@types/jest": "27.4.0",
     "@types/node": "16.11.21",
-    "@types/node-fetch": "2.5.12",
+    "@types/node-fetch": "3.0.2",
     "eslint": "8.8.0",
     "jest": "27.4.7",
     "nodemon": "2.0.15",
