@@ -27,7 +27,7 @@
     "@devoxa/aes-encryption": "^1.0.2",
     "dayjs": "^1.8.33",
     "form-data": "^4.0.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^3.0.0",
     "php-serialize": "^4.0.2"
   },
   "devDependencies": {
