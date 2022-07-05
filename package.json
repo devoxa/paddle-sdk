@@ -39,7 +39,7 @@
     "@types/node-fetch": "2.6.2",
     "eslint": "8.19.0",
     "jest": "28.1.2",
-    "nodemon": "2.0.18",
+    "nodemon": "2.0.19",
     "prettier": "2.7.1",
     "ts-jest": "28.0.5",
     "ts-node": "10.8.2",
