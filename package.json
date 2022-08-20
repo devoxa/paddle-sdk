@@ -35,7 +35,7 @@
     "@devoxa/flocky": "1.4.0",
     "@devoxa/prettier-config": "1.0.2",
     "@types/jest": "28.1.7",
-    "@types/node": "16.11.50",
+    "@types/node": "16.11.51",
     "@types/node-fetch": "2.6.2",
     "eslint": "8.22.0",
     "jest": "28.1.3",
