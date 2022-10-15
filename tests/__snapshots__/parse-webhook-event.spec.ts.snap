@@ -5,7 +5,7 @@ exports[`parse webhook event errors if the metadata can not be parsed 1`] = `"Fa
 exports[`parse webhook event errors if the webhook signature can not be validated 1`] = `"Failed validating webhook event body"`;
 
 exports[`parse webhook event parses a "payment refunded" event correctly 1`] = `
-Object {
+{
   "amount": 414.43,
   "balanceCurrency": "USD",
   "balanceEarningsDecrease": 0.34,
@@ -22,7 +22,7 @@ Object {
   "feeRefund": 0.86,
   "grossRefund": 0.61,
   "hasMarketingConsent": true,
-  "metadata": Object {
+  "metadata": {
     "foo": "bar",
   },
   "orderId": "8",
@@ -34,7 +34,7 @@ Object {
 `;
 
 exports[`parse webhook event parses a "payment succeeded" event correctly 1`] = `
-Object {
+{
   "balanceCurrency": "USD",
   "balanceEarnings": 317.23,
   "balanceFee": 875.73,
@@ -53,7 +53,7 @@ Object {
   "fee": 0.75,
   "gross": 804.76,
   "hasMarketingConsent": true,
-  "metadata": Object {
+  "metadata": {
     "foo": "bar",
   },
   "orderId": "3",
@@ -68,7 +68,7 @@ Object {
 `;
 
 exports[`parse webhook event parses a "subscription cancelled" event correctly 1`] = `
-Object {
+{
   "cancelledFrom": 2020-08-12T00:00:00.000Z,
   "checkoutId": "1-25b286e64f4a228-65f3aadbbb",
   "currency": "GBP",
@@ -78,7 +78,7 @@ Object {
   "eventTime": 2020-08-12T02:13:06.000Z,
   "eventType": "SUBSCRIPTION_CANCELLED",
   "hasMarketingConsent": false,
-  "metadata": Object {
+  "metadata": {
     "foo": "bar",
   },
   "price": 464.07,
@@ -91,7 +91,7 @@ Object {
 `;
 
 exports[`parse webhook event parses a "subscription created" event correctly 1`] = `
-Object {
+{
   "cancelUrl": "https://checkout.paddle.com/subscription/cancel?user=6&subscription=1&hash=acb15fc760b9d4cb4fae9abf67b7b4d52f12441e",
   "checkoutId": "2-461ecbe710cab0e-f2e284ef00",
   "currency": "GBP",
@@ -101,7 +101,7 @@ Object {
   "eventTime": 2020-08-09T22:11:09.000Z,
   "eventType": "SUBSCRIPTION_CREATED",
   "hasMarketingConsent": true,
-  "metadata": Object {
+  "metadata": {
     "foo": "bar",
   },
   "nextPaymentDate": 2020-09-03T00:00:00.000Z,
@@ -117,7 +117,7 @@ Object {
 `;
 
 exports[`parse webhook event parses a "subscription payment succeeded" event correctly 1`] = `
-Object {
+{
   "balanceCurrency": "GBP",
   "balanceEarnings": 233.34,
   "balanceFee": 812.01,
@@ -139,7 +139,7 @@ Object {
   "hasMarketingConsent": true,
   "installments": 9,
   "isInitialPayment": true,
-  "metadata": Object {
+  "metadata": {
     "foo": "bar",
   },
   "nextPaymentAmount": 4.99,
@@ -159,7 +159,7 @@ Object {
 `;
 
 exports[`parse webhook event parses a "subscription updated (paused)" event correctly 1`] = `
-Object {
+{
   "cancelUrl": "https://checkout.paddle.com/subscription/cancel?user=7&subscription=1&hash=539134462da7ff8bce9581704ff3f462994caf05",
   "checkoutId": "6-1d95a8cd27317a6-f8810efc48",
   "currency": "USD",
@@ -169,7 +169,7 @@ Object {
   "eventTime": 2020-08-12T02:12:03.000Z,
   "eventType": "SUBSCRIPTION_UPDATED",
   "hasMarketingConsent": true,
-  "metadata": Object {
+  "metadata": {
     "foo": "bar",
   },
   "nextPaymentDate": 2020-09-04T00:00:00.000Z,
@@ -193,7 +193,7 @@ Object {
 `;
 
 exports[`parse webhook event parses a "subscription updated" event correctly 1`] = `
-Object {
+{
   "cancelUrl": "https://checkout.paddle.com/subscription/cancel?user=7&subscription=1&hash=539134462da7ff8bce9581704ff3f462994caf05",
   "checkoutId": "6-1d95a8cd27317a6-f8810efc48",
   "currency": "USD",
@@ -203,7 +203,7 @@ Object {
   "eventTime": 2020-08-12T02:12:03.000Z,
   "eventType": "SUBSCRIPTION_UPDATED",
   "hasMarketingConsent": true,
-  "metadata": Object {
+  "metadata": {
     "foo": "bar",
   },
   "nextPaymentDate": 2020-09-04T00:00:00.000Z,
