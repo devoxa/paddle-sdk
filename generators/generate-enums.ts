@@ -7,6 +7,11 @@ const DOCUMENTATION_URLS = {
   RawPaddleEnumCountries: `https://developer.paddle.com/reference/platform-parameters/supported-countries`,
 }
 
+type NextDataQuery = {
+  queryHash: string
+  state: { data: { data: string } }
+}
+
 run()
 
 async function run() {
@@ -37,9 +42,22 @@ async function getEnumFields(url: string) {
   const response = await fetch(url)
   const text = await response.text()
 
-  const matches = matchAll(/<code>(.*?)<\/code>/g, text)
-  return matches
-    .map((match) => match.subMatches[0])
+  const dataMatch = text.match(/<script id="__NEXT_DATA__" [^>]*>(.*?)<\/script>/)
+  if (!dataMatch) throw new Error('Could not find __NEXT_DATA__')
+
+  const nextData = JSON.parse(dataMatch[1])
+  const queries = nextData.props.pageProps.dehydratedState.queries as Array<NextDataQuery>
+
+  const urlQueryKey = url.split('/').pop() as string
+  const query = queries.find((query) => query.queryHash.includes(urlQueryKey))
+  if (!query) throw new Error(`Could not find query for "${urlQueryKey}"`)
+
+  const queryData = query.state.data.data
+  const jsonMatches = matchAll(/```json([\s\S]*?)```/g, queryData)
+  return jsonMatches
+    .map((match) => JSON.parse(match.subMatches[0]))
+    .map((json) => Object.values(json))
+    .reduce((a, b) => a.concat(b), [])
     .filter((x, i, self) => self.indexOf(x) === i)
     .sort()
 }
