@@ -1,6 +1,6 @@
 import fs from 'fs'
 import { matchAll } from '@devoxa/flocky'
-import { fetchPageMarkdown } from './helpers/fetch-page-markdown'
+import { fetchPageMarkdown } from './helpers'
 
 const DOCUMENTATION_URLS = {
   RawPaddleEnumCurrencies: `https://developer.paddle.com/reference/platform-parameters/supported-currencies`,
