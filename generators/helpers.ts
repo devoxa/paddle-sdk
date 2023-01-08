@@ -57,3 +57,7 @@ export function toPascalCase(string: string) {
   const camelCase = string.replace(/_(\w)/g, (_, $1) => $1.toUpperCase())
   return `${camelCase.charAt(0).toUpperCase()}${camelCase.slice(1)}`
 }
+
+export function toJSDoc(lines: Array<string>) {
+  return lines.length ? `/**\n${lines.map((line) => `* ${line}`).join('\n')}\n*/` : ''
+}
