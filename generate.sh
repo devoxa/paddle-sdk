@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 echo "Generating webhook alert types"
 ts-node generators/generate-webhook-alerts.ts
