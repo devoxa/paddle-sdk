@@ -8,14 +8,17 @@ import {
 // ----------------------------------------------------------------------------
 
 /** A type of a webhook event */
-export enum PaddleSdkWebhookEventType {
-  'PAYMENT_SUCCEEDED' = 'PAYMENT_SUCCEEDED',
-  'PAYMENT_REFUNDED' = 'PAYMENT_REFUNDED',
-  'SUBSCRIPTION_CREATED' = 'SUBSCRIPTION_CREATED',
-  'SUBSCRIPTION_UPDATED' = 'SUBSCRIPTION_UPDATED',
-  'SUBSCRIPTION_CANCELLED' = 'SUBSCRIPTION_CANCELLED',
-  'SUBSCRIPTION_PAYMENT_SUCCEEDED' = 'SUBSCRIPTION_PAYMENT_SUCCEEDED',
-}
+export const PaddleSdkWebhookEventType = {
+  PAYMENT_SUCCEEDED: 'PAYMENT_SUCCEEDED',
+  PAYMENT_REFUNDED: 'PAYMENT_REFUNDED',
+  SUBSCRIPTION_CREATED: 'SUBSCRIPTION_CREATED',
+  SUBSCRIPTION_UPDATED: 'SUBSCRIPTION_UPDATED',
+  SUBSCRIPTION_CANCELLED: 'SUBSCRIPTION_CANCELLED',
+  SUBSCRIPTION_PAYMENT_SUCCEEDED: 'SUBSCRIPTION_PAYMENT_SUCCEEDED',
+} as const
+
+export type PaddleSdkWebhookEventType =
+  (typeof PaddleSdkWebhookEventType)[keyof typeof PaddleSdkWebhookEventType]
 
 /**
  * A status of a subscription
@@ -26,13 +29,16 @@ export enum PaddleSdkWebhookEventType {
  * - PAUSED: Indicates that this subscription has been paused. The customer will not be charged for subsequent payments. The status will change to ACTIVE once the subscription is restarted.
  * - CANCELLED: Indicates that this subscription has been cancelled.
  */
-export enum PaddleSdkSubscriptionStatus {
-  'ACTIVE' = 'ACTIVE',
-  'TRIALING' = 'TRIALING',
-  'PAST_DUE' = 'PAST_DUE',
-  'PAUSED' = 'PAUSED',
-  'CANCELLED' = 'CANCELLED',
-}
+export const PaddleSdkSubscriptionStatus = {
+  ACTIVE: 'ACTIVE',
+  TRIALING: 'TRIALING',
+  PAST_DUE: 'PAST_DUE',
+  PAUSED: 'PAUSED',
+  CANCELLED: 'CANCELLED',
+} as const
+
+export type PaddleSdkSubscriptionStatus =
+  (typeof PaddleSdkSubscriptionStatus)[keyof typeof PaddleSdkSubscriptionStatus]
 
 /** A three-letter ISO currency code */
 export { PaddleSdkCurrency }
@@ -46,39 +52,49 @@ export { PaddleSdkCountry }
  * - DELINQUENT: The payment failed and the rule specified in the dunning settings was to pause the subscription.
  * - VOLUNTARY: The subscription was paused via the API.
  */
-export enum PaddleSdkPausedReason {
-  'DELINQUENT' = 'DELINQUENT',
-  'VOLUNTARY' = 'VOLUNTARY',
-}
+export const PaddleSdkPausedReason = {
+  DELINQUENT: 'DELINQUENT',
+  VOLUNTARY: 'VOLUNTARY',
+} as const
+
+export type PaddleSdkPausedReason =
+  (typeof PaddleSdkPausedReason)[keyof typeof PaddleSdkPausedReason]
 
 /** A payment method used to make a transaction */
-export enum PaddleSdkPaymentMethod {
-  'CARD' = 'CARD',
-  'PAYPAL' = 'PAYPAL',
-  'APPLE_PAY' = 'APPLE_PAY',
-  'WIRE_TRANSFER' = 'WIRE_TRANSFER',
-  'FREE' = 'FREE',
-}
+export const PaddleSdkPaymentMethod = {
+  CARD: 'CARD',
+  PAYPAL: 'PAYPAL',
+  APPLE_PAY: 'APPLE_PAY',
+  WIRE_TRANSFER: 'WIRE_TRANSFER',
+  FREE: 'FREE',
+} as const
+
+export type PaddleSdkPaymentMethod =
+  (typeof PaddleSdkPaymentMethod)[keyof typeof PaddleSdkPaymentMethod]
 
 /** A brand of card used to make a transaction */
-export enum PaddleSdkCardBrand {
-  'AMERICAN_EXPRESS' = 'AMERICAN_EXPRESS',
-  'DINERS_CLUB' = 'DINERS_CLUB',
-  'DISCOVER' = 'DISCOVER',
-  'ELO' = 'ELO',
-  'JCB' = 'JCB',
-  'MAESTRO' = 'MAESTRO',
-  'MASTERCARD' = 'MASTERCARD',
-  'VISA' = 'VISA',
-  'UNKNOWN' = 'UNKNOWN',
-}
+export const PaddleSdkCardBrand = {
+  AMERICAN_EXPRESS: 'AMERICAN_EXPRESS',
+  DINERS_CLUB: 'DINERS_CLUB',
+  DISCOVER: 'DISCOVER',
+  ELO: 'ELO',
+  JCB: 'JCB',
+  MAESTRO: 'MAESTRO',
+  MASTERCARD: 'MASTERCARD',
+  VISA: 'VISA',
+  UNKNOWN: 'UNKNOWN',
+} as const
+
+export type PaddleSdkCardBrand = (typeof PaddleSdkCardBrand)[keyof typeof PaddleSdkCardBrand]
 
 /** Refund type */
-export enum PaddleSdkRefundType {
-  'FULL' = 'FULL',
-  'VAT' = 'VAT',
-  'PARTIAL' = 'PARTIAL',
-}
+export const PaddleSdkRefundType = {
+  FULL: 'FULL',
+  VAT: 'VAT',
+  PARTIAL: 'PARTIAL',
+} as const
+
+export type PaddleSdkRefundType = (typeof PaddleSdkRefundType)[keyof typeof PaddleSdkRefundType]
 
 // ----------------------------------------------------------------------------
 // WEBHOOKS
@@ -89,7 +105,7 @@ export type PaddleSdkPaymentSucceededEvent<TMetadata> = {
   // EVENT ---
 
   /** The type of this event */
-  eventType: PaddleSdkWebhookEventType.PAYMENT_SUCCEEDED
+  eventType: typeof PaddleSdkWebhookEventType.PAYMENT_SUCCEEDED
 
   /** The unique ID for this event */
   eventId: number
@@ -181,7 +197,7 @@ export type PaddleSdkPaymentRefundedEvent<TMetadata> = {
   // EVENT ---
 
   /** The type of this event */
-  eventType: PaddleSdkWebhookEventType.PAYMENT_REFUNDED
+  eventType: typeof PaddleSdkWebhookEventType.PAYMENT_REFUNDED
 
   /** The unique ID for this event */
   eventId: number
@@ -258,7 +274,7 @@ export type PaddleSdkSubscriptionCreatedEvent<TMetadata> = {
   // EVENT ---
 
   /** The type of this event */
-  eventType: PaddleSdkWebhookEventType.SUBSCRIPTION_CREATED
+  eventType: typeof PaddleSdkWebhookEventType.SUBSCRIPTION_CREATED
 
   /** The unique ID for this event */
   eventId: number
@@ -326,7 +342,7 @@ export type PaddleSdkSubscriptionUpdatedEvent<TMetadata> = {
   // EVENT ---
 
   /** The type of this event */
-  eventType: PaddleSdkWebhookEventType.SUBSCRIPTION_UPDATED
+  eventType: typeof PaddleSdkWebhookEventType.SUBSCRIPTION_UPDATED
 
   /** The unique ID for this event */
   eventId: number
@@ -421,7 +437,7 @@ export type PaddleSdkSubscriptionCancelledEvent<TMetadata> = {
   // EVENT ---
 
   /** The type of this event */
-  eventType: PaddleSdkWebhookEventType.SUBSCRIPTION_CANCELLED
+  eventType: typeof PaddleSdkWebhookEventType.SUBSCRIPTION_CANCELLED
 
   /** The unique ID for this event */
   eventId: number
@@ -486,7 +502,7 @@ export type PaddleSdkSubscriptionPaymentSucceededEvent<TMetadata> = {
   // EVENT ---
 
   /** The type of this event */
-  eventType: PaddleSdkWebhookEventType.SUBSCRIPTION_PAYMENT_SUCCEEDED
+  eventType: typeof PaddleSdkWebhookEventType.SUBSCRIPTION_PAYMENT_SUCCEEDED
 
   /** The unique ID for this event */
   eventId: number
@@ -760,7 +776,7 @@ export type PaddleSdkListSubscriptionsResponse = Array<{
   // ORDER ---
 
   /** The payment method used to make the transaction */
-  paymentMethod: PaddleSdkPaymentMethod.CARD | PaddleSdkPaymentMethod.PAYPAL
+  paymentMethod: typeof PaddleSdkPaymentMethod.CARD | typeof PaddleSdkPaymentMethod.PAYPAL
 
   /** The brand of the card, set if `paymentMethod` is "CARD" */
   cardBrand: PaddleSdkCardBrand | null

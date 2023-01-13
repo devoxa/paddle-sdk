@@ -496,7 +496,7 @@ export class PaddleSdk<TMetadata = unknown> {
     ) => {
       if (paymentInformation.payment_method === 'card') {
         return {
-          paymentMethod: PaddleSdkPaymentMethod.CARD as const,
+          paymentMethod: PaddleSdkPaymentMethod.CARD,
           cardBrand: convertApiCardBrand(paymentInformation.card_type),
           cardLastFour: paymentInformation.last_four_digits,
           cardExpirationDate: convertApiDate(paymentInformation.expiry_date, 'EXPIRY_DATE'),
@@ -506,7 +506,7 @@ export class PaddleSdk<TMetadata = unknown> {
       // istanbul ignore else
       if (paymentInformation.payment_method === 'paypal') {
         return {
-          paymentMethod: PaddleSdkPaymentMethod.PAYPAL as const,
+          paymentMethod: PaddleSdkPaymentMethod.PAYPAL,
           cardBrand: null,
           cardLastFour: null,
           cardExpirationDate: null,
