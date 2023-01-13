@@ -72,6 +72,12 @@ export * from './interfaces'
 export * from './metadata'
 
 export interface PaddleSdkOptions<TMetadata = unknown> {
+  /**
+   * The base URL of the paddle API
+   * @default https://vendors.paddle.com/api
+   */
+  readonly baseUrl?: string
+
   /** Public key from the paddle dashboard to validate webhook requests */
   readonly publicKey: string
 
@@ -90,6 +96,7 @@ export interface PaddleSdkOptions<TMetadata = unknown> {
 }
 
 export class PaddleSdk<TMetadata = unknown> {
+  private readonly baseUrl: string
   private readonly publicKey: string
   private readonly vendorId: number
   private readonly vendorAuthCode: string
@@ -108,6 +115,8 @@ export class PaddleSdk<TMetadata = unknown> {
     if (!options.metadataCodec) {
       throw new PaddleSdkException('PaddleSdk was called without a metadataCodec')
     }
+
+    this.baseUrl = options.baseUrl || 'https://vendors.paddle.com/api'
     this.publicKey = options.publicKey
     this.vendorId = options.vendorId
     this.vendorAuthCode = options.vendorAuthCode
@@ -385,10 +394,12 @@ export class PaddleSdk<TMetadata = unknown> {
   }
 
   private async apiRequest<TRequest, TResponse>(
-    url: string,
+    path: string,
     method: 'GET' | 'POST',
     body: TRequest
   ): Promise<TResponse> {
+    const url = this.baseUrl + path
+
     const json = await fetch<
       | {
           success: true
@@ -470,7 +481,7 @@ export class PaddleSdk<TMetadata = unknown> {
       RawPaddlePostProductGeneratePayLinkRequest,
       RawPaddlePostProductGeneratePayLinkResponse
     >(
-      PADDLE_PRODUCT_GENERATE_PAY_LINK.url,
+      PADDLE_PRODUCT_GENERATE_PAY_LINK.path,
       PADDLE_PRODUCT_GENERATE_PAY_LINK.method,
       convertProductPayLinkRequest(data)
     )
@@ -556,7 +567,7 @@ export class PaddleSdk<TMetadata = unknown> {
       RawPaddlePostSubscriptionUsersRequest,
       RawPaddlePostSubscriptionUsersResponse
     >(
-      PADDLE_SUBSCRIPTION_USERS.url,
+      PADDLE_SUBSCRIPTION_USERS.path,
       PADDLE_SUBSCRIPTION_USERS.method,
       convertListSubscriptionsRequest(data)
     ).then((subscriptions) => subscriptions.map(convertListSubscriptionsResponseElement))
@@ -599,7 +610,7 @@ export class PaddleSdk<TMetadata = unknown> {
       RawPaddlePostSubscriptionUsersUpdateRequest,
       RawPaddlePostSubscriptionUsersUpdateResponse
     >(
-      PADDLE_SUBSCRIPTION_USERS_UPDATE.url,
+      PADDLE_SUBSCRIPTION_USERS_UPDATE.path,
       PADDLE_SUBSCRIPTION_USERS_UPDATE.method,
       convertUpdateSubscriptionRequest(data)
     ).then((x) => convertUpdateSubscriptionResponse(x))
@@ -620,7 +631,7 @@ export class PaddleSdk<TMetadata = unknown> {
       RawPaddlePostSubscriptionUsersCancelRequest,
       RawPaddlePostSubscriptionUsersCancelResponse
     >(
-      PADDLE_SUBSCRIPTION_USERS_CANCEL.url,
+      PADDLE_SUBSCRIPTION_USERS_CANCEL.path,
       PADDLE_SUBSCRIPTION_USERS_CANCEL.method,
       convertCancelSubscriptionRequest(data)
     )
@@ -653,7 +664,7 @@ export class PaddleSdk<TMetadata = unknown> {
       RawPaddlePostSubscriptionModifiersCreateRequest,
       RawPaddlePostSubscriptionModifiersCreateResponse
     >(
-      PADDLE_SUBSCRIPTION_MODIFIERS_CREATE.url,
+      PADDLE_SUBSCRIPTION_MODIFIERS_CREATE.path,
       PADDLE_SUBSCRIPTION_MODIFIERS_CREATE.method,
       convertCreateSubscriptionModifierRequest(data)
     ).then((response) => convertCreateSubscriptionModifierResponse(response))

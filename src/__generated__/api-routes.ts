@@ -2,7 +2,7 @@
 
 export const PADDLE_PRODUCT_GENERATE_PAY_LINK = {
   method: 'POST' as const,
-  url: 'https://vendors.paddle.com/api/2.0/product/generate_pay_link' as const,
+  path: '/2.0/product/generate_pay_link' as const,
 }
 
 export type RawPaddlePostProductGeneratePayLinkRequest = {
@@ -88,7 +88,7 @@ export type RawPaddlePostProductGeneratePayLinkResponse = {
 
 export const PADDLE_SUBSCRIPTION_USERS = {
   method: 'POST' as const,
-  url: 'https://vendors.paddle.com/api/2.0/subscription/users' as const,
+  path: '/2.0/subscription/users' as const,
 }
 
 export type RawPaddlePostSubscriptionUsersRequest = {
@@ -141,7 +141,7 @@ export type RawPaddlePostSubscriptionUsersResponse = Array<{
 
 export const PADDLE_SUBSCRIPTION_USERS_UPDATE = {
   method: 'POST' as const,
-  url: 'https://vendors.paddle.com/api/2.0/subscription/users/update' as const,
+  path: '/2.0/subscription/users/update' as const,
 }
 
 export type RawPaddlePostSubscriptionUsersUpdateRequest = {
@@ -180,7 +180,7 @@ export type RawPaddlePostSubscriptionUsersUpdateResponse = {
 
 export const PADDLE_SUBSCRIPTION_USERS_CANCEL = {
   method: 'POST' as const,
-  url: 'https://vendors.paddle.com/api/2.0/subscription/users_cancel' as const,
+  path: '/2.0/subscription/users_cancel' as const,
 }
 
 export type RawPaddlePostSubscriptionUsersCancelRequest = {
@@ -192,7 +192,7 @@ export type RawPaddlePostSubscriptionUsersCancelResponse = void
 
 export const PADDLE_SUBSCRIPTION_MODIFIERS_CREATE = {
   method: 'POST' as const,
-  url: 'https://vendors.paddle.com/api/2.0/subscription/modifiers/create' as const,
+  path: '/2.0/subscription/modifiers/create' as const,
 }
 
 export type RawPaddlePostSubscriptionModifiersCreateRequest = {
