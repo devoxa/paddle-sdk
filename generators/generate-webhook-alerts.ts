@@ -83,7 +83,8 @@ async function buildWebhookAlertType(url: string) {
     if (propertySchema.description) jsDocLines.push(propertySchema.description)
     if (propertySchema.format) jsDocLines.push(`@format ${propertySchema.format}`)
 
-    return `${INCLUDE_COMMENTS ? toJSDoc(jsDocLines) + '\n' : ''}${propertyName}: ${type}`
+    const comment = INCLUDE_COMMENTS ? toJSDoc(jsDocLines) + '\n' : ''
+    return `${comment}${propertyName}: ${type}`
   })
 
   const name = `RawPaddle${toPascalCase(jsonSchema.alert_name.default)}Alert`

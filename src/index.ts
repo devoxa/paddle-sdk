@@ -385,10 +385,12 @@ export class PaddleSdk<TMetadata = unknown> {
   }
 
   private async apiRequest<TRequest, TResponse>(
-    url: string,
+    path: string,
     method: 'GET' | 'POST',
     body: TRequest
   ): Promise<TResponse> {
+    const url = 'https://vendors.paddle.com/api' + path
+
     const json = await fetch<
       | {
           success: true
