@@ -61,6 +61,7 @@ import { PaddleSdk, stringifyMetadata } from '@devoxa/paddle-sdk'
 type PaddleMetadata = { userId: number }
 
 const paddleSdk = new PaddleSdk<PaddleMetadata>({
+  baseUrl: 'https://vendors.paddle.com/api', // (Optional) The base URL of the paddle API (e.g. to use the sandbox)
   publicKey: '...', // Your public key from the paddle dashboard
   vendorId: 123, // Your vendor ID from the paddle dashboard
   vendorAuthCode: 'AAA', // Your vendor auth code from the paddle dashboard

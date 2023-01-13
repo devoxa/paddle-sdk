@@ -72,6 +72,12 @@ export * from './interfaces'
 export * from './metadata'
 
 export interface PaddleSdkOptions<TMetadata = unknown> {
+  /**
+   * The base URL of the paddle API
+   * @default https://vendors.paddle.com/api
+   */
+  readonly baseUrl?: string
+
   /** Public key from the paddle dashboard to validate webhook requests */
   readonly publicKey: string
 
@@ -90,6 +96,7 @@ export interface PaddleSdkOptions<TMetadata = unknown> {
 }
 
 export class PaddleSdk<TMetadata = unknown> {
+  private readonly baseUrl: string
   private readonly publicKey: string
   private readonly vendorId: number
   private readonly vendorAuthCode: string
@@ -108,6 +115,8 @@ export class PaddleSdk<TMetadata = unknown> {
     if (!options.metadataCodec) {
       throw new PaddleSdkException('PaddleSdk was called without a metadataCodec')
     }
+
+    this.baseUrl = options.baseUrl || 'https://vendors.paddle.com/api'
     this.publicKey = options.publicKey
     this.vendorId = options.vendorId
     this.vendorAuthCode = options.vendorAuthCode
@@ -385,10 +394,12 @@ export class PaddleSdk<TMetadata = unknown> {
   }
 
   private async apiRequest<TRequest, TResponse>(
-    url: string,
+    path: string,
     method: 'GET' | 'POST',
     body: TRequest
   ): Promise<TResponse> {
+    const url = this.baseUrl + path
+
     const json = await fetch<
       | {
           success: true
