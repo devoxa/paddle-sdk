@@ -22,6 +22,10 @@ type NextDehydratedStateQuery = {
 // HACK: Hardcoded overrides for how to find pages, to handle redirects
 const URL_QUERY_KEY_OVERRIDES: Record<string, string | undefined> = {
   createpaylink: 'generate-pay-link',
+  listusers: 'list-users',
+  updateuser: 'update-user',
+  canceluser: 'cancel-user',
+  createmodifier: 'create-modifier',
 }
 
 export async function fetchPageMarkdown(url: string) {

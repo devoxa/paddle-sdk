@@ -1,5 +1,5 @@
-import fetch from 'node-fetch'
 import fs from 'fs'
+import { fetchPageMarkdown, toJSDoc } from './helpers'
 
 const INCLUDE_COMMENTS = true
 
@@ -11,66 +11,31 @@ const DOCUMENTATION_URLS = [
   'https://developer.paddle.com/api-reference/subscription-api/modifiers/createmodifier',
 ]
 
-interface RouteInfo<T> {
-  allProps: {
-    page: {
-      data: {
-        blocks: Array<{ type: string; data: T; header?: { title: string } }>
-      }
+interface NextData {
+  method: string
+  path: string
+
+  request: {
+    body: {
+      contents: Array<{
+        schema: JsonSchema
+      }>
     }
   }
-}
 
-type RouteInfoRequestBlock = {
-  children: [
-    {
-      blocks: [
-        {
-          data: JsonSchema
-        }
-      ]
-    }
-  ]
-}
-
-type RouteInfoResponseBlock = {
-  children: [
-    {
-      blocks: [
-        {
-          data: {
-            children: Array<{
-              title: string
-              blocks: [
-                {
-                  data: {
-                    oneOf: Array<{
-                      properties: {
-                        success: {
-                          default: boolean
-                        }
-                        response:
-                          | JsonSchema
-                          | {
-                              type: 'array'
-                              items: JsonSchema
-                            }
-                      }
-                    }>
-                  }
-                }
-              ]
-            }>
+  responses: Array<{
+    contents: Array<{
+      schema: {
+        oneOf: [
+          {
+            properties: {
+              response: JsonSchema | { type: 'array'; items: JsonSchema }
+            }
           }
-        }
-      ]
-    }
-  ]
-}
-
-type RouteInfoTestRequestBlock = {
-  method: string
-  url: string
+        ]
+      }
+    }>
+  }>
 }
 
 type JsonSchema = {
@@ -109,22 +74,25 @@ ${types.map((x) => x.sourceCode).join('\n\n')}`
 }
 
 async function buildApiRouteTypes(url: string) {
-  const routeInfo = await getRouteInfo(url)
+  const data = JSON.parse(await fetchPageMarkdown(url)) as NextData
 
-  const requestEndpoint = getRequestEndpoint(routeInfo)
+  const requestEndpoint = { method: data.method, path: data.path }
   const typeName = getTypeNameFromRequestEndpoint(requestEndpoint)
 
-  const requestJsonSchema = getRequestJsonSchema(routeInfo)
-  const responseJsonSchema = getResponseJsonSchema(routeInfo)
+  const requestJsonSchema = data.request.body.contents[0].schema
+  const responseJsonSchema = data.responses[0].contents[0].schema.oneOf[0].properties.response
 
   const requestProperties = Object.entries(requestJsonSchema.properties)
     .filter(([propertyName]) => !['vendor_id', 'vendor_auth_code'].includes(propertyName))
     .map(([propertyName, propertySchema]) => {
       const type = inferTypeFromPropertySchema(propertySchema)
 
+      const jsDocLines = []
+      if (propertySchema.description) jsDocLines.push(...propertySchema.description.split('\n'))
+
+      const comment = INCLUDE_COMMENTS ? toJSDoc(jsDocLines) + '\n' : ''
       const nullable = requestJsonSchema.required?.includes(propertyName) ? '' : '?'
-      const comment = propertySchema.description ? `/** ${propertySchema.description} */\n  ` : ''
-      return `  ${INCLUDE_COMMENTS ? comment : ''}${propertyName}${nullable}: ${type}`
+      return `${comment}${propertyName}${nullable}: ${type}`
     })
 
   let responseType
@@ -141,11 +109,12 @@ async function buildApiRouteTypes(url: string) {
       ([propertyName, propertySchema]) => {
         const type = inferTypeFromPropertySchema(propertySchema)
 
-        const pattern = propertySchema.pattern ? `\n@pattern ${propertySchema.pattern}` : ''
-        const comment = propertySchema.description
-          ? `/** ${propertySchema.description}${pattern} */\n  `
-          : ''
-        return `  ${INCLUDE_COMMENTS ? comment : ''}${propertyName}: ${type}`
+        const jsDocLines = []
+        if (propertySchema.description) jsDocLines.push(...propertySchema.description.split('\n'))
+        if (propertySchema.pattern) jsDocLines.push(`@pattern ${propertySchema.pattern}`)
+
+        const comment = INCLUDE_COMMENTS ? toJSDoc(jsDocLines) + '\n' : ''
+        return `${comment}${propertyName}: ${type}`
       }
     )
 
@@ -154,15 +123,16 @@ ${responseProperties.join('\n')}
 }${responseIsArray ? '>' : ''}`
   }
 
-  const sourceCode = `export const PADDLE_${toSnakeCase(typeName)
+  const screamingTypeName = toSnakeCase(typeName)
     .toUpperCase()
-    .replace(/^(POST|GET)_/, '')} = {
+    .replace(/^(POST|GET)_/, '')
+  const sourceCode = `export const PADDLE_${screamingTypeName} = {
   method: '${requestEndpoint.method.toUpperCase()}' as const,
-  url: '${requestEndpoint.url}' as const,
+  path: '${requestEndpoint.path}' as const,
 }
 
 export type RawPaddle${typeName}Request = {
-${requestProperties.join('\n')}
+${requestProperties.join(INCLUDE_COMMENTS ? '\n\n' : '\n')}
 }
 
 export type RawPaddle${typeName}Response = ${responseType}`
@@ -170,68 +140,8 @@ export type RawPaddle${typeName}Response = ${responseType}`
   return { sourceCode }
 }
 
-async function getRouteInfo(url: string) {
-  const response = await fetch(url)
-  const text = await response.text()
-
-  const line = text.split('\n').find((x) => x.trim().startsWith('window.__routeInfo ='))
-
-  if (!line) {
-    throw new Error('Could not find routeInfo line')
-  }
-
-  const jsonString = line.replace(/^.*window\.__routeInfo = /, '').replace(/;<.*$/, '')
-  return JSON.parse(jsonString)
-}
-
-function getRequestEndpoint(routeInfo: RouteInfo<RouteInfoTestRequestBlock>) {
-  const testRequestBlock = routeInfo.allProps.page.data.blocks.find((x) => x.type === 'http')
-
-  if (!testRequestBlock) {
-    throw new Error('Could not find text block for page')
-  }
-
-  return { method: testRequestBlock.data.method, url: testRequestBlock.data.url }
-}
-
-function getRequestJsonSchema(routeInfo: RouteInfo<RouteInfoRequestBlock>) {
-  const accordionBlock = routeInfo.allProps.page.data.blocks.find((x) => x.type === 'accordion')
-
-  if (!accordionBlock) {
-    throw new Error('Could not find accordion block for page')
-  }
-
-  return accordionBlock.data.children[0].blocks[0].data
-}
-
-function getResponseJsonSchema(routeInfo: RouteInfo<RouteInfoResponseBlock>) {
-  const tabsBlock = routeInfo.allProps.page.data.blocks.find((x) => x.type === 'tabs')
-
-  if (!tabsBlock) {
-    throw new Error('Could not find tabs block for page')
-  }
-
-  const schemaBlock = tabsBlock.data.children[0].blocks[0].data.children.find(
-    (x) => x.title === 'Schema'
-  )
-
-  if (!schemaBlock) {
-    throw new Error('Could not find schema block for page')
-  }
-
-  const successResponseSchema = schemaBlock.blocks[0].data.oneOf.find(
-    (x) => x.properties.success.default !== false
-  )
-
-  if (!successResponseSchema) {
-    throw new Error('Could not find success response block for page')
-  }
-
-  return successResponseSchema.properties.response
-}
-
-function getTypeNameFromRequestEndpoint(endpoint: { method: string; url: string }): string {
-  const path = endpoint.url.replace(/^.*\/\d.\d\//, '').replace(/\//g, '_')
+function getTypeNameFromRequestEndpoint(endpoint: { method: string; path: string }): string {
+  const path = endpoint.path.replace(/^.*\/\d.\d\//, '').replace(/\//g, '_')
   return toPascalCase(`${endpoint.method}_${path}`)
 }
 
@@ -260,6 +170,11 @@ function inferTypeFromPropertySchema(propertySchema: JsonSchemaProperty): string
   }
 
   if (propertySchema.type === 'string') {
+    // HACK: Infer if this is actually an array via the description
+    if (propertySchema.description?.slice(0, 100).includes('(s) ')) {
+      return 'Array<string>'
+    }
+
     return 'string'
   }
 
