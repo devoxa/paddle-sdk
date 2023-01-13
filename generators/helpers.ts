@@ -19,6 +19,11 @@ type NextDehydratedStateQuery = {
   }
 }
 
+// HACK: Hardcoded overrides for how to find pages, to handle redirects
+const URL_QUERY_KEY_OVERRIDES: Record<string, string | undefined> = {
+  createpaylink: 'generate-pay-link',
+}
+
 export async function fetchPageMarkdown(url: string) {
   const response = await fetch(url)
   const text = await response.text()
@@ -29,7 +34,9 @@ export async function fetchPageMarkdown(url: string) {
   const data = JSON.parse(scriptMatch[1]) as NextData
   const queries = data.props.pageProps.dehydratedState.queries
 
-  const urlQueryKey = url.split('/').pop() as string
+  let urlQueryKey = url.split('/').pop() as string
+  urlQueryKey = URL_QUERY_KEY_OVERRIDES[urlQueryKey] || urlQueryKey
+
   const queryHashRegex = new RegExp(`"[a-z0-9]{13}-${urlQueryKey}`)
   const query = queries.find((query) => query.queryHash.match(queryHashRegex))
   if (!query) throw new Error(`Could not find query for "${urlQueryKey}" in dehydratedState`)
