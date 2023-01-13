@@ -470,7 +470,7 @@ export class PaddleSdk<TMetadata = unknown> {
       RawPaddlePostProductGeneratePayLinkRequest,
       RawPaddlePostProductGeneratePayLinkResponse
     >(
-      PADDLE_PRODUCT_GENERATE_PAY_LINK.url,
+      PADDLE_PRODUCT_GENERATE_PAY_LINK.path,
       PADDLE_PRODUCT_GENERATE_PAY_LINK.method,
       convertProductPayLinkRequest(data)
     )
@@ -556,7 +556,7 @@ export class PaddleSdk<TMetadata = unknown> {
       RawPaddlePostSubscriptionUsersRequest,
       RawPaddlePostSubscriptionUsersResponse
     >(
-      PADDLE_SUBSCRIPTION_USERS.url,
+      PADDLE_SUBSCRIPTION_USERS.path,
       PADDLE_SUBSCRIPTION_USERS.method,
       convertListSubscriptionsRequest(data)
     ).then((subscriptions) => subscriptions.map(convertListSubscriptionsResponseElement))
@@ -599,7 +599,7 @@ export class PaddleSdk<TMetadata = unknown> {
       RawPaddlePostSubscriptionUsersUpdateRequest,
       RawPaddlePostSubscriptionUsersUpdateResponse
     >(
-      PADDLE_SUBSCRIPTION_USERS_UPDATE.url,
+      PADDLE_SUBSCRIPTION_USERS_UPDATE.path,
       PADDLE_SUBSCRIPTION_USERS_UPDATE.method,
       convertUpdateSubscriptionRequest(data)
     ).then((x) => convertUpdateSubscriptionResponse(x))
@@ -620,7 +620,7 @@ export class PaddleSdk<TMetadata = unknown> {
       RawPaddlePostSubscriptionUsersCancelRequest,
       RawPaddlePostSubscriptionUsersCancelResponse
     >(
-      PADDLE_SUBSCRIPTION_USERS_CANCEL.url,
+      PADDLE_SUBSCRIPTION_USERS_CANCEL.path,
       PADDLE_SUBSCRIPTION_USERS_CANCEL.method,
       convertCancelSubscriptionRequest(data)
     )
@@ -653,7 +653,7 @@ export class PaddleSdk<TMetadata = unknown> {
       RawPaddlePostSubscriptionModifiersCreateRequest,
       RawPaddlePostSubscriptionModifiersCreateResponse
     >(
-      PADDLE_SUBSCRIPTION_MODIFIERS_CREATE.url,
+      PADDLE_SUBSCRIPTION_MODIFIERS_CREATE.path,
       PADDLE_SUBSCRIPTION_MODIFIERS_CREATE.method,
       convertCreateSubscriptionModifierRequest(data)
     ).then((response) => convertCreateSubscriptionModifierResponse(response))
