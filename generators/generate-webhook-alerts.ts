@@ -1,5 +1,5 @@
-import fetch from 'node-fetch'
 import fs from 'fs'
+import fetch from 'node-fetch'
 
 const INCLUDE_COMMENTS = true
 

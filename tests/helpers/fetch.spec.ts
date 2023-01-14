@@ -1,6 +1,6 @@
-import { fetch } from '../../src/helpers/fetch'
 import FormData from 'form-data'
 import nodeFetch from 'node-fetch'
+import { fetch } from '../../src/helpers/fetch'
 
 jest.mock('node-fetch', () => jest.fn())
 

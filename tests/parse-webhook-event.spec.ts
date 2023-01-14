@@ -1,6 +1,6 @@
-import * as FIXTURES from './fixtures'
 import { PaddleSdk } from '../src/index'
 import { encryptMetadata, stringifyMetadata } from '../src/metadata'
+import * as FIXTURES from './fixtures'
 
 const paddleSdk = new PaddleSdk({
   publicKey: FIXTURES.publicKey,

@@ -1,5 +1,5 @@
-import nodeFetch from 'node-fetch'
 import FormData from 'form-data'
+import nodeFetch from 'node-fetch'
 
 type Body = Record<string, string | number | undefined>
 
