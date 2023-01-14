@@ -42,7 +42,6 @@ export type PaddleSdkSubscriptionStatus =
 
 /** A three-letter ISO currency code */
 export { PaddleSdkCurrency }
-
 /** A two letter ISO country code */
 export { PaddleSdkCountry }
 

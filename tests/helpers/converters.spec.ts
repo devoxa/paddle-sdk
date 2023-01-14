@@ -1,5 +1,5 @@
+import { PaddleSdkCurrency, PaddleSdkSubscriptionStatus } from '../../src'
 import * as converters from '../../src/helpers/converters'
-import { PaddleSdkSubscriptionStatus, PaddleSdkCurrency } from '../../src'
 
 describe('helpers -> converters', () => {
   it('can convert an API integer', () => {

@@ -1,13 +1,13 @@
-import * as FIXTURES from './fixtures'
+import { PaddleSdkApiException } from '../src/exceptions'
+import { fetch } from '../src/helpers/fetch'
 import {
   PaddleSdk,
-  PaddleSdkCurrency,
   PaddleSdkCountry,
+  PaddleSdkCurrency,
   PaddleSdkSubscriptionStatus,
 } from '../src/index'
-import { fetch } from '../src/helpers/fetch'
-import { PaddleSdkApiException } from '../src/exceptions'
 import { encryptMetadata, stringifyMetadata } from '../src/metadata'
+import * as FIXTURES from './fixtures'
 
 jest.mock('../src/helpers/fetch', () => ({ fetch: jest.fn() }))
 
