@@ -1,4 +1,30 @@
 import { createVerify } from 'crypto'
+import {
+  PADDLE_PRODUCT_GENERATE_PAY_LINK,
+  PADDLE_SUBSCRIPTION_MODIFIERS_CREATE,
+  PADDLE_SUBSCRIPTION_USERS,
+  PADDLE_SUBSCRIPTION_USERS_CANCEL,
+  PADDLE_SUBSCRIPTION_USERS_UPDATE,
+  RawPaddlePostProductGeneratePayLinkRequest,
+  RawPaddlePostProductGeneratePayLinkResponse,
+  RawPaddlePostSubscriptionModifiersCreateRequest,
+  RawPaddlePostSubscriptionModifiersCreateResponse,
+  RawPaddlePostSubscriptionUsersCancelRequest,
+  RawPaddlePostSubscriptionUsersCancelResponse,
+  RawPaddlePostSubscriptionUsersRequest,
+  RawPaddlePostSubscriptionUsersResponse,
+  RawPaddlePostSubscriptionUsersUpdateRequest,
+  RawPaddlePostSubscriptionUsersUpdateResponse,
+} from './__generated__/api-routes'
+import {
+  RawPaddlePaymentRefundedAlert,
+  RawPaddlePaymentSucceededAlert,
+  RawPaddleSubscriptionCancelledAlert,
+  RawPaddleSubscriptionCreatedAlert,
+  RawPaddleSubscriptionPaymentSucceededAlert,
+  RawPaddleSubscriptionUpdatedAlert,
+  RawPaddleWebhookAlert,
+} from './__generated__/webhook-alerts'
 import { PaddleSdkApiException, PaddleSdkException } from './exceptions'
 import {
   convertApiBoolean,
@@ -40,32 +66,6 @@ import {
   PaddleSdkWebhookEventType,
 } from './interfaces'
 import { MetadataCodec } from './metadata'
-import {
-  PADDLE_PRODUCT_GENERATE_PAY_LINK,
-  PADDLE_SUBSCRIPTION_MODIFIERS_CREATE,
-  PADDLE_SUBSCRIPTION_USERS,
-  PADDLE_SUBSCRIPTION_USERS_CANCEL,
-  PADDLE_SUBSCRIPTION_USERS_UPDATE,
-  RawPaddlePostProductGeneratePayLinkRequest,
-  RawPaddlePostProductGeneratePayLinkResponse,
-  RawPaddlePostSubscriptionModifiersCreateRequest,
-  RawPaddlePostSubscriptionModifiersCreateResponse,
-  RawPaddlePostSubscriptionUsersCancelRequest,
-  RawPaddlePostSubscriptionUsersCancelResponse,
-  RawPaddlePostSubscriptionUsersRequest,
-  RawPaddlePostSubscriptionUsersResponse,
-  RawPaddlePostSubscriptionUsersUpdateRequest,
-  RawPaddlePostSubscriptionUsersUpdateResponse,
-} from './__generated__/api-routes'
-import {
-  RawPaddlePaymentRefundedAlert,
-  RawPaddlePaymentSucceededAlert,
-  RawPaddleSubscriptionCancelledAlert,
-  RawPaddleSubscriptionCreatedAlert,
-  RawPaddleSubscriptionPaymentSucceededAlert,
-  RawPaddleSubscriptionUpdatedAlert,
-  RawPaddleWebhookAlert,
-} from './__generated__/webhook-alerts'
 
 export * from './exceptions'
 export * from './interfaces'

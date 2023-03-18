@@ -2,6 +2,12 @@ import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
 import {
+  RawPaddlePaymentRefundedAlert,
+  RawPaddleSubscriptionCreatedAlert,
+  RawPaddleSubscriptionPaymentSucceededAlert,
+  RawPaddleSubscriptionUpdatedAlert,
+} from '../__generated__/webhook-alerts'
+import {
   PaddleSdkCardBrand,
   PaddleSdkCountry,
   PaddleSdkCurrency,
@@ -10,12 +16,6 @@ import {
   PaddleSdkRefundType,
   PaddleSdkSubscriptionStatus,
 } from '../interfaces'
-import {
-  RawPaddlePaymentRefundedAlert,
-  RawPaddleSubscriptionCreatedAlert,
-  RawPaddleSubscriptionPaymentSucceededAlert,
-  RawPaddleSubscriptionUpdatedAlert,
-} from '../__generated__/webhook-alerts'
 
 dayjs.extend(customParseFormat)
 dayjs.extend(utc)
