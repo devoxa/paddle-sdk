@@ -3564,10 +3564,10 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-php-serialize@4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/php-serialize/-/php-serialize-4.0.2.tgz#869bd4e01c2d26ac41c1d3e8058ab00ec072e3e5"
-  integrity sha512-73K9MqCnRn07sXxOht6kVLg+fg1lf/VYpecKy4n9ABcw1PJIAWfaxuQKML27EjolGHWxlXTy3rfh59AGrcUvIA==
+php-serialize@4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/php-serialize/-/php-serialize-4.1.0.tgz#6a2caaa2b73d13c1e1938c1f5486f16f229c5802"
+  integrity sha512-Mt7e3qzVV9igIvL/+ucWBeSyYppn62zQ7aRCI86wgvo8c32AVYnRd9FHM/MaSiGIfuA5EWi/28WITOz7aWJWRg==
 
 picocolors@^1.0.0:
   version "1.0.0"
