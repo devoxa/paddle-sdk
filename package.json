@@ -31,7 +31,7 @@
     "php-serialize": "4.1.0"
   },
   "devDependencies": {
-    "@devoxa/eslint-config": "3.0.9",
+    "@devoxa/eslint-config": "3.0.10",
     "@devoxa/flocky": "1.4.0",
     "@devoxa/prettier-config": "2.0.1",
     "@types/jest": "29.5.1",
