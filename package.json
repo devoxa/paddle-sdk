@@ -25,7 +25,7 @@
   "prettier": "@devoxa/prettier-config",
   "dependencies": {
     "@devoxa/aes-encryption": "1.0.3",
-    "dayjs": "1.11.7",
+    "dayjs": "1.11.8",
     "form-data": "4.0.0",
     "node-fetch": "2.6.11",
     "php-serialize": "4.1.1"
