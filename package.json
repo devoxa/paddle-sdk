@@ -25,7 +25,7 @@
   "prettier": "@devoxa/prettier-config",
   "dependencies": {
     "@devoxa/aes-encryption": "1.0.3",
-    "dayjs": "1.11.8",
+    "dayjs": "1.11.9",
     "form-data": "4.0.0",
     "node-fetch": "2.6.12",
     "php-serialize": "4.1.1"
@@ -35,7 +35,7 @@
     "@devoxa/flocky": "1.4.0",
     "@devoxa/prettier-config": "2.0.1",
     "@types/jest": "29.5.2",
-    "@types/node": "18.16.18",
+    "@types/node": "18.16.19",
     "@types/node-fetch": "2.6.4",
     "eslint": "8.44.0",
     "jest": "29.5.0",
