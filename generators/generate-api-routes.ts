@@ -27,9 +27,9 @@ type RouteInfoRequestBlock = {
       blocks: [
         {
           data: JsonSchema
-        }
+        },
       ]
-    }
+    },
   ]
 }
 
@@ -58,13 +58,13 @@ type RouteInfoResponseBlock = {
                       }
                     }>
                   }
-                }
+                },
               ]
             }>
           }
-        }
+        },
       ]
-    }
+    },
   ]
 }
 
