@@ -31,14 +31,14 @@
     "php-serialize": "4.1.1"
   },
   "devDependencies": {
-    "@devoxa/eslint-config": "3.0.10",
+    "@devoxa/eslint-config": "3.0.11",
     "@devoxa/flocky": "1.4.0",
-    "@devoxa/prettier-config": "2.0.1",
-    "@types/jest": "29.5.2",
+    "@devoxa/prettier-config": "2.0.2",
+    "@types/jest": "29.5.3",
     "@types/node": "18.16.19",
     "@types/node-fetch": "2.6.4",
     "eslint": "8.44.0",
-    "jest": "29.6.0",
+    "jest": "29.6.1",
     "nodemon": "2.0.22",
     "prettier": "3.0.0",
     "ts-jest": "29.1.1",
