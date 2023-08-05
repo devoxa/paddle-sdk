@@ -11,36 +11,24 @@
       "name": "David Reeß",
       "avatar_url": "https://avatars3.githubusercontent.com/u/4615516?v=4",
       "profile": "https://www.david-reess.de",
-      "contributions": [
-        "code",
-        "doc",
-        "test"
-      ]
+      "contributions": ["code", "doc", "test"]
     },
     {
       "login": "atjeff",
       "name": "Jeff Hage",
       "avatar_url": "https://avatars1.githubusercontent.com/u/10563763?v=4",
       "profile": "https://github.com/atjeff",
-      "contributions": [
-        "review"
-      ]
+      "contributions": ["review"]
     },
     {
       "login": "aradzie",
       "name": "Aliaksandr Radzivanovich",
       "avatar_url": "https://avatars0.githubusercontent.com/u/44386?v=4",
       "profile": "https://github.com/aradzie",
-      "contributions": [
-        "code",
-        "doc",
-        "test"
-      ]
+      "contributions": ["code", "doc", "test"]
     }
   ],
-  "files": [
-    "README.md"
-  ],
+  "files": ["README.md"],
   "contributorsPerLine": 7,
   "commitConvention": "none"
 }
