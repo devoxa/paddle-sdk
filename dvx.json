@@ -1,0 +1,3 @@
+{
+  "skipCheckRepositorySteps": ["npm-dependency-rules", "code-files-naming-consistency"]
+}
