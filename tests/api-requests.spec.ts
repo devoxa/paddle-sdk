@@ -32,7 +32,7 @@ describe('api requests', () => {
     ;(fetch as jest.Mock).mockClear()
   })
 
-  it('can create a product pay link', async () => {
+  test('can create a product pay link', async () => {
     mockNextApiResponse(FIXTURES.createProductPayLinkApiResponse)
 
     const response = await paddleSdk.createProductPayLink({
@@ -73,7 +73,7 @@ describe('api requests', () => {
     expect(request).toMatchSnapshot()
   })
 
-  it('can list the subscriptions with filters', async () => {
+  test('can list the subscriptions with filters', async () => {
     mockNextApiResponse(FIXTURES.listSubscriptionsApiResponse)
 
     const response = await paddleSdk.listSubscriptions({
@@ -88,7 +88,7 @@ describe('api requests', () => {
     expect(getLastApiRequest()).toMatchSnapshot()
   })
 
-  it('can list the subscriptions with no filters', async () => {
+  test('can list the subscriptions with no filters', async () => {
     mockNextApiResponse(FIXTURES.listSubscriptionsApiResponse)
 
     await paddleSdk.listSubscriptions({})
@@ -96,7 +96,7 @@ describe('api requests', () => {
     expect(getLastApiRequest()).toMatchSnapshot()
   })
 
-  it('can update a subscription (all fields)', async () => {
+  test('can update a subscription (all fields)', async () => {
     mockNextApiResponse(FIXTURES.updateSubscriptionApiResponse)
 
     const response = await paddleSdk.updateSubscription({
@@ -119,7 +119,7 @@ describe('api requests', () => {
     expect(request).toMatchSnapshot()
   })
 
-  it('can update a subscription (single field)', async () => {
+  test('can update a subscription (single field)', async () => {
     mockNextApiResponse(FIXTURES.updateSubscriptionApiResponse)
 
     const response = await paddleSdk.updateSubscription({
@@ -131,7 +131,7 @@ describe('api requests', () => {
     expect(getLastApiRequest()).toMatchSnapshot()
   })
 
-  it('can cancel a subscription', async () => {
+  test('can cancel a subscription', async () => {
     mockNextApiResponse(FIXTURES.cancelSubscriptionApiResponse)
 
     const response = await paddleSdk.cancelSubscription({
@@ -142,7 +142,7 @@ describe('api requests', () => {
     expect(getLastApiRequest()).toMatchSnapshot()
   })
 
-  it('can create a subscription modifier', async () => {
+  test('can create a subscription modifier', async () => {
     mockNextApiResponse(FIXTURES.createSubscriptionModifierApiResponse)
 
     const response = await paddleSdk.createSubscriptionModifier({
@@ -156,7 +156,7 @@ describe('api requests', () => {
     expect(getLastApiRequest()).toMatchSnapshot()
   })
 
-  it('throws on API failure', async () => {
+  test('throws on API failure', async () => {
     ;(fetch as jest.Mock).mockImplementationOnce(async () => ({
       success: false,
       error: { message: 'Foo' },

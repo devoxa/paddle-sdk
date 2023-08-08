@@ -15,11 +15,11 @@ function verify(body: any, publicKey?: string) {
 }
 
 describe('verify webhook event', () => {
-  it('verifies valid signature', () => {
+  test('verifies valid signature', () => {
     expect(verify(FIXTURES.subscriptionCreatedEvent)).toEqual(true)
   })
 
-  it('verifies valid signature for pre-parsed body', () => {
+  test('verifies valid signature for pre-parsed body', () => {
     const eventBodyParsed = {
       ...FIXTURES.subscriptionCreatedEvent,
       linked_subscriptions: [8, 9, 4],
@@ -29,7 +29,7 @@ describe('verify webhook event', () => {
     expect(verify(eventBodyParsed)).toEqual(true)
   })
 
-  it('rejects for wrong body type', () => {
+  test('rejects for wrong body type', () => {
     expect(verify(null)).toEqual(false)
     expect(verify('FooBarBaz')).toEqual(false)
     expect(verify(42)).toEqual(false)
@@ -39,19 +39,19 @@ describe('verify webhook event', () => {
     expect(verify(['Foo'])).toEqual(false)
   })
 
-  it('rejects for empty body', () => {
+  test('rejects for empty body', () => {
     expect(verify({})).toEqual(false)
   })
 
-  it('rejects for body with irrelevant properties', () => {
+  test('rejects for body with irrelevant properties', () => {
     expect(verify({ foo: 'bar' })).toEqual(false)
   })
 
-  it('rejects for body with extra properties', () => {
+  test('rejects for body with extra properties', () => {
     expect(verify({ ...FIXTURES.subscriptionCreatedEvent, foo: 'bar' })).toEqual(false)
   })
 
-  it('rejects for invalid signature type', () => {
+  test('rejects for invalid signature type', () => {
     expect(
       verify({
         ...FIXTURES.subscriptionCreatedEvent,
@@ -60,11 +60,11 @@ describe('verify webhook event', () => {
     ).toEqual(false)
   })
 
-  it('rejects for invalid signature', () => {
+  test('rejects for invalid signature', () => {
     expect(verify({ ...FIXTURES.subscriptionCreatedEvent, p_signature: 'FooBar' })).toEqual(false)
   })
 
-  it('rejects for malformed public key', () => {
+  test('rejects for malformed public key', () => {
     function replaceCharacterAt(string: string, index: number, replace: string) {
       return string.substring(0, index) + replace + string.substring(index + 1)
     }

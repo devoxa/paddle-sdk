@@ -20,7 +20,7 @@ describe('helpers -> fetch', () => {
     ;(nodeFetch as unknown as jest.Mock).mockClear()
   })
 
-  it('can make a fetch request using a form data body', async () => {
+  test('can make a fetch request using a form data body', async () => {
     mockNextNodeFetchCall({ success: true, response: { foo: 'bar' } })
 
     const response = await fetch('https://example.com', {

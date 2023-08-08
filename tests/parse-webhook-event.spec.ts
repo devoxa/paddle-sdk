@@ -13,23 +13,23 @@ const paddleSdk = new PaddleSdk({
 ;(paddleSdk as any).verifyWebhookEvent = () => true
 
 describe('parse webhook event', () => {
-  it('parses a "payment succeeded" event correctly', () => {
+  test('parses a "payment succeeded" event correctly', () => {
     expect(paddleSdk.parseWebhookEvent(FIXTURES.paymentSucceededEvent)).toMatchSnapshot()
   })
 
-  it('parses a "payment refunded" event correctly', () => {
+  test('parses a "payment refunded" event correctly', () => {
     expect(paddleSdk.parseWebhookEvent(FIXTURES.paymentRefundedEvent)).toMatchSnapshot()
   })
 
-  it('parses a "subscription created" event correctly', () => {
+  test('parses a "subscription created" event correctly', () => {
     expect(paddleSdk.parseWebhookEvent(FIXTURES.subscriptionCreatedEvent)).toMatchSnapshot()
   })
 
-  it('parses a "subscription updated" event correctly', () => {
+  test('parses a "subscription updated" event correctly', () => {
     expect(paddleSdk.parseWebhookEvent(FIXTURES.subscriptionUpdatedEvent)).toMatchSnapshot()
   })
 
-  it('parses a "subscription updated (paused)" event correctly', () => {
+  test('parses a "subscription updated (paused)" event correctly', () => {
     const fixture = {
       ...FIXTURES.subscriptionUpdatedEvent,
       paused_at: '2020-01-01 12:13:14',
@@ -40,17 +40,17 @@ describe('parse webhook event', () => {
     expect(paddleSdk.parseWebhookEvent(fixture)).toMatchSnapshot()
   })
 
-  it('parses a "subscription cancelled" event correctly', () => {
+  test('parses a "subscription cancelled" event correctly', () => {
     expect(paddleSdk.parseWebhookEvent(FIXTURES.subscriptionCancelledEvent)).toMatchSnapshot()
   })
 
-  it('parses a "subscription payment succeeded" event correctly', () => {
+  test('parses a "subscription payment succeeded" event correctly', () => {
     expect(
       paddleSdk.parseWebhookEvent(FIXTURES.subscriptionPaymentSucceededEvent)
     ).toMatchSnapshot()
   })
 
-  it('errors if the metadata can not be parsed', () => {
+  test('errors if the metadata can not be parsed', () => {
     const fixture = {
       ...FIXTURES.subscriptionCreatedEvent,
       passthrough: 'FooBar',
@@ -59,7 +59,7 @@ describe('parse webhook event', () => {
     expect(() => paddleSdk.parseWebhookEvent(fixture)).toThrowErrorMatchingSnapshot()
   })
 
-  it('errors if the webhook signature can not be validated', () => {
+  test('errors if the webhook signature can not be validated', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(paddleSdk as any).verifyWebhookEvent = () => false
 
