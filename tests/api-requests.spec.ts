@@ -98,7 +98,7 @@ describe('api requests', () => {
 
   test('errors if the payment method is not known', async () => {
     const fixture = FIXTURES.listSubscriptionsApiResponse
-    fixture[0].payment_information.payment_method = 'foobar' as any
+    fixture[0].payment_information.payment_method = 'foobar' as 'paypal'
 
     mockNextApiResponse(fixture)
 
