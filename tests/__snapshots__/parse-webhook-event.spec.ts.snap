@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`parse webhook event errors if the event type is not known 1`] = `"Implementation missing: Can not parse event of type foo_bar"`;
+
 exports[`parse webhook event errors if the metadata can not be parsed 1`] = `"Failed decrypting metadata: Invalid authentication tag length: 0"`;
 
 exports[`parse webhook event errors if the webhook signature can not be validated 1`] = `"Failed validating webhook event body"`;

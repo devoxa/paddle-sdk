@@ -96,6 +96,22 @@ describe('api requests', () => {
     expect(getLastApiRequest()).toMatchSnapshot()
   })
 
+  test('errors if the payment method is not known', async () => {
+    const fixture = FIXTURES.listSubscriptionsApiResponse
+    fixture[0].payment_information.payment_method = 'foobar' as any
+
+    mockNextApiResponse(fixture)
+
+    let error
+    try {
+      await paddleSdk.listSubscriptions({})
+    } catch (err) {
+      error = err
+    }
+
+    expect(error).toMatchSnapshot()
+  })
+
   test('can update a subscription (all fields)', async () => {
     mockNextApiResponse(FIXTURES.updateSubscriptionApiResponse)
 
