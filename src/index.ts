@@ -160,7 +160,6 @@ export class PaddleSdk<TMetadata = unknown> {
         return this.parseSubscriptionPaymentSucceededWebhookEvent(body)
     }
 
-    // istanbul ignore next
     throw new PaddleSdkException(
       `Implementation missing: Can not parse event of type ${body.alert_name}`
     )
@@ -525,7 +524,6 @@ export class PaddleSdk<TMetadata = unknown> {
       }
 
       // @ts-expect-error TS errors here because we handled all types that should exist according to the API docs
-      // istanbul ignore next
       throw new PaddleSdkException(`Unknown payment method "${paymentInformation.payment_method}"`)
     }
 

@@ -274,4 +274,6 @@ exports[`api requests can update a subscription (single field) 2`] = `
 ]
 `;
 
+exports[`api requests errors if the payment method is not known 1`] = `[Error: Unknown payment method "foobar"]`;
+
 exports[`api requests throws on API failure 1`] = `[Error: Foo]`;
