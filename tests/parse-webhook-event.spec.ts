@@ -53,7 +53,7 @@ describe('parse webhook event', () => {
   test('errors if the event type is not known', () => {
     const fixture = {
       ...FIXTURES.subscriptionCreatedEvent,
-      alert_name: 'foo_bar'
+      alert_name: 'foo_bar',
     }
 
     expect(() => paddleSdk.parseWebhookEvent(fixture)).toThrowErrorMatchingSnapshot()
