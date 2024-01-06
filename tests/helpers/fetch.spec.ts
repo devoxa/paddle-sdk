@@ -1,23 +1,21 @@
 import FormData from 'form-data'
-import nodeFetch from 'node-fetch'
 import { fetch } from '../../src/helpers/fetch'
 
-jest.mock('node-fetch', () => jest.fn())
+const mockFetch = jest.fn()
+global.fetch = mockFetch
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mockNextNodeFetchCall(json: any) {
-  ;(nodeFetch as unknown as jest.Mock).mockImplementationOnce(async () => ({
-    json: async () => json,
-  }))
+  mockFetch.mockImplementationOnce(async () => ({ json: async () => json }))
 }
 
 function getLastNodeFetchCall() {
-  return (nodeFetch as unknown as jest.Mock).mock.calls[0]
+  return mockFetch.mock.calls[0]
 }
 
 describe('helpers -> fetch', () => {
   beforeEach(() => {
-    ;(nodeFetch as unknown as jest.Mock).mockClear()
+    mockFetch.mockClear()
   })
 
   test('can make a fetch request using a form data body', async () => {

@@ -36,9 +36,7 @@ describe('metadata codecs', () => {
   test('"stringify" codec throws error on parse failure', () => {
     const codec = stringifyMetadata()
 
-    expect(() => {
-      codec.parse('garbage')
-    }).toThrowError('Failed parsing metadata: Unexpected token g in JSON at position 0')
+    expect(() => codec.parse('garbage')).toThrowErrorMatchingSnapshot()
   })
 
   test('"encrypt" codec encrypts and decrypts metadata values', () => {
@@ -53,8 +51,6 @@ describe('metadata codecs', () => {
   test('"encrypt" codec throws error on decryption failure', () => {
     const codec = encryptMetadata(passthroughMetadata(), '01234567890123456789012345678901')
 
-    expect(() => {
-      codec.parse('garbage')
-    }).toThrowError('Failed decrypting metadata: Invalid authentication tag length: 0')
+    expect(() => codec.parse('garbage')).toThrowErrorMatchingSnapshot()
   })
 })
