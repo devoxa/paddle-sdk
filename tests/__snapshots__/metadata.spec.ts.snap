@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`metadata codecs "encrypt" codec throws error on decryption failure 1`] = `"Failed decrypting metadata: Invalid authentication tag length: 0"`;
+
+exports[`metadata codecs "stringify" codec throws error on parse failure 1`] = `"Failed parsing metadata: Unexpected token 'g', "garbage" is not valid JSON"`;

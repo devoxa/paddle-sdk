@@ -1,6 +1,5 @@
 import { matchAll } from '@devoxa/flocky'
 import fs from 'fs'
-import fetch from 'node-fetch'
 
 const DOCUMENTATION_URLS = {
   RawPaddleEnumCurrencies: `https://developer.paddle.com/reference/platform-parameters/supported-currencies`,

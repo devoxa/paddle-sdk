@@ -1,15 +1,14 @@
 import FormData from 'form-data'
-import nodeFetch from 'node-fetch'
 
 type Body = Record<string, string | number | undefined>
 
 export async function fetch<T>(url: string, options: { method: string; body: Body }): Promise<T> {
-  const response = await nodeFetch(url, {
+  const response = await global.fetch(url, {
     method: options.method,
     body: objectToFormData(options.body),
   })
 
-  return response.json()
+  return response.json() as T
 }
 
 function objectToFormData(object: Body): FormData {
