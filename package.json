@@ -27,7 +27,7 @@
     "@devoxa/aes-encryption": "2.0.0",
     "dayjs": "1.11.13",
     "form-data": "4.0.1",
-    "php-serialize": "4.1.1"
+    "php-serialize": "5.0.1"
   },
   "devDependencies": {
     "@devoxa/eslint-config": "3.0.11",
