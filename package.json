@@ -34,7 +34,7 @@
     "@devoxa/flocky": "2.1.1",
     "@devoxa/prettier-config": "2.0.3",
     "@swc/core": "1.7.40",
-    "@swc/jest": "0.2.36",
+    "@swc/jest": "0.2.37",
     "@types/jest": "29.5.14",
     "@types/node": "20.9.5",
     "eslint": "8.57.1",
