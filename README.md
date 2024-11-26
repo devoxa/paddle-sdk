@@ -1,3 +1,9 @@
+# :no_entry: DEPRECATED :no_entry:
+
+### This package has been archived and is no longer maintained. While we will not provide any updates or support, the code is still available for reference. If you need this package for your project, we encourage you to fork & republish the code following the license terms.
+
+---
+
 <!-- Title -->
 <h1 align="center">
   paddle-sdk
